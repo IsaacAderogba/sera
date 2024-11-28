@@ -1,0 +1,28 @@
+{
+  "name": "@sera/app",
+  "version": "1.0.0",
+  "description": "An Electron application with React and TypeScript",
+  "author": "example.com",
+  "homepage": "https://electron-vite.org",
+  "type": "module",
+  "main": "./dist/main/index.js",
+  "license": "ISC",
+  "scripts": {
+    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
+    "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "build": "yarn typecheck:node && yarn typecheck:web && electron-vite build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "electron": "33.2.1",
+    "electron-vite": "^2.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^5.3.1"
+  }
+}
