@@ -6,10 +6,15 @@ import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, "..", ".env") });
+dotenv.config({ path: path.join(__dirname, "..", "build", ".env") });
 
-const { CSC_LINK, CSC_KEY_PASSWORD, WIN_CSC_LINK, WIN_CSC_KEY_PASSWORD } =
-  process.env;
+const {
+  CSC_LINK,
+  CSC_KEY_PASSWORD,
+  WIN_CSC_LINK,
+  WIN_CSC_KEY_PASSWORD,
+  GH_TOKEN
+} = process.env;
 
 const Platform = builder.Platform;
 const appBundleId = "com.sera.prod";
@@ -33,7 +38,19 @@ async function pkg(targets, options) {
         target: {
           target: "zip",
           arch: ["x64", "arm64"]
-        }
+        },
+        entitlements: path.join(
+          __dirname,
+          "..",
+          "build",
+          "entitlements.mac.plist"
+        ),
+        entitlementsInherit: path.join(
+          __dirname,
+          "..",
+          "build",
+          "entitlements.mac.inherit.plist"
+        )
       },
       win: {
         icon: path.join(__dirname, "..", "public", "logos", "icon.ico"),
@@ -42,17 +59,16 @@ async function pkg(targets, options) {
         target: {
           target: "nsis",
           arch: ["x64", "arm64"]
-        }
+        },
+        // because setting a publisher isn't possible when using the apple developer cert
+        verifyUpdateCodeSignature: false
       },
       linux: {
         category: "Utility",
         icon: path.join(__dirname, "..", "public", "logos", "icon.png"),
         executableName: "Pine",
         artifactName: "${productName}-${version}.${ext}",
-        target: {
-          target: "default",
-          arch: ["x64", "arm64"]
-        }
+        target: { target: "AppImage", arch: ["x64", "arm64"] }
       },
       snap: {
         publish: { provider: "generic", url: "https://anydummyurl.com" }
@@ -62,7 +78,7 @@ async function pkg(targets, options) {
   });
 }
 
-export async function build(options = {}) {
+async function build(options = {}) {
   switch (os.platform()) {
     case "darwin":
       console.log(`Packaging mac targets`);
@@ -75,3 +91,5 @@ export async function build(options = {}) {
       return await pkg(Platform.LINUX.createTarget(), options);
   }
 }
+
+export { build, GH_TOKEN };

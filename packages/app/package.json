@@ -1,6 +1,6 @@
 {
   "name": "@sera/app",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "An Electron application with React and TypeScript",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
@@ -15,7 +15,7 @@
     "prepare": "rm -rf ./out/* && yarn typecheck:node && yarn typecheck:web && electron-vite build",
     "test": "yarn prepare && node ./scripts/test.js",
     "build": "yarn prepare && node ./scripts/build.js",
-    "publish": "yarn prepare && node ./scripts/publish.js",
+    "release": "yarn prepare && node ./scripts/release.js",
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {},
