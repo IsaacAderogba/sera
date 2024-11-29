@@ -12,7 +12,11 @@
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
-    "build": "yarn typecheck:node && yarn typecheck:web && electron-vite build"
+    "prepare": "rm -rf ./out/* && yarn typecheck:node && yarn typecheck:web && electron-vite build",
+    "test": "yarn prepare && node ./scripts/test.js",
+    "build": "yarn prepare && node ./scripts/build.js",
+    "publish": "yarn prepare && node ./scripts/publish.js",
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {},
   "devDependencies": {
@@ -20,6 +24,8 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "electron": "33.2.1",
+    "electron-builder": "^25.1.8",
+    "electron-updater": "^6.3.9",
     "electron-vite": "^2.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
