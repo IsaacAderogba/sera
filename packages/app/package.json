@@ -1,6 +1,6 @@
 {
   "name": "@sera/app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An Electron application with React and TypeScript",
   "author": "example.com",
   "homepage": "https://electron-vite.org",

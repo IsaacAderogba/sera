@@ -1,0 +1,17 @@
+name: test-windows
+
+on: 
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn
+      - run: cd packages/app && yarn build
+      - run: cd packages/app && yarn test
+
+
