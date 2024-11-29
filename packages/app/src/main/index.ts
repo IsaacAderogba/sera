@@ -6,7 +6,7 @@ import {
   initializeWindows
 } from "./windows";
 import { APP_MODEL_ID } from "./constants";
-import { autoUpdater } from "./updater";
+import { checkForUpdates } from "./updater";
 
 app
   .whenReady()
@@ -16,7 +16,7 @@ app
     await initializeWindows();
     setContentSecurityPolicy();
 
-    await autoUpdater.checkForUpdates();
+    await checkForUpdates();
   })
   .catch(e => console.error(e));
 

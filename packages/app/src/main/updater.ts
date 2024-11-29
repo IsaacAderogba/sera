@@ -1,5 +1,6 @@
 import { Notification, dialog } from "electron";
 import { autoUpdater } from "electron-updater";
+import { NODE_ENV } from "./constants";
 
 autoUpdater.setFeedURL({
   provider: "github",
@@ -8,6 +9,7 @@ autoUpdater.setFeedURL({
 });
 
 autoUpdater.on("error", (_, message) => {
+  console.log("sera-update-error", message);
   const notification = new Notification({
     title: "Update error",
     body: message
@@ -17,6 +19,7 @@ autoUpdater.on("error", (_, message) => {
 });
 
 autoUpdater.on("update-available", info => {
+  console.log("sera-update-available");
   const notification = new Notification({
     title: "Update available",
     body: `Version ${info.version} of Pine is available and will download in the background.`
@@ -25,7 +28,10 @@ autoUpdater.on("update-available", info => {
   notification.show();
 });
 
-autoUpdater.on("update-downloaded", async () => {
+autoUpdater.on("update-downloaded", async info => {
+  console.log("sera-update-downloaded", info);
+  if (NODE_ENV === "test") return;
+
   const { response } = await dialog.showMessageBox({
     type: "info",
     buttons: ["Install and restart", "Install on next launch"],
@@ -39,7 +45,9 @@ autoUpdater.on("update-downloaded", async () => {
 });
 
 export const checkForUpdates = async () => {
-  await autoUpdater.checkForUpdates();
+  try {
+    await autoUpdater.checkForUpdates();
+  } catch (err) {
+    console.log(`Error checking for updates`, err);
+  }
 };
-
-export { autoUpdater };

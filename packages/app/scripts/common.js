@@ -44,12 +44,6 @@ async function pkg(targets, options) {
           "..",
           "build",
           "entitlements.mac.plist"
-        ),
-        entitlementsInherit: path.join(
-          __dirname,
-          "..",
-          "build",
-          "entitlements.mac.inherit.plist"
         )
       },
       win: {
@@ -66,7 +60,7 @@ async function pkg(targets, options) {
       linux: {
         category: "Utility",
         icon: path.join(__dirname, "..", "public", "logos", "icon.png"),
-        executableName: "Pine",
+        executableName: "Sera",
         artifactName: "${productName}-${version}.${ext}",
         target: { target: "AppImage", arch: ["x64", "arm64"] }
       },
