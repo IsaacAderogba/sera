@@ -64,7 +64,6 @@ async function pkg(targets, options) {
         category: "Utility",
         icon: path.join(__dirname, "..", "public", "logos", "icon.png"),
         executableName: "Sera",
-        artifactName: "${productName}-${version}.${ext}",
         target: { target: "AppImage", arch: ["x64", "arm64"] },
         ...options?.config?.linux
       },
@@ -76,6 +75,10 @@ async function pkg(targets, options) {
 }
 
 async function build(options = {}) {
+  // await pkg(Platform.MAC.createTarget(), options);
+  // await pkg(Platform.WINDOWS.createTarget(), options);
+  // await pkg(Platform.LINUX.createTarget(), options);
+
   switch (os.platform()) {
     case "darwin":
       console.log(`Packaging mac targets`);
