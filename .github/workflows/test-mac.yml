@@ -1,0 +1,22 @@
+name: test-mac
+
+on: 
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn
+      - run: cd packages/app && yarn build:test
+      - run: cd packages/app && yarn test
+        env:
+          DEBUG: "pw:browser*"
+
+

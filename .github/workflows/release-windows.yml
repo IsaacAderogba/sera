@@ -1,0 +1,21 @@
+name: release-windows
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn
+      - run: cd packages/app && yarn release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+

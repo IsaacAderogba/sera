@@ -1,0 +1,22 @@
+name: test-linux
+
+on: 
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn
+      - run: cd packages/app && yarn build:test
+      - run: cd packages/app && xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' -- yarn test
+        env:
+          DEBUG: "pw:browser*"
+
+

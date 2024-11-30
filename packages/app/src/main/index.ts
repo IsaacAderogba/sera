@@ -6,6 +6,7 @@ import {
   initializeWindows
 } from "./windows";
 import { APP_MODEL_ID } from "./constants";
+import { checkForUpdates } from "./updater";
 
 app
   .whenReady()
@@ -14,6 +15,8 @@ app
 
     await initializeWindows();
     setContentSecurityPolicy();
+
+    await checkForUpdates();
   })
   .catch(e => console.error(e));
 
@@ -24,17 +27,14 @@ const beforeQuit = () => {
     window.removeAllListeners("close").setClosable(true);
     window.close();
   }
+
+  app.exit();
 };
 
-electronUpdater.on("before-quit-for-update", async () => {
-  beforeQuit();
-  app.exit();
-});
-
+electronUpdater.on("before-quit-for-update", beforeQuit);
 app.on("before-quit", async e => {
   e.preventDefault();
   beforeQuit();
-  app.exit();
 });
 
 app.on("activate", activateWindows);
