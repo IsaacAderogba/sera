@@ -8,7 +8,12 @@ const __dirname = path.dirname(__filename);
 
 test("smoke test", async () => {
   const app = await electron.launch({
-    executablePath: await getExecutablePath()
+    executablePath: await getExecutablePath(),
+    env: {
+      ...process.env,
+      NODE_ENV: "test",
+      APPIMAGE: path.join(__dirname, "..", "out", "Sera-0.0.1.AppImage")
+    }
   });
 
   const result = await new Promise((resolve, reject) => {

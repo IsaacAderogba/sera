@@ -15,6 +15,6 @@ jobs:
           node-version: 20
       - run: yarn
       - run: cd packages/app && yarn build
-      - run: cd packages/app && yarn test
+      - run: cd packages/app && DEBUG=pw:browser* yarn test
 
 

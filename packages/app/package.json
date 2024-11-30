@@ -13,7 +13,7 @@
     "start": "electron-vite preview",
     "dev": "electron-vite dev",
     "setup": "rm -rf ./out/* && yarn typecheck:node && yarn typecheck:web && electron-vite build",
-    "test": "DEBUG=pw:browser* NODE_ENV=test playwright test",
+    "test": "playwright test",
     "build": "yarn setup && node ./scripts/build.js",
     "release": "yarn setup && node ./scripts/release.js"
   },
