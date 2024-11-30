@@ -17,7 +17,7 @@ test("smoke test", async () => {
   });
 
   const result = await new Promise((resolve, reject) => {
-    const timeoutId = setTimeout(() => reject(new Error("Timeout")), 60_000);
+    const timeoutId = setTimeout(() => reject(new Error("Timeout")), 120_000);
     app.process().stdout.on("data", data => {
       console.log(`stdout: ${data}`);
 

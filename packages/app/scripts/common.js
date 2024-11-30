@@ -30,6 +30,7 @@ async function pkg(targets, options) {
       directories: { output: "out", buildResources: "public" },
       files: ["dist/**/*", "public/**/*", "package.json"],
       publish: { provider: "github", owner: "IsaacAderogba", repo: "sera" },
+      ...options?.config,
       mac: {
         cscLink: CSC_LINK,
         cscKeyPassword: CSC_KEY_PASSWORD,
@@ -44,7 +45,8 @@ async function pkg(targets, options) {
           "..",
           "build",
           "entitlements.mac.plist"
-        )
+        ),
+        ...options?.config?.mac
       },
       win: {
         icon: path.join(__dirname, "..", "public", "logos", "icon.ico"),
@@ -55,19 +57,20 @@ async function pkg(targets, options) {
           arch: ["x64", "arm64"]
         },
         // because setting a publisher isn't possible when using the apple developer cert
-        verifyUpdateCodeSignature: false
+        verifyUpdateCodeSignature: false,
+        ...options?.config?.win
       },
       linux: {
         category: "Utility",
         icon: path.join(__dirname, "..", "public", "logos", "icon.png"),
         executableName: "Sera",
         artifactName: "${productName}-${version}.${ext}",
-        target: { target: "AppImage", arch: ["x64", "arm64"] }
+        target: { target: "AppImage", arch: ["x64", "arm64"] },
+        ...options?.config?.linux
       },
       snap: {
         publish: { provider: "generic", url: "https://anydummyurl.com" }
-      },
-      ...options.config
+      }
     }
   });
 }
