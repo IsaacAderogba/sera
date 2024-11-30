@@ -17,6 +17,6 @@ jobs:
       - run: cd packages/app && yarn build:test
       - run: cd packages/app && yarn test
         env:
-            DEBUG: "pw:browser*"
+          DEBUG: "pw:browser*"
 
 

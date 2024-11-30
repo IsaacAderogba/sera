@@ -17,6 +17,6 @@ jobs:
       - run: cd packages/app && yarn build:test
       - run: cd packages/app && xvfb-run --auto-servernum --server-num=1 --server-args='-screen 0, 1920x1080x24' -- yarn test
         env:
-            DEBUG: "pw:browser*"
+          DEBUG: "pw:browser*"
 
 
