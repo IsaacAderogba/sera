@@ -6,7 +6,7 @@ import { test, expect, _electron as electron } from "@playwright/test";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-test("test update downloading", async () => {
+test("smoke test", async () => {
   const app = await electron.launch({
     executablePath: await getExecutablePath()
   });
