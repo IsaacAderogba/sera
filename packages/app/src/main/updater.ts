@@ -19,7 +19,7 @@ autoUpdater.on("error", (_, message) => {
 });
 
 autoUpdater.on("update-available", info => {
-  console.log("sera-update-available");
+  console.log("sera-update-available", info);
   const notification = new Notification({
     title: "Update available",
     body: `Version ${info.version} of Pine is available and will download in the background.`
