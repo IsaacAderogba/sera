@@ -10,6 +10,5 @@ export const ELECTRON_RENDERER_URL = IS_DEVELOPMENT
   ? process.env["ELECTRON_RENDERER_URL"]
   : "";
 
-export const PUBLIC_FOLDER = path.join(__dirname, "..", "..", "public");
-export const BUILD_FOLDER = path.join(__dirname, "..", "..", "build");
+export const RESOURCES_FOLDER = path.join(__dirname, "..", "..", "resources");
 export const { NODE_ENV } = process.env;

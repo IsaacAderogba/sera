@@ -8,6 +8,9 @@ import {
 import { APP_MODEL_ID } from "./constants";
 import { checkForUpdates } from "./updater";
 import { subscribeIPCHandlers, unsubscribeIPCHandlers } from "./ipc";
+import { connectDatabase, disconnectDatabase } from "./database";
+
+const databaseConnection = connectDatabase();
 
 app
   .whenReady()
@@ -15,6 +18,7 @@ app
     app.setAppUserModelId(APP_MODEL_ID);
 
     subscribeIPCHandlers();
+    await databaseConnection;
     await initializeWindows();
     setContentSecurityPolicy();
 
@@ -22,7 +26,7 @@ app
   })
   .catch(e => console.error(e));
 
-const beforeQuit = () => {
+const beforeQuit = async () => {
   beforeQuitWindows();
 
   for (const window of BrowserWindow.getAllWindows()) {
@@ -31,13 +35,14 @@ const beforeQuit = () => {
   }
 
   unsubscribeIPCHandlers();
+  await disconnectDatabase();
   app.exit();
 };
 
 electronUpdater.on("before-quit-for-update", beforeQuit);
 app.on("before-quit", async e => {
   e.preventDefault();
-  beforeQuit();
+  await beforeQuit();
 });
 
 app.on("activate", activateWindows);

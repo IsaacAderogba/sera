@@ -8,7 +8,7 @@ import {
 } from "electron";
 import path from "path";
 import { debounce } from "../preload/utilities";
-import { ELECTRON_RENDERER_URL, PUBLIC_FOLDER } from "./constants";
+import { ELECTRON_RENDERER_URL, RESOURCES_FOLDER } from "./constants";
 import {
   StoreState,
   WindowState,
@@ -108,7 +108,7 @@ const createMenubarWindow = async () => {
   trayWindow.on("show", () => trayWindow.focus());
 
   const trayImage = nativeImage
-    .createFromPath(path.join(PUBLIC_FOLDER, "logos", "template-logo.png"))
+    .createFromPath(path.join(RESOURCES_FOLDER, "logos", "template-logo.png"))
     .resize({ width: 22, height: 22 });
   trayImage.setTemplateImage(true);
 
