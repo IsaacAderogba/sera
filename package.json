@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "postinstall": "electron-builder install-app-deps"
   },
   "repository": {
     "type": "git",
