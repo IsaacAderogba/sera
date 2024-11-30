@@ -13,6 +13,7 @@ import {
   View,
   WebContentsView
 } from "electron";
+import { adapters } from "./database";
 
 export function subscribeIPCHandlers() {
   ipcMain.on("message", onIPCBroadcast);
@@ -24,12 +25,16 @@ export function unsubscribeIPCHandlers() {
   ipcMain.removeHandler("message");
 }
 
-const handleIPCInvoke = <T extends keyof IPCInvokeEvents>(
+const handleIPCInvoke = async <T extends keyof IPCInvokeEvents>(
   event: IpcMainInvokeEvent,
   subject: T,
   ...data
 ) => {
   console.log("[invoke]", subject);
+
+  const [namespace, method] = subject.split(":");
+  const handler = adapters[namespace][method];
+  if (handler) return await handler(...data);
 };
 
 const onIPCBroadcast = <T extends keyof IPCBroadcastEvents>(

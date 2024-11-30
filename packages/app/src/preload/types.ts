@@ -4,6 +4,10 @@ declare global {
       invoke: Invoke;
       publish: Publish;
       subscribe: Subscribe;
+
+      users: UserAdapter;
+      playlists: PlaylistAdapter;
+      songs: SongAdapter;
     };
   }
 }
@@ -42,3 +46,29 @@ export interface IPCContext {
 }
 
 export type Platform = "mac" | "windows" | "linux";
+
+export type Adapter<Type extends Record = Record> = {
+  read: (id: string) => Promise<Type>;
+  list: () => Promise<Type[]>;
+
+  create: (
+    record: Omit<Type, "id" | "createdAt" | "updatedAt">
+  ) => Promise<Type>;
+  update: (id: string, record: Partial<Type>) => Promise<Type>;
+  delete: (id: string) => Promise<Type>;
+};
+
+export interface UserRecord extends Record {}
+export type UserAdapter = Adapter<UserRecord>;
+
+export interface PlaylistRecord extends Record {}
+export type PlaylistAdapter = Adapter<PlaylistRecord>;
+
+export interface SongRecord extends Record {}
+export type SongAdapter = Adapter<SongRecord>;
+
+interface Record {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+}

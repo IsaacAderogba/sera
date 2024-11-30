@@ -1,5 +1,13 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
-import { Invoke, Publish, Subscribe } from "./types";
+import {
+  Adapter,
+  Invoke,
+  PlaylistAdapter,
+  Publish,
+  SongAdapter,
+  Subscribe,
+  UserAdapter
+} from "./types";
 
 const invoke: Invoke = (subject, ...args) => {
   console.log("[invoke]", subject, ...args);
@@ -26,9 +34,17 @@ const subscribe: Subscribe = (subject, listener) => {
   };
 };
 
+const createAdapter = <T extends Adapter>(): T => {
+  throw new Error("Unimplemented");
+  // uses invoke api
+  // ipcRenderer.invoke("message", subject, ...args)
+};
+
 contextBridge.exposeInMainWorld("ipc", {
-  getWindowContext: () => ipcRenderer.sendSync("message", "getWindowContext"),
   invoke,
   publish,
-  subscribe
+  subscribe,
+  users: createAdapter<UserAdapter>(),
+  playlists: createAdapter<PlaylistAdapter>(),
+  songs: createAdapter<SongAdapter>()
 });
