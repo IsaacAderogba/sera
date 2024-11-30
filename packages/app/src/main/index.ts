@@ -7,12 +7,14 @@ import {
 } from "./windows";
 import { APP_MODEL_ID } from "./constants";
 import { checkForUpdates } from "./updater";
+import { subscribeIPCHandlers, unsubscribeIPCHandlers } from "./ipc";
 
 app
   .whenReady()
   .then(async () => {
     app.setAppUserModelId(APP_MODEL_ID);
 
+    subscribeIPCHandlers();
     await initializeWindows();
     setContentSecurityPolicy();
 
@@ -28,6 +30,7 @@ const beforeQuit = () => {
     window.close();
   }
 
+  unsubscribeIPCHandlers();
   app.exit();
 };
 
