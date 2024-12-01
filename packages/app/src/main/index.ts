@@ -1,14 +1,20 @@
-import { BrowserWindow, app, autoUpdater as electronUpdater } from "electron";
+import {
+  BrowserWindow,
+  app,
+  autoUpdater as electronUpdater,
+  ipcMain
+} from "electron";
+import { APP_MODEL_ID } from "./constants";
+import { connectDatabase, disconnectDatabase } from "./database";
+import { onIPCInvoke } from "./invoke";
 import { setContentSecurityPolicy } from "./policies";
+import { checkForUpdates } from "./updater";
 import {
   activateWindows,
   beforeQuitWindows,
   initializeWindows
 } from "./windows";
-import { APP_MODEL_ID } from "./constants";
-import { checkForUpdates } from "./updater";
-import { subscribeIPCHandlers, unsubscribeIPCHandlers } from "./ipc";
-import { connectDatabase, disconnectDatabase } from "./database";
+import { onIPCBroadcast } from "./broadcast";
 
 const databaseConnection = connectDatabase();
 
@@ -17,7 +23,8 @@ app
   .then(async () => {
     app.setAppUserModelId(APP_MODEL_ID);
 
-    subscribeIPCHandlers();
+    ipcMain.on("message", onIPCBroadcast);
+    ipcMain.handle("message", onIPCInvoke);
     await databaseConnection;
     await initializeWindows();
     setContentSecurityPolicy();
@@ -34,7 +41,8 @@ const beforeQuit = async () => {
     window.close();
   }
 
-  unsubscribeIPCHandlers();
+  ipcMain.removeListener("message", onIPCBroadcast);
+  ipcMain.removeHandler("message");
   await disconnectDatabase();
   app.exit();
 };

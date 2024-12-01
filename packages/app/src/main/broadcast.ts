@@ -1,53 +1,19 @@
+import { BrowserWindow, IpcMainEvent, View, WebContentsView } from "electron";
 import os from "os";
-import {
-  IPCContext,
-  IPCBroadcastEvents,
-  IPCInvokeEvents,
-  Platform
-} from "../preload/types";
-import {
-  BrowserWindow,
-  ipcMain,
-  IpcMainEvent,
-  IpcMainInvokeEvent,
-  View,
-  WebContentsView
-} from "electron";
-import { adapters } from "./database";
+import { IPCBroadcastEvents, IPCContext, Platform } from "../preload/ipc";
 
-export function subscribeIPCHandlers() {
-  ipcMain.on("message", onIPCBroadcast);
-  ipcMain.handle("message", handleIPCInvoke);
-}
-
-export function unsubscribeIPCHandlers() {
-  ipcMain.removeListener("message", onIPCBroadcast);
-  ipcMain.removeHandler("message");
-}
-
-const handleIPCInvoke = async <T extends keyof IPCInvokeEvents>(
-  event: IpcMainInvokeEvent,
-  subject: T,
-  ...data
-) => {
-  console.log("[invoke]", subject);
-
-  const [namespace, method] = subject.split(":");
-  const handler = adapters[namespace][method];
-  if (handler) return await handler(...data);
-};
-
-const onIPCBroadcast = <T extends keyof IPCBroadcastEvents>(
+export const onIPCBroadcast = <T extends keyof IPCBroadcastEvents>(
   event: IpcMainEvent,
   subject: T,
   ...data: Parameters<IPCBroadcastEvents[T]>
-) => broadcast(getWindowContext(event.sender.id), subject, ...data);
+) => broadcast(event.sender.id, subject, ...data);
 
 export const broadcast = <T extends keyof IPCBroadcastEvents>(
-  context: IPCContext,
+  viewId: number,
   subject: T,
   ...data: Parameters<IPCBroadcastEvents[T]>
 ) => {
+  const context = getWindowContext(viewId);
   console.log("[message]", subject);
 
   const windows = BrowserWindow.getAllWindows().filter(
@@ -64,7 +30,7 @@ export const broadcast = <T extends keyof IPCBroadcastEvents>(
   }
 };
 
-export const getWindowContext = (viewId: number): IPCContext => {
+const getWindowContext = (viewId: number): IPCContext => {
   const windows = BrowserWindow.getAllWindows();
 
   const selectedWindow = windows.find(window => {
@@ -83,13 +49,13 @@ export const getWindowContext = (viewId: number): IPCContext => {
   };
 };
 
-export const isWebContentsView = (
+const isWebContentsView = (
   view: WebContentsView | View
 ): view is WebContentsView => {
   return view instanceof WebContentsView;
 };
 
-export const getPlatform = (): Platform => {
+const getPlatform = (): Platform => {
   switch (os.platform()) {
     case "darwin":
       return "mac";

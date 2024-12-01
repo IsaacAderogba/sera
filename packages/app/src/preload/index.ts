@@ -7,7 +7,7 @@ import {
   SongAdapter,
   Subscribe,
   UserAdapter
-} from "./types";
+} from "./ipc";
 
 const invoke: Invoke = (subject, ...args) => {
   console.log("[invoke]", subject, ...args);

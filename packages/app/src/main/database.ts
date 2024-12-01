@@ -2,7 +2,7 @@ import { app } from "electron";
 import knex, { Knex } from "knex";
 import path from "node:path";
 import { RESOURCES_FOLDER } from "./constants";
-import { Adapter, UserAdapter } from "../preload/types";
+import { Adapter, UserAdapter } from "../preload/ipc";
 
 let database: Knex;
 export const connectDatabase = async (): Promise<Knex> => {
@@ -34,6 +34,10 @@ export const disconnectDatabase = async () => {
 const createAdapter = <T extends Adapter>(): T => {
   throw new Error("Unimplemented");
   // uses invoke api
+
+  /**
+   * so let's go
+   */
 };
 
 export const adapters = {
