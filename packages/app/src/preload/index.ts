@@ -34,24 +34,25 @@ const subscribe: Subscribe = (subject, listener) => {
 };
 
 const createAdapter = <T extends keyof ItemRecord>(
-  type: T
+  table: T
 ): Adapter<ItemRecord[T]> => {
   return {
-    read: (...args) => ipcRenderer.invoke("message", `${type}:read`, ...args),
-    list: (...args) => ipcRenderer.invoke("message", `${type}:list`, ...args),
+    read: (...args) => ipcRenderer.invoke("message", `${table}:read`, ...args),
+    list: (...args) => ipcRenderer.invoke("message", `${table}:list`, ...args),
     create: (...args) =>
-      ipcRenderer.invoke("message", `${type}:create`, ...args),
+      ipcRenderer.invoke("message", `${table}:create`, ...args),
     update: (...args) =>
-      ipcRenderer.invoke("message", `${type}:update`, ...args),
+      ipcRenderer.invoke("message", `${table}:update`, ...args),
     delete: (...args) =>
-      ipcRenderer.invoke("message", `${type}:delete`, ...args)
+      ipcRenderer.invoke("message", `${table}:delete`, ...args)
   };
 };
 
 const adapters: AdaptersInterface = {
-  user: createAdapter("user"),
-  playlist: createAdapter("playlist"),
-  song: createAdapter("song")
+  profiles: createAdapter("profiles"),
+  playlists: createAdapter("playlists"),
+  songs: createAdapter("songs"),
+  playlists_songs: createAdapter("playlists_songs")
 };
 
 contextBridge.exposeInMainWorld("ipc", {

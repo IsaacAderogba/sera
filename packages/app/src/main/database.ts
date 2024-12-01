@@ -1,20 +1,12 @@
 import { app } from "electron";
 import knex, { Knex } from "knex";
 import path from "node:path";
+import { Adapter, AdaptersInterface, ItemRecord } from "../preload/ipc";
 import { RESOURCES_FOLDER } from "./constants";
-import {
-  Adapter,
-  AdaptersInterface,
-  Item,
-  ItemRecord,
-  Playlist,
-  Song,
-  User
-} from "../preload/ipc";
 
 let database: Knex;
-export const connectDatabase = async (): Promise<Knex> => {
-  if (database) return database;
+export const connectDatabase = async (table?: string): Promise<Knex> => {
+  if (database) return table ? database(table) : database;
 
   database = knex({
     client: "sqlite3",
@@ -32,7 +24,7 @@ export const connectDatabase = async (): Promise<Knex> => {
     console.error("Migration error", error);
   }
 
-  return database;
+  return table ? database(table) : database;
 };
 
 export const disconnectDatabase = async () => {
@@ -40,30 +32,37 @@ export const disconnectDatabase = async () => {
 };
 
 const createAdapter = <T extends keyof ItemRecord>(
-  type: T
+  table: T
 ): Adapter<ItemRecord[T]> => {
   return {
-    read: () => {
-      throw new Error("Unimplemented");
+    read: async id => {
+      const database = await connectDatabase(table);
+      return database.where({ id }).first();
     },
-    list: () => {
-      throw new Error("Unimplemented");
+    list: async () => {
+      const database = await connectDatabase(table);
+      return database.select("*");
     },
-
-    create: () => {
-      throw new Error("Unimplemented");
+    create: async item => {
+      const database = await connectDatabase(table);
+      const [id] = await database.insert(item);
+      return database.where({ id }).first();
     },
-    update: () => {
-      throw new Error("Unimplemented");
+    update: async (id, item) => {
+      const database = await connectDatabase(table);
+      await database.where({ id }).update(item);
+      return database.where({ id }).first();
     },
-    delete: () => {
-      throw new Error("Unimplemented");
+    delete: async id => {
+      const database = await connectDatabase(table);
+      await database.where({ id }).delete();
     }
   };
 };
 
 export const adapters: AdaptersInterface = {
-  user: createAdapter("user"),
-  playlist: createAdapter("playlist"),
-  song: createAdapter("song")
+  profiles: createAdapter("profiles"),
+  playlists: createAdapter("playlists"),
+  songs: createAdapter("songs"),
+  playlists_songs: createAdapter("playlists_songs")
 };

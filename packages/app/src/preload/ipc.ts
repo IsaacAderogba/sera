@@ -49,36 +49,47 @@ export type AdaptersInterface = {
 };
 
 export type Adapter<Type extends Item> = {
-  read: (id: string) => Promise<Type>;
+  read: (id: number) => Promise<Type | undefined>;
   list: () => Promise<Type[]>;
   create: (
     record: Omit<Type, "id" | "createdAt" | "updatedAt">
   ) => Promise<Type>;
-  update: (id: string, record: Partial<Type>) => Promise<Type>;
-  delete: (id: string) => Promise<Type>;
+  update: (id: number, record: Partial<Type>) => Promise<Type>;
+  delete: (id: number) => Promise<void>;
 };
 
-export type Item = User | Playlist | Song;
+export type Item = Profile | Playlist | Song | PlaylistSong;
 export type ItemRecord = {
-  user: User;
-  playlist: Playlist;
-  song: Song;
+  profiles: Profile;
+  playlists: Playlist;
+  songs: Song;
+  playlists_songs: PlaylistSong;
 };
 
-export interface User extends Node {
-  type: "user";
+export interface Profile extends Node {
+  type: "profile";
+  token: string;
 }
 
 export interface Playlist extends Node {
   type: "playlist";
+  profileId: number;
 }
 
 export interface Song extends Node {
   type: "song";
+  profileId: number;
+}
+
+export interface PlaylistSong extends Node {
+  type: "playlist_song";
+  profileId: number;
+  playlistId: number;
+  songId: number;
 }
 
 interface Node {
-  id: string;
+  id: number;
   createdAt: string;
   updatedAt: string;
 }
