@@ -1,12 +1,11 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
 import {
   Adapter,
+  AdaptersInterface,
   Invoke,
-  PlaylistAdapter,
+  ItemRecord,
   Publish,
-  SongAdapter,
-  Subscribe,
-  UserAdapter
+  Subscribe
 } from "./ipc";
 
 const invoke: Invoke = (subject, ...args) => {
@@ -34,17 +33,30 @@ const subscribe: Subscribe = (subject, listener) => {
   };
 };
 
-const createAdapter = <T extends Adapter>(): T => {
-  throw new Error("Unimplemented");
-  // uses invoke api
-  // ipcRenderer.invoke("message", subject, ...args)
+const createAdapter = <T extends keyof ItemRecord>(
+  type: T
+): Adapter<ItemRecord[T]> => {
+  return {
+    read: (...args) => ipcRenderer.invoke("message", `${type}:read`, ...args),
+    list: (...args) => ipcRenderer.invoke("message", `${type}:list`, ...args),
+    create: (...args) =>
+      ipcRenderer.invoke("message", `${type}:create`, ...args),
+    update: (...args) =>
+      ipcRenderer.invoke("message", `${type}:update`, ...args),
+    delete: (...args) =>
+      ipcRenderer.invoke("message", `${type}:delete`, ...args)
+  };
+};
+
+const adapters: AdaptersInterface = {
+  user: createAdapter("user"),
+  playlist: createAdapter("playlist"),
+  song: createAdapter("song")
 };
 
 contextBridge.exposeInMainWorld("ipc", {
   invoke,
   publish,
   subscribe,
-  users: createAdapter<UserAdapter>(),
-  playlists: createAdapter<PlaylistAdapter>(),
-  songs: createAdapter<SongAdapter>()
+  adapters
 });

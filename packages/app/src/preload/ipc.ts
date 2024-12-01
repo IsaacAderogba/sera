@@ -4,10 +4,7 @@ declare global {
       invoke: Invoke;
       publish: Publish;
       subscribe: Subscribe;
-
-      users: UserAdapter;
-      playlists: PlaylistAdapter;
-      songs: SongAdapter;
+      adapters: AdaptersInterface;
     };
   }
 }
@@ -47,10 +44,13 @@ export interface IPCContext {
 
 export type Platform = "mac" | "windows" | "linux";
 
-export type Adapter<Type extends Record = Record> = {
+export type AdaptersInterface = {
+  [K in keyof ItemRecord]: Adapter<ItemRecord[K]>;
+};
+
+export type Adapter<Type extends Item> = {
   read: (id: string) => Promise<Type>;
   list: () => Promise<Type[]>;
-
   create: (
     record: Omit<Type, "id" | "createdAt" | "updatedAt">
   ) => Promise<Type>;
@@ -58,16 +58,26 @@ export type Adapter<Type extends Record = Record> = {
   delete: (id: string) => Promise<Type>;
 };
 
-export interface UserRecord extends Record {}
-export type UserAdapter = Adapter<UserRecord>;
+export type Item = User | Playlist | Song;
+export type ItemRecord = {
+  user: User;
+  playlist: Playlist;
+  song: Song;
+};
 
-export interface PlaylistRecord extends Record {}
-export type PlaylistAdapter = Adapter<PlaylistRecord>;
+export interface User extends Node {
+  type: "user";
+}
 
-export interface SongRecord extends Record {}
-export type SongAdapter = Adapter<SongRecord>;
+export interface Playlist extends Node {
+  type: "playlist";
+}
 
-interface Record {
+export interface Song extends Node {
+  type: "song";
+}
+
+interface Node {
   id: string;
   createdAt: string;
   updatedAt: string;

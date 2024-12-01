@@ -2,7 +2,15 @@ import { app } from "electron";
 import knex, { Knex } from "knex";
 import path from "node:path";
 import { RESOURCES_FOLDER } from "./constants";
-import { Adapter, UserAdapter } from "../preload/ipc";
+import {
+  Adapter,
+  AdaptersInterface,
+  Item,
+  ItemRecord,
+  Playlist,
+  Song,
+  User
+} from "../preload/ipc";
 
 let database: Knex;
 export const connectDatabase = async (): Promise<Knex> => {
@@ -31,17 +39,31 @@ export const disconnectDatabase = async () => {
   await database.destroy();
 };
 
-const createAdapter = <T extends Adapter>(): T => {
-  throw new Error("Unimplemented");
-  // uses invoke api
+const createAdapter = <T extends keyof ItemRecord>(
+  type: T
+): Adapter<ItemRecord[T]> => {
+  return {
+    read: () => {
+      throw new Error("Unimplemented");
+    },
+    list: () => {
+      throw new Error("Unimplemented");
+    },
 
-  /**
-   * so let's go
-   */
+    create: () => {
+      throw new Error("Unimplemented");
+    },
+    update: () => {
+      throw new Error("Unimplemented");
+    },
+    delete: () => {
+      throw new Error("Unimplemented");
+    }
+  };
 };
 
-export const adapters = {
-  users: createAdapter<UserAdapter>(),
-  playlists: createAdapter<UserAdapter>(),
-  songs: createAdapter<UserAdapter>()
+export const adapters: AdaptersInterface = {
+  user: createAdapter("user"),
+  playlist: createAdapter("playlist"),
+  song: createAdapter("song")
 };
