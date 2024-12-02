@@ -68,7 +68,7 @@ export type ItemRecord = {
 
 export interface Profile extends Node {
   type: "profile";
-  token: string;
+  token: string | null;
 }
 
 export interface Playlist extends Node {

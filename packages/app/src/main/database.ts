@@ -19,6 +19,7 @@ export const connectDatabase = async (table?: string): Promise<Knex> => {
   });
 
   try {
+    await database.raw(`CREATE DATABASE IF NOT EXISTS database`);
     await database.migrate.latest();
   } catch (error) {
     console.error("Migration error", error);
@@ -45,12 +46,19 @@ const createAdapter = <T extends keyof ItemRecord>(
     },
     create: async item => {
       const database = await connectDatabase(table);
-      const [id] = await database.insert(item);
+      const [id] = await database.insert({
+        ...item,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+
       return database.where({ id }).first();
     },
     update: async (id, item) => {
       const database = await connectDatabase(table);
-      await database.where({ id }).update(item);
+      await database
+        .where({ id })
+        .update({ ...item, updatedAt: new Date().toISOString() });
       return database.where({ id }).first();
     },
     delete: async id => {
