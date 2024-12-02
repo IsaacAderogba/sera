@@ -3,7 +3,7 @@ import { IPCInvokeEvents } from "../preload/ipc";
 import { adapters } from "./database";
 
 export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
-  event: IpcMainInvokeEvent,
+  _event: IpcMainInvokeEvent,
   subject: T,
   ...data
 ) => {

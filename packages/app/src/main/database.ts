@@ -19,7 +19,6 @@ export const connectDatabase = async (table?: string): Promise<Knex> => {
   });
 
   try {
-    await database.raw(`CREATE DATABASE IF NOT EXISTS database`);
     await database.migrate.latest();
   } catch (error) {
     console.error("Migration error", error);
