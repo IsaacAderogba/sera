@@ -4,7 +4,7 @@ declare global {
       invoke: Invoke;
       publish: Publish;
       subscribe: Subscribe;
-      adapters: AdaptersInterface;
+      adapters: IPCAdaptersInterface;
     };
   }
 }
@@ -28,10 +28,12 @@ export type Subscribe = <T extends keyof IPCBroadcastEvents>(
 ) => () => void;
 
 export type IPCBroadcastEvents = {
-  change: (object: {
-    action: "created" | "updated" | "deleted";
-    data: Item;
-  }) => Promise<void>;
+  change: (object: ItemSnapshot) => Promise<void>;
+};
+
+export type ItemSnapshot<T extends Item = Item> = {
+  action: "created" | "updated" | "deleted";
+  data: T;
 };
 
 export type IPCInvokeEvents = {
@@ -47,11 +49,11 @@ export interface IPCContext {
 
 export type Platform = "mac" | "windows" | "linux";
 
-export type AdaptersInterface = {
-  [K in keyof ItemRecord]: Adapter<ItemRecord[K]>;
+export type IPCAdaptersInterface = {
+  [K in keyof ItemRecord]: IPCAdapter<ItemRecord[K]>;
 };
 
-export type Adapter<Type extends Item> = {
+export type IPCAdapter<Type extends Item> = {
   read: (id: number) => Promise<Type | undefined>;
   list: () => Promise<Type[]>;
   create: (

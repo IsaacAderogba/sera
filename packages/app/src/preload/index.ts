@@ -1,7 +1,7 @@
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
 import {
-  Adapter,
-  AdaptersInterface,
+  IPCAdapter,
+  IPCAdaptersInterface,
   Invoke,
   ItemRecord,
   Publish,
@@ -33,9 +33,9 @@ const subscribe: Subscribe = (subject, listener) => {
   };
 };
 
-const createAdapter = <T extends keyof ItemRecord>(
+const createIPCAdapter = <T extends keyof ItemRecord>(
   table: T
-): Adapter<ItemRecord[T]> => {
+): IPCAdapter<ItemRecord[T]> => {
   return {
     read: (...args) => ipcRenderer.invoke("message", `${table}:read`, ...args),
     list: (...args) => ipcRenderer.invoke("message", `${table}:list`, ...args),
@@ -48,11 +48,11 @@ const createAdapter = <T extends keyof ItemRecord>(
   };
 };
 
-const adapters: AdaptersInterface = {
-  profiles: createAdapter("profiles"),
-  playlists: createAdapter("playlists"),
-  songs: createAdapter("songs"),
-  playlists_songs: createAdapter("playlists_songs")
+const adapters: IPCAdaptersInterface = {
+  profiles: createIPCAdapter("profiles"),
+  playlists: createIPCAdapter("playlists"),
+  songs: createIPCAdapter("songs"),
+  playlists_songs: createIPCAdapter("playlists_songs")
 };
 
 contextBridge.exposeInMainWorld("ipc", {

@@ -1,3 +1,5 @@
+import { DataProvider } from "../providers/DataProvider";
+
 export const MainApp: React.FC = () => {
-  return <>main</>;
+  return <DataProvider>main</DataProvider>;
 };

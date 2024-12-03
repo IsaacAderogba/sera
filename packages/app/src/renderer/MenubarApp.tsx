@@ -1,3 +1,5 @@
+import { DataProvider } from "../providers/DataProvider";
+
 export const MenubarApp: React.FC = () => {
-  return <>menubar</>;
+  return <DataProvider>menubar</DataProvider>;
 };

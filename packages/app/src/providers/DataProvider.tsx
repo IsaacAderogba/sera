@@ -1,82 +1,103 @@
 import {
-  Context,
   createContext,
   Dispatch,
-  Fragment,
   PropsWithChildren,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
   useState
 } from "react";
-import { Playlist, PlaylistSong, Profile, Song } from "../preload/ipc";
+import {
+  IPCAdapter,
+  Item,
+  ItemSnapshot,
+  Playlist,
+  PlaylistSong,
+  Profile,
+  Song
+} from "../preload/ipc";
 
-type ProfileStore = DataStore<Profile>;
-type PlaylistStore = DataStore<Playlist>;
-type SongStore = DataStore<Song>;
-type PlaylistSongStore = DataStore<PlaylistSong>;
-
-const ProfileContext = createContext<ProfileStore | undefined>(undefined);
-const PlaylistContext = createContext<PlaylistStore | undefined>(undefined);
-const SongContext = createContext<SongStore | undefined>(undefined);
-const PlaylistSongContext = createContext<PlaylistSongStore | undefined>(
-  undefined
-);
-
-export const StoreProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const profileStore = useProfileStore({});
-  const playlistStore = usePlaylistStore({});
-  const songStore = useSongStore({});
-  const playlistSongStore = usePlaylistSongStore({});
-
-  useEffect(() => {
-    // also need to populate the store here
-
-    return window.ipc?.subscribe("change", (_ctx, item) => {
-      /**
-       * todo, update store based on data changes
-       */
-    });
-  }, []);
-
+export const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
-    <ProfileContext.Provider value={profileStore}>
-      <PlaylistContext.Provider value={playlistStore}>
-        <SongContext.Provider value={songStore}>
-          <PlaylistSongContext.Provider value={playlistSongStore}>
-            {children}
-          </PlaylistSongContext.Provider>
-        </SongContext.Provider>
-      </PlaylistContext.Provider>
-    </ProfileContext.Provider>
+    <ProfileProvider>
+      <PlaylistProvider>
+        <SongProvider>
+          <PlaylistSongProvider>{children}</PlaylistSongProvider>
+        </SongProvider>
+      </PlaylistProvider>
+    </ProfileProvider>
   );
 };
 
-export const [useProfileContext, useProfileStore] =
-  createDataAdapter(ProfileContext);
-export const [usePlaylistContext, usePlaylistStore] =
-  createDataAdapter(PlaylistContext);
-export const [useSongContext, useSongStore] = createDataAdapter(SongContext);
-export const [usePlaylistSongContext, usePlaylistSongStore] =
-  createDataAdapter(PlaylistSongContext);
+export const [ProfileProvider, useProfileStore] = createStoreAdapter<Profile>(
+  "profile",
+  window.ipc.adapters.profiles
+);
+export const [PlaylistProvider, usePlaylistStore] =
+  createStoreAdapter<Playlist>("playlist", window.ipc.adapters.playlists);
+export const [SongProvider, useSongStore] = createStoreAdapter<Song>(
+  "song",
+  window.ipc.adapters.songs
+);
+export const [PlaylistSongProvider, usePlaylistSongStore] =
+  createStoreAdapter<PlaylistSong>(
+    "playlist_song",
+    window.ipc.adapters.playlists_songs
+  );
 
-function createDataAdapter<T>(ctx: Context<T>) {
-  function useDataContext() {
-    const context = useContext(ctx);
+function createStoreAdapter<T extends Item>(
+  type: T["type"],
+  adapter: IPCAdapter<T>
+) {
+  const Context = createContext<DataStore<T> | undefined>(undefined);
+
+  const Provider: React.FC<PropsWithChildren> = ({ children }) => {
+    const [state, setState] = useState<Record<string, T>>({});
+
+    const onSnapshotChange = useCallback((snapshots: ItemSnapshot<T>[]) => {
+      setState(state => {
+        const nextState = { ...state };
+
+        for (const { action, data } of snapshots) {
+          if (action === "deleted") {
+            delete nextState[data.id];
+          } else {
+            nextState[data.id] = data;
+          }
+        }
+
+        return nextState;
+      });
+    }, []);
+
+    const store = useMemo(() => ({ state, setState }), [state]);
+
+    useEffect(() => {
+      adapter.list().then(data => {
+        onSnapshotChange(data.map(data => ({ action: "created", data })));
+      });
+
+      return window.ipc?.subscribe("change", (_ctx, item) => {
+        if (item.data.type !== type) return;
+        onSnapshotChange([item as ItemSnapshot<T>]);
+      });
+    }, [onSnapshotChange]);
+
+    return <Context.Provider value={store}>{children}</Context.Provider>;
+  };
+
+  function useDataStore() {
+    const context = useContext(Context);
     if (!context) throw new Error("useContext must be used within a Provider");
     return context;
   }
 
-  function useDataStore<T>(defaultState: T) {
-    const [state, setState] = useState<T>(defaultState);
-    return useMemo(() => ({ state, setState }), [state]);
-  }
-
-  return [useDataContext, useDataStore];
+  return [Provider, useDataStore] as const;
 }
 
-interface DataStore<T> {
+interface DataStore<T extends Item> {
   state: Record<string, T>;
   setState: Dispatch<SetStateAction<Record<string, T>>>;
 }

@@ -1,7 +1,7 @@
 import { app } from "electron";
 import knex, { Knex } from "knex";
 import path from "node:path";
-import { Adapter, AdaptersInterface, ItemRecord } from "../preload/ipc";
+import { IPCAdapter, IPCAdaptersInterface, ItemRecord } from "../preload/ipc";
 import { RESOURCES_FOLDER } from "./constants";
 import { broadcast } from "./broadcast";
 
@@ -32,9 +32,9 @@ export const disconnectDatabase = async () => {
   await database.destroy();
 };
 
-const createAdapter = <T extends keyof ItemRecord>(
+const createIPCAdapter = <T extends keyof ItemRecord>(
   table: T
-): Adapter<ItemRecord[T]> => {
+): IPCAdapter<ItemRecord[T]> => {
   return {
     read: async id => {
       const database = await connectDatabase(table);
@@ -77,9 +77,9 @@ const createAdapter = <T extends keyof ItemRecord>(
   };
 };
 
-export const adapters: AdaptersInterface = {
-  profiles: createAdapter("profiles"),
-  playlists: createAdapter("playlists"),
-  songs: createAdapter("songs"),
-  playlists_songs: createAdapter("playlists_songs")
+export const adapters: IPCAdaptersInterface = {
+  profiles: createIPCAdapter("profiles"),
+  playlists: createIPCAdapter("playlists"),
+  songs: createIPCAdapter("songs"),
+  playlists_songs: createIPCAdapter("playlists_songs")
 };
