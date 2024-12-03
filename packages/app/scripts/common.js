@@ -27,15 +27,15 @@ async function pkg(targets, options) {
     config: {
       appId: appBundleId,
       productName: "Sera",
-      directories: { output: "out", buildResources: "public" },
-      files: ["dist/**/*", "public/**/*", "package.json"],
+      directories: { output: "out", buildResources: "resources" },
+      files: ["dist/**/*", "resources/**/*", "package.json"],
       publish: { provider: "github", owner: "IsaacAderogba", repo: "sera" },
       ...options?.config,
       mac: {
         cscLink: CSC_LINK,
         cscKeyPassword: CSC_KEY_PASSWORD,
         category: "public.app-category.productivity",
-        icon: path.join(__dirname, "..", "public", "logos", "icon.icns"),
+        icon: path.join(__dirname, "..", "resources", "logos", "icon.icns"),
         target: {
           target: "zip",
           arch: ["x64", "arm64"]
@@ -49,7 +49,7 @@ async function pkg(targets, options) {
         ...options?.config?.mac
       },
       win: {
-        icon: path.join(__dirname, "..", "public", "logos", "icon.ico"),
+        icon: path.join(__dirname, "..", "resources", "logos", "icon.ico"),
         cscLink: WIN_CSC_LINK,
         cscKeyPassword: WIN_CSC_KEY_PASSWORD,
         target: {
@@ -62,7 +62,7 @@ async function pkg(targets, options) {
       },
       linux: {
         category: "Utility",
-        icon: path.join(__dirname, "..", "public", "logos", "icon.png"),
+        icon: path.join(__dirname, "..", "resources", "logos", "icon.png"),
         executableName: "Sera",
         target: { target: "AppImage", arch: ["x64", "arm64"] },
         ...options?.config?.linux

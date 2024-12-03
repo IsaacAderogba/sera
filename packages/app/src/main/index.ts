@@ -1,18 +1,31 @@
-import { BrowserWindow, app, autoUpdater as electronUpdater } from "electron";
+import {
+  BrowserWindow,
+  app,
+  autoUpdater as electronUpdater,
+  ipcMain
+} from "electron";
+import { APP_MODEL_ID } from "./constants";
+import { connectDatabase, disconnectDatabase } from "./database";
+import { onIPCInvoke } from "./invoke";
 import { setContentSecurityPolicy } from "./policies";
+import { checkForUpdates } from "./updater";
 import {
   activateWindows,
   beforeQuitWindows,
   initializeWindows
 } from "./windows";
-import { APP_MODEL_ID } from "./constants";
-import { checkForUpdates } from "./updater";
+import { onIPCBroadcast } from "./broadcast";
+
+const databaseConnection = connectDatabase();
 
 app
   .whenReady()
   .then(async () => {
     app.setAppUserModelId(APP_MODEL_ID);
 
+    ipcMain.on("message", onIPCBroadcast);
+    ipcMain.handle("message", onIPCInvoke);
+    await databaseConnection;
     await initializeWindows();
     setContentSecurityPolicy();
 
@@ -20,7 +33,7 @@ app
   })
   .catch(e => console.error(e));
 
-const beforeQuit = () => {
+const beforeQuit = async () => {
   beforeQuitWindows();
 
   for (const window of BrowserWindow.getAllWindows()) {
@@ -28,13 +41,16 @@ const beforeQuit = () => {
     window.close();
   }
 
+  ipcMain.removeListener("message", onIPCBroadcast);
+  ipcMain.removeHandler("message");
+  await disconnectDatabase();
   app.exit();
 };
 
 electronUpdater.on("before-quit-for-update", beforeQuit);
 app.on("before-quit", async e => {
   e.preventDefault();
-  beforeQuit();
+  await beforeQuit();
 });
 
 app.on("activate", activateWindows);
