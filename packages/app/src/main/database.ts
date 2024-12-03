@@ -3,6 +3,7 @@ import knex, { Knex } from "knex";
 import path from "node:path";
 import { Adapter, AdaptersInterface, ItemRecord } from "../preload/ipc";
 import { RESOURCES_FOLDER } from "./constants";
+import { broadcast } from "./broadcast";
 
 let database: Knex;
 export const connectDatabase = async (table?: string): Promise<Knex> => {
@@ -51,18 +52,27 @@ const createAdapter = <T extends keyof ItemRecord>(
         updatedAt: new Date().toISOString()
       });
 
-      return database.where({ id }).first();
+      const data = await database.where({ id }).first();
+      broadcast(-1, "change", { action: "created", data });
+      return data;
     },
     update: async (id, item) => {
       const database = await connectDatabase(table);
       await database
         .where({ id })
         .update({ ...item, updatedAt: new Date().toISOString() });
-      return database.where({ id }).first();
+
+      const data = await database.where({ id }).first();
+      broadcast(-1, "change", { action: "updated", data });
+      return data;
     },
     delete: async id => {
       const database = await connectDatabase(table);
-      await database.where({ id }).delete();
+      const data = await database.where({ id }).first();
+      if (data) {
+        broadcast(-1, "change", { action: "deleted", data });
+        await database.where({ id }).delete();
+      }
     }
   };
 };

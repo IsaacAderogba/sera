@@ -28,7 +28,10 @@ export type Subscribe = <T extends keyof IPCBroadcastEvents>(
 ) => () => void;
 
 export type IPCBroadcastEvents = {
-  foo: () => Promise<void>;
+  change: (object: {
+    action: "created" | "updated" | "deleted";
+    data: Item;
+  }) => Promise<void>;
 };
 
 export type IPCInvokeEvents = {
