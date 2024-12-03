@@ -18,6 +18,7 @@ import {
   Profile,
   Song
 } from "../preload/ipc";
+import { useAppStore } from "./AppProvider";
 
 export const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -72,20 +73,24 @@ function createStoreAdapter<T extends Item>(
       });
     }, []);
 
-    const store = useMemo(() => ({ state, setState }), [state]);
-
+    const { setState: setAppState } = useAppStore();
     useEffect(() => {
       adapter.list().then(data => {
         onSnapshotChange(data.map(data => ({ action: "created", data })));
+        setAppState(state => ({
+          ...state,
+          dataStatus: { ...state.dataStatus, [type]: "loaded" }
+        }));
       });
 
       return window.ipc?.subscribe("change", (_ctx, item) => {
         if (item.data.type !== type) return;
         onSnapshotChange([item as ItemSnapshot<T>]);
       });
-    }, [onSnapshotChange]);
+    }, [onSnapshotChange, setAppState]);
 
-    return <Context.Provider value={store}>{children}</Context.Provider>;
+    const value = useMemo(() => ({ state, setState }), [state]);
+    return <Context.Provider value={value}>{children}</Context.Provider>;
   };
 
   function useDataStore() {

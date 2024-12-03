@@ -66,8 +66,9 @@ export const createAppWindow = async (state: Partial<WindowState> = {}) => {
     ...bounds,
     minWidth: 500,
     minHeight: 400,
-    titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
-    trafficLightPosition: { x: 12, y: 16 }
+    transparent: false
+    // titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
+    // trafficLightPosition: { x: 12, y: 16 }
   });
 
   setWindowState(appWindow.id, { bounds: appWindow.getBounds() });
