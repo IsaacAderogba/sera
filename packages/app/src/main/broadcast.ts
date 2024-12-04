@@ -1,4 +1,10 @@
-import { BrowserWindow, IpcMainEvent, View, WebContentsView } from "electron";
+import {
+  BrowserWindow,
+  IpcMainEvent,
+  nativeTheme,
+  View,
+  WebContentsView
+} from "electron";
 import os from "os";
 import { IPCBroadcastEvents, IPCContext, Platform } from "../preload/ipc";
 
@@ -8,7 +14,7 @@ export const onIPCBroadcast = <T extends keyof IPCBroadcastEvents>(
   ...data: Parameters<IPCBroadcastEvents[T]>
 ) => broadcast(event.sender.id, subject, ...data);
 
-export const broadcast = <T extends keyof IPCBroadcastEvents>(
+export const broadcast = async <T extends keyof IPCBroadcastEvents>(
   viewId: number,
   subject: T,
   ...data: Parameters<IPCBroadcastEvents[T]>
@@ -27,6 +33,15 @@ export const broadcast = <T extends keyof IPCBroadcastEvents>(
       if (!isWebContentsView(view)) continue;
       view.webContents.send(subject, context, ...data);
     }
+  }
+
+  // @ts-expect-error - A spread argument must either have a tuple type or be passed to a rest parameter
+  await handlers[subject]?.(...data);
+};
+
+const handlers: Partial<IPCBroadcastEvents> = {
+  themePreferenceChange: themePreference => {
+    nativeTheme.themeSource = themePreference;
   }
 };
 

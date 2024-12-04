@@ -48,6 +48,7 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
         cache.set("theme-preference", preference);
         window.ipc.publish("themePreferenceChange", preference);
       }
+
       setState(state => ({ ...state, mode: setThemeMode(preference) }));
     },
     []

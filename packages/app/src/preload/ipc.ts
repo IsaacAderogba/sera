@@ -28,8 +28,8 @@ export type Subscribe = <T extends keyof IPCBroadcastEvents>(
 ) => () => void;
 
 export type IPCBroadcastEvents = {
-  change: (snapshot: ItemSnapshot) => Promise<void>;
-  themePreferenceChange: (preference: ThemePreference) => Promise<void>;
+  change: (snapshot: ItemSnapshot) => Promise<void> | void;
+  themePreferenceChange: (preference: ThemePreference) => Promise<void> | void;
 };
 
 export type IPCInvokeEvents = {
