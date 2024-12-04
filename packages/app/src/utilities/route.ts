@@ -1,10 +1,4 @@
-import { useParams } from "react-router-dom";
-
-export const useRouteParams = <P extends RoutePath>(_path: P["path"]) => {
-  return useParams<P["params"]>();
-};
-
-export const createRoutePath = <P extends RoutePath>(
+export const createRoutePath = <P extends RouteUnion>(
   path: P["path"],
   params?: P["params"]
 ) => {
@@ -18,7 +12,7 @@ export const createRoutePath = <P extends RoutePath>(
   return route;
 };
 
-export type RoutePath =
+export type RouteUnion =
   | { path: "/"; params: Record<string, never> }
   | { path: "/main"; params: Record<string, never> }
   | { path: "/menubar"; params: Record<string, never> }

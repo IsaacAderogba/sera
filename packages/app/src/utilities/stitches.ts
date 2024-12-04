@@ -1,3 +1,4 @@
+import type * as Stitches from "@stitches/react";
 import { createStitches } from "@stitches/react";
 
 export const {
@@ -19,7 +20,7 @@ export const {
       bp3: "1048px"
     },
     colors: {
-      text: "rgba(000,000,000, 0.85)",
+      text: "rgba(000,000,000, 0.80)",
       label: "rgba(000,000,000, 0.60)",
       disable: "rgba(000,000,000, 0.25)",
       border: "rgba(000,000,000, 0.12)",
@@ -133,9 +134,12 @@ export const globalStyles = globalCss({
     display: "none"
   },
   a: {
-    textDecoration: "none",
-    outline: "none"
+    textDecoration: "underline",
+    outline: "none",
+    color: "inherit",
+    transition: "opacity 100ms"
   },
+  "a:hover": { opacity: 0.8 },
   "i, em": {
     fontStyle: "italic"
   },
@@ -170,3 +174,5 @@ export const themeModes = {
   light: lightTheme.className,
   dark: darkTheme.className
 };
+
+export type CSS = Stitches.CSS<typeof config>;

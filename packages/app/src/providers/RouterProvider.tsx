@@ -1,12 +1,12 @@
 import { Fragment, PropsWithChildren, useMemo } from "react";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
-import { Route } from "../patterns/Route/Route";
-import { createRoutePath, useRouteParams } from "../patterns/Route/useRoute";
 import { AuthView } from "../views/AuthView";
 import { ProfilePreviewView } from "../views/ProfilePreviewView";
 import { ProfileView } from "../views/ProfileView";
 import { useAppContext } from "./AppContext";
 import { useProfileContext } from "./DataContext";
+import { createRoutePath } from "../utilities/route";
+import { Route, useRouteParams } from "../components/Route";
 
 export const MainRouterProvider: React.FC<PropsWithChildren> = () => {
   return (

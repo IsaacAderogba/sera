@@ -1,5 +1,6 @@
 import { Flex } from "../components/Flex";
 import { Logo } from "../components/Logo";
+import { Text, Title } from "../components/Typography";
 
 export const AuthView: React.FC = () => {
   return (
@@ -13,31 +14,40 @@ export const AuthView: React.FC = () => {
         flexDirection: "column",
         justify: "center",
         align: "center",
-        gap: "$lg",
         p: "$md",
         overflow: "auto",
         "-webkit-app-region": "drag"
       }}
     >
-      <Logo />
       <Flex
         css={{
-          background: "$surface",
-          borderRadius: "$base",
-          padding: "$lg",
-          maxWidth: "420px",
-          width: "100%",
-          gap: "$lg",
           flexDirection: "column",
           alignItems: "center",
-          border: "1px solid $border",
+          gap: "$lg",
           "-webkit-app-region": "no-drag"
         }}
       >
-        <div>welcome back heading</div>
-        <div>auth form</div>
+        <Logo />
+        <Flex
+          css={{
+            background: "$surface",
+            borderRadius: "$base",
+            padding: "$lg",
+            maxWidth: "420px",
+            width: "100%",
+            gap: "$lg",
+            flexDirection: "column",
+            alignItems: "center",
+            border: "1px solid $border"
+          }}
+        >
+          <Title>welcome back heading</Title>
+          <Text>auth form</Text>
+        </Flex>
+        <Text size="compact" secondary>
+          Don't have a token? Create one <a href="#">link</a>.
+        </Text>
       </Flex>
-      <div>Don't have a token? Create one here link.</div>
     </Flex>
   );
 };
