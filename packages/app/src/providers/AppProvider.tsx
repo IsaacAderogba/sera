@@ -3,6 +3,7 @@ import {
   Dispatch,
   PropsWithChildren,
   SetStateAction,
+  useContext,
   useMemo,
   useState
 } from "react";
@@ -16,6 +17,13 @@ export const AppProvider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const AppContext = createContext<AppStore | undefined>(undefined);
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error("useAppContext must be used within a AppContext");
+  }
+  return context;
+};
 
 const createDefaultState = (): AppState => {
   return {

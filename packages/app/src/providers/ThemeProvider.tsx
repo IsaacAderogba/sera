@@ -2,6 +2,7 @@ import {
   createContext,
   PropsWithChildren,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useState
@@ -55,13 +56,10 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 
   useEffect(() => {
-    return window.ipc.subscribe(
-      "themePreferenceChange",
-      (_ctx, themePreference) => {
-        return setThemePreference(themePreference, { persist: true });
-      }
-    );
-  }, [setThemePreference]);
+    return window.ipc.subscribe("themePreferenceChange", (_ctx, preference) => {
+      setState(state => ({ ...state, mode: setThemeMode(preference) }));
+    });
+  }, []);
 
   const value = useMemo(
     () => ({ state, setThemePreference }),
@@ -74,6 +72,13 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const ThemeContext = createContext<ThemeStore | undefined>(undefined);
+export const useThemeContext = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useThemeContext must be used within a ThemeContext");
+  }
+  return context;
+};
 
 export interface ThemeStore {
   state: ThemeState;

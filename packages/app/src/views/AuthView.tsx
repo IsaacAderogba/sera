@@ -1,4 +1,4 @@
-import { useThemeContext } from "../providers/useProviders";
+import { useThemeContext } from "../providers/ThemeProvider";
 
 export const AuthView: React.FC = () => {
   const { state, setThemePreference } = useThemeContext();

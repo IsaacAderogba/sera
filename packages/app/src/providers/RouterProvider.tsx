@@ -5,8 +5,8 @@ import { createRoutePath, useRouteParams } from "../patterns/Route/useRoute";
 import { AuthView } from "../views/AuthView";
 import { ProfilePreviewView } from "../views/ProfilePreviewView";
 import { ProfileView } from "../views/ProfileView";
-import { useProfileStore } from "./DataProvider";
-import { useAppContext } from "./useProviders";
+import { useProfileContext } from "./DataProvider";
+import { useAppContext } from "./AppProvider";
 
 export const MainRouterProvider: React.FC<PropsWithChildren> = () => {
   return (
@@ -33,7 +33,7 @@ export const MenubarRouterProvider: React.FC<PropsWithChildren> = () => {
 const AuthRoute: React.FC = () => {
   const loading = useIsLoading();
 
-  const { state: profileState } = useProfileStore();
+  const { state: profileState } = useProfileContext();
   const profile = useMemo(() => {
     return Object.values(profileState)[0];
   }, [profileState]);
@@ -73,7 +73,7 @@ const ProfilePreviewRoute: React.FC = () => {
 
 const useHasProfile = () => {
   const { profileId } = useRouteParams("/profiles/:profileId");
-  const { state: profileState } = useProfileStore();
+  const { state: profileState } = useProfileContext();
   return useMemo(() => {
     return Boolean(profileState[profileId]);
   }, [profileId, profileState]);
