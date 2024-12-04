@@ -15,6 +15,7 @@ import {
   initializeWindows
 } from "./windows";
 import { onIPCBroadcast } from "./broadcast";
+import { initializeMenus } from "./menus";
 
 const databaseConnection = connectDatabase();
 
@@ -27,6 +28,7 @@ app
     ipcMain.handle("message", onIPCInvoke);
     await databaseConnection;
     await initializeWindows();
+    await initializeMenus();
     setContentSecurityPolicy();
 
     await checkForUpdates();
