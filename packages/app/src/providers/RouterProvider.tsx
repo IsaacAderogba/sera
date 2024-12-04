@@ -5,8 +5,8 @@ import { createRoutePath, useRouteParams } from "../patterns/Route/useRoute";
 import { AuthView } from "../views/AuthView";
 import { ProfilePreviewView } from "../views/ProfilePreviewView";
 import { ProfileView } from "../views/ProfileView";
-import { useProfileContext } from "./DataProvider";
-import { useAppContext } from "./AppProvider";
+import { useAppContext } from "./AppContext";
+import { useProfileContext } from "./DataContext";
 
 export const MainRouterProvider: React.FC<PropsWithChildren> = () => {
   return (
@@ -54,10 +54,10 @@ const AuthRoute: React.FC = () => {
 };
 
 const ProfileRoute: React.FC = () => {
-  // const loading = useIsLoading();
-  // const hasProfile = useHasProfile();
-  // if (loading) return null; // return loading screen component
-  // if (!hasProfile) return null; // return auth view component
+  const loading = useIsLoading();
+  const hasProfile = useHasProfile();
+  if (loading) return null; // return loading screen component
+  if (!hasProfile) return null; // return auth view component
 
   return <ProfileView />;
 };
@@ -75,7 +75,7 @@ const useHasProfile = () => {
   const { profileId } = useRouteParams("/profiles/:profileId");
   const { state: profileState } = useProfileContext();
   return useMemo(() => {
-    return Boolean(profileState[profileId]);
+    return Boolean(profileState[profileId]?.token);
   }, [profileId, profileState]);
 };
 

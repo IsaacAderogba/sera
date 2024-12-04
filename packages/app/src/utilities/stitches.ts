@@ -67,6 +67,7 @@ export const {
       xxl: "38px"
     },
     shadows: {
+      sm: "rgba(0, 0, 0, 0.08) 0px 4px 8px",
       base: "rgba(0, 0, 0, 0.19) 0px 8px 16px"
     },
     space: {
@@ -100,6 +101,7 @@ export const darkTheme = createTheme({
     mask: "rgba(32, 32, 32, 0.35)"
   },
   shadows: {
+    sm: "rgba(0, 0, 0, 0.25) 0px 4px 8px",
     base: "rgba(0, 0, 0, 0.40) 0px 8px 16px"
   }
 });
@@ -118,7 +120,7 @@ export const globalStyles = globalCss({
       font: "inherit",
       verticalAlign: "baseline"
     },
-  "html, body": { height: "100%", cursor: "default" },
+  "html, body": { height: "100%", cursor: "default", overflow: "hidden" },
   "article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section":
     {
       display: "block"

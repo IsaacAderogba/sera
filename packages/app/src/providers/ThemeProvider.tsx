@@ -1,15 +1,18 @@
 import {
-  createContext,
   PropsWithChildren,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState
 } from "react";
-import { ThemePreference } from "../preload/ipc";
+import { ThemeMode, ThemePreference } from "../preload/ipc";
 import { cache } from "../utilities/cache";
 import { globalStyles, themeModes } from "../utilities/stitches";
+import {
+  ThemeContext,
+  ThemePreferenceOptions,
+  ThemeState
+} from "./ThemeContext";
 
 const getThemeMode = (preference: ThemePreference): ThemeMode => {
   const systemMode = window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -70,27 +73,3 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
-
-export const ThemeContext = createContext<ThemeStore | undefined>(undefined);
-export const useThemeContext = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useThemeContext must be used within a ThemeContext");
-  }
-  return context;
-};
-
-export interface ThemeStore {
-  state: ThemeState;
-  setThemePreference: (
-    preference: ThemePreference,
-    options: ThemePreferenceOptions
-  ) => void;
-}
-
-export interface ThemeState {
-  mode: ThemeMode;
-}
-
-export type ThemeMode = "dark" | "light";
-export type ThemePreferenceOptions = { persist: boolean };

@@ -43,6 +43,7 @@ export type ItemSnapshot<T extends Item = Item> = {
 };
 
 export type ThemePreference = "dark" | "light" | "system";
+export type ThemeMode = "dark" | "light";
 
 export interface IPCContext {
   platform: Platform;

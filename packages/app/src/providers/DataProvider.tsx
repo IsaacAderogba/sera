@@ -1,10 +1,9 @@
 import {
-  createContext,
+  Context,
   Dispatch,
   PropsWithChildren,
   SetStateAction,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState
@@ -18,7 +17,13 @@ import {
   Profile,
   Song
 } from "../preload/ipc";
-import { useAppContext } from "./AppProvider";
+import { useAppContext } from "./AppContext";
+import {
+  PlaylistContext,
+  PlaylistSongContext,
+  ProfileContext,
+  SongContext
+} from "./DataContext";
 
 export const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -32,28 +37,34 @@ export const DataProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export const [ProfileProvider, useProfileContext] = createStoreAdapter<Profile>(
-  "profile",
-  window.ipc.adapters.profiles
-);
-export const [PlaylistProvider, usePlaylistContext] =
-  createStoreAdapter<Playlist>("playlist", window.ipc.adapters.playlists);
-export const [SongProvider, useSongContext] = createStoreAdapter<Song>(
-  "song",
-  window.ipc.adapters.songs
-);
-export const [PlaylistSongProvider, usePlaylistSongContext] =
-  createStoreAdapter<PlaylistSong>(
-    "playlist_song",
-    window.ipc.adapters.playlists_songs
-  );
+const ProfileProvider = createProvider<Profile>("profile", {
+  adapter: window.ipc.adapters.profiles,
+  Context: ProfileContext
+});
 
-function createStoreAdapter<T extends Item>(
+const PlaylistProvider = createProvider<Playlist>("playlist", {
+  adapter: window.ipc.adapters.playlists,
+  Context: PlaylistContext
+});
+
+const SongProvider = createProvider<Song>("song", {
+  adapter: window.ipc.adapters.songs,
+  Context: SongContext
+});
+
+const PlaylistSongProvider = createProvider<PlaylistSong>("playlist_song", {
+  adapter: window.ipc.adapters.playlists_songs,
+  Context: PlaylistSongContext
+});
+
+function createProvider<T extends Item>(
   type: T["type"],
-  adapter: IPCAdapter<T>
+  options: {
+    adapter: IPCAdapter<T>;
+    Context: Context<DataStore<T> | undefined>;
+  }
 ) {
-  const Context = createContext<DataStore<T> | undefined>(undefined);
-
+  const { adapter, Context } = options;
   const Provider: React.FC<PropsWithChildren> = ({ children }) => {
     const [state, setState] = useState<Record<string, T>>({});
 
@@ -93,13 +104,7 @@ function createStoreAdapter<T extends Item>(
     return <Context.Provider value={value}>{children}</Context.Provider>;
   };
 
-  function useDataStore() {
-    const context = useContext(Context);
-    if (!context) throw new Error("useContext must be used within a Provider");
-    return context;
-  }
-
-  return [Provider, useDataStore] as const;
+  return Provider;
 }
 
 interface DataStore<T extends Item> {
