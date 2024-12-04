@@ -5,8 +5,8 @@ import { createRoutePath, useRouteParams } from "../patterns/Route/useRoute";
 import { AuthView } from "../views/AuthView";
 import { ProfilePreviewView } from "../views/ProfilePreviewView";
 import { ProfileView } from "../views/ProfileView";
-import { useAppStore } from "./AppProvider";
 import { useProfileStore } from "./DataProvider";
+import { useAppContext } from "./useProviders";
 
 export const MainRouterProvider: React.FC<PropsWithChildren> = () => {
   return (
@@ -80,7 +80,7 @@ const useHasProfile = () => {
 };
 
 const useIsLoading = () => {
-  const { state: appState } = useAppStore();
+  const { state: appState } = useAppContext();
   return useMemo(() => {
     const { dataStatus } = appState;
     return Object.values(dataStatus).some(status => status === "loading");

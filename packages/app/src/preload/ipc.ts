@@ -28,7 +28,13 @@ export type Subscribe = <T extends keyof IPCBroadcastEvents>(
 ) => () => void;
 
 export type IPCBroadcastEvents = {
-  change: (object: ItemSnapshot) => Promise<void>;
+  change: (snapshot: ItemSnapshot) => Promise<void>;
+  themePreferenceChange: (preference: ThemePreference) => Promise<void>;
+};
+
+export type IPCInvokeEvents = {
+  foo: (hi: string) => Promise<boolean>;
+  bar: (oh: number) => Promise<number>;
 };
 
 export type ItemSnapshot<T extends Item = Item> = {
@@ -36,10 +42,7 @@ export type ItemSnapshot<T extends Item = Item> = {
   data: T;
 };
 
-export type IPCInvokeEvents = {
-  foo: (hi: string) => Promise<boolean>;
-  bar: (oh: number) => Promise<number>;
-};
+export type ThemePreference = "dark" | "light" | "system";
 
 export interface IPCContext {
   platform: Platform;

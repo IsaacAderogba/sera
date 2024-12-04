@@ -147,7 +147,8 @@ const createWindow = (
     webPreferences: {
       preload: path.join(__dirname, "..", "preload", "index.mjs"),
       sandbox: false,
-      backgroundThrottling: false
+      backgroundThrottling: false,
+      partition: "persist:shared"
     },
     transparent: true,
     vibrancy: "fullscreen-ui",
