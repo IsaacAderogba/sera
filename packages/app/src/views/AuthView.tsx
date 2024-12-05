@@ -1,8 +1,11 @@
+import { Button } from "../components/Button";
 import { Flex } from "../components/Flex";
 import { Logo } from "../components/Logo";
 import { Text, Title } from "../components/Typography";
+import { useThemeContext } from "../providers/ThemeContext";
 
 export const AuthView: React.FC = () => {
+  const { state, setThemePreference } = useThemeContext();
   return (
     <Flex
       css={{
@@ -42,11 +45,29 @@ export const AuthView: React.FC = () => {
           }}
         >
           <Title>welcome back heading</Title>
-          <Text>auth form</Text>
+          {/* <Text>auth form</Text> */}
+          <Flex css={{ flexDirection: "column", gap: "$sm", width: "100%" }}>
+            <Button variant="solid">Solid button</Button>
+
+            <Button variant="soft">Soft button</Button>
+
+            <Button variant="outline">Outline button</Button>
+
+            <Button variant="ghost">Ghost button</Button>
+          </Flex>
         </Flex>
         <Text size="compact" secondary>
           Don't have a token? Create one <a href="#">link</a>.
         </Text>
+        <Button
+          onClick={() => {
+            setThemePreference(state.mode === "dark" ? "light" : "dark", {
+              persist: true
+            });
+          }}
+        >
+          Toggle Theme
+        </Button>
       </Flex>
     </Flex>
   );

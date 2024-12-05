@@ -42,7 +42,7 @@ export const Title = styled("h6", {
   fontFamily: "$sans",
   fontWeight: "$medium",
   variants: {
-    type: {
+    variant: {
       h1: {},
       h2: {},
       h3: {},
@@ -60,20 +60,20 @@ export const Title = styled("h6", {
     }
   },
   compoundVariants: [
-    { type: "h1", size: "default", css: extraExtraLargeTextSize },
-    { type: "h1", size: "compact", css: extraLargeTextSize },
-    { type: "h2", size: "default", css: extraLargeTextSize },
-    { type: "h2", size: "compact", css: largeTextSize },
-    { type: "h3", size: "default", css: largeTextSize },
-    { type: "h3", size: "compact", css: mediumTextSize },
-    { type: "h4", size: "default", css: mediumTextSize },
-    { type: "h4", size: "compact", css: baseTextSize },
-    { type: "h5", size: "default", css: baseTextSize },
-    { type: "h5", size: "compact", css: smallTextSize },
-    { type: "h6", size: "default", css: smallTextSize },
-    { type: "h6", size: "compact", css: extraSmallTextSize }
+    { variant: "h1", size: "default", css: extraExtraLargeTextSize },
+    { variant: "h1", size: "compact", css: extraLargeTextSize },
+    { variant: "h2", size: "default", css: extraLargeTextSize },
+    { variant: "h2", size: "compact", css: largeTextSize },
+    { variant: "h3", size: "default", css: largeTextSize },
+    { variant: "h3", size: "compact", css: mediumTextSize },
+    { variant: "h4", size: "default", css: mediumTextSize },
+    { variant: "h4", size: "compact", css: baseTextSize },
+    { variant: "h5", size: "default", css: baseTextSize },
+    { variant: "h5", size: "compact", css: smallTextSize },
+    { variant: "h6", size: "default", css: smallTextSize },
+    { variant: "h6", size: "compact", css: extraSmallTextSize }
   ],
-  defaultVariants: { type: "h5", size: "default", ellipsis: false }
+  defaultVariants: { variant: "h5", size: "default", ellipsis: false }
 });
 
 export const Text = styled("span", {

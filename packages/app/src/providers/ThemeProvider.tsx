@@ -42,8 +42,10 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
     injectedGlobalStyles = true;
   }
 
-  const [state, setState] = useState<ThemeState>({
-    mode: getThemeMode(cache.get("theme-preference") || "dark")
+  const [state, setState] = useState<ThemeState>(() => {
+    return {
+      mode: setThemeMode(cache.get("theme-preference") || "dark")
+    };
   });
 
   const setThemePreference = useCallback(
