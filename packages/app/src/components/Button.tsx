@@ -17,6 +17,7 @@ export const Button = styled("button", {
   transition: "all 100ms",
   "&:hover": { opacity: 0.9 },
   "&:active": { opacity: 0.75 },
+  "&:focus-visible": { outline: "solid $label", outlineOffset: "1px" },
   variants: {
     disabled: {
       true: {
@@ -61,8 +62,44 @@ export const Button = styled("button", {
         color: "$text",
         "&:hover": { background: "$neutral" }
       }
-    }
+    },
+    danger: { true: {} }
   },
+  compoundVariants: [
+    {
+      variant: "solid",
+      danger: true,
+      css: {
+        border: "1px solid $danger",
+        background: "$danger",
+        color: "white"
+      }
+    },
+    {
+      variant: "soft",
+      danger: true,
+      css: { color: "$danger" }
+    },
+    {
+      variant: "outline",
+      danger: true,
+      css: {
+        border: "1px solid $danger",
+        color: "$danger",
+        "&:hover": { borderColor: "$danger", background: "$neutral" }
+      }
+    },
+    {
+      variant: "ghost",
+      danger: true,
+      css: { color: "$danger" }
+    }
+  ],
 
-  defaultVariants: { size: "default", variant: "solid", disabled: false }
+  defaultVariants: {
+    size: "default",
+    variant: "solid",
+    disabled: false,
+    danger: false
+  }
 });

@@ -73,6 +73,17 @@ export function Form<V extends FieldValues>({
     </FormContext.Provider>
   );
 }
+export const FormCheckbox: React.FC = () => {
+  return null;
+};
+
+export const FormInput: React.FC = () => {
+  return null;
+};
+
+export const FormSelect: React.FC = () => {
+  return null;
+};
 
 const FormContext = createContext<FormStore<any> | undefined>(undefined);
 const useForm = createContextHook(FormContext);

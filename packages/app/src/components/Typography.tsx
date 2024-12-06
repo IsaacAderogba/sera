@@ -57,6 +57,11 @@ export const Title = styled("h6", {
         textOverflow: "ellipsis",
         whiteSpace: "nowrap"
       }
+    },
+    danger: {
+      true: {
+        color: "$danger"
+      }
     }
   },
   compoundVariants: [

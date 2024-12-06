@@ -1,6 +1,6 @@
 import { Button } from "../components/Button";
 import { Flex } from "../components/Flex";
-import { Form } from "../components/Form";
+import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
 import { Text, Title } from "../components/Typography";
 import { useThemeContext } from "../providers/ThemeContext";
@@ -48,13 +48,15 @@ export const AuthView: React.FC = () => {
           <Title>welcome back heading</Title>
           {/* <Text>auth form</Text> */}
           <Flex css={{ flexDirection: "column", gap: "$sm", width: "100%" }}>
-            <Form
+            {/* <Form
               size="default"
               initialValues={{ foo: "bar" }}
               onSubmit={(e, values) => {}}
             >
               todo
-            </Form>
+            </Form> */}
+
+            <Input placeholder="Email" />
 
             <Button variant="solid">Solid button</Button>
 
