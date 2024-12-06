@@ -58,9 +58,9 @@ export const AuthView: React.FC = () => {
             </Form> */}
 
             <Input placeholder="Email" />
-            <Flex>
-              <Checkbox size="default" />
-            </Flex>
+            <Checkbox size="default">
+              <Text>hello</Text>
+            </Checkbox>
 
             <Button variant="solid">Solid button</Button>
 
