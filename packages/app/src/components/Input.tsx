@@ -41,4 +41,4 @@ export const Input = styled("input", {
   defaultVariants: { size: "default", danger: false }
 });
 
-export type InputProps = ComponentProps<typeof Input>;
+export type InputProps = ComponentProps<HTMLInputElement>;

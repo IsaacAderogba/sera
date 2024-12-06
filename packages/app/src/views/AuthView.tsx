@@ -1,4 +1,5 @@
 import { Button } from "../components/Button";
+import { Checkbox } from "../components/Checkbox";
 import { Flex } from "../components/Flex";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
@@ -57,6 +58,9 @@ export const AuthView: React.FC = () => {
             </Form> */}
 
             <Input placeholder="Email" />
+            <Flex>
+              <Checkbox size="default" />
+            </Flex>
 
             <Button variant="solid">Solid button</Button>
 
