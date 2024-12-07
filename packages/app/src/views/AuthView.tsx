@@ -3,6 +3,7 @@ import { Checkbox } from "../components/Checkbox";
 import { Flex } from "../components/Flex";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
+import { Tooltip } from "../components/Tooltip";
 import { Text, Title } from "../components/Typography";
 import { useThemeContext } from "../providers/ThemeContext";
 
@@ -46,7 +47,9 @@ export const AuthView: React.FC = () => {
             border: "1px solid $border"
           }}
         >
-          <Title>welcome back heading</Title>
+          <Tooltip content="Tooltip content" placement="top">
+            <Title>welcome back heading</Title>
+          </Tooltip>
           {/* <Text>auth form</Text> */}
           <Flex css={{ flexDirection: "column", gap: "$sm", width: "100%" }}>
             {/* <Form

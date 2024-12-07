@@ -24,7 +24,7 @@ export const useRelativePosition = <
   trigger = ["hover"],
   ignore = ["focus"]
 }: RelativePositionProps) => {
-  const popoverRef = useRef<T | null>(null);
+  const portalRef = useRef<T | null>(null);
   const triggerRef = useRef<K | null>(null);
   const [point, setPoint] = useState<Point>({ x: 0, y: 0 });
   const [clicked, setClicked] = useState(false);
@@ -35,7 +35,7 @@ export const useRelativePosition = <
   });
 
   const onPointChange = useCallback(() => {
-    const [trigger, portal] = [triggerRef.current, popoverRef.current];
+    const [trigger, portal] = [triggerRef.current, portalRef.current];
     if (!trigger || !portal) return;
 
     const { offsetWidth, offsetHeight } = trigger;
@@ -50,7 +50,7 @@ export const useRelativePosition = <
 
   const onOpenChange = useCallback(
     (open: boolean) => {
-      if (!triggerRef.current || !popoverRef.current) return;
+      if (!triggerRef.current || !portalRef.current) return;
       if (open === true) onPointChange();
       setOpen(open);
     },
@@ -83,7 +83,7 @@ export const useRelativePosition = <
     }
   });
 
-  const dismissiableProps = useDismissable(popoverRef, {
+  const dismissiableProps = useDismissable(portalRef, {
     enabled: true,
     onDismiss: ({ type }) => {
       if (ignore.includes(type)) return;
@@ -93,13 +93,12 @@ export const useRelativePosition = <
   });
 
   return {
-    popoverRef,
+    portalRef,
     triggerRef,
     point,
     open,
     onPointChange,
     onOpenChange,
-    position,
     ...hoverableProps,
     ...dismissiableProps
   };

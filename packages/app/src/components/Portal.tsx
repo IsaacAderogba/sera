@@ -1,24 +1,30 @@
-import { forwardRef, useMemo } from "react";
+import { createContext, forwardRef, useContext, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { Box, BoxProps } from "../components/Box";
-import { PortalContext, usePortal } from "./PortalContext";
+import { Box, BoxProps } from "./Box";
 import { Z_INDEX } from "../utilities/constants";
+
+const PortalContext = createContext<PortalStore | undefined>(undefined);
+const usePortal = () => useContext(PortalContext);
+
+export interface PortalStore {
+  depth: number;
+}
 
 export interface PortalProps extends BoxProps {
   container?: HTMLElement;
 }
 
-export const Portal = forwardRef<HTMLDivElement, PortalProps>(
+const ReactPortal = forwardRef<HTMLDivElement, PortalProps>(
   ({ container = globalThis.document.body, ...props }, ref) => {
     return createPortal(<Box {...props} ref={ref} />, container);
   }
 );
 
-export const PortalProvider = forwardRef<HTMLDivElement, PortalProps>(
+export const Portal = forwardRef<HTMLDivElement, PortalProps>(
   ({ children, css, ...props }, ref) => {
     const portal = usePortal();
     const depth = portal ? portal.depth + 1 : Z_INDEX.Higher;
-    const Container = portal ? Box : Portal;
+    const Container = portal ? Box : ReactPortal;
 
     const value = useMemo(() => ({ depth }), [depth]);
 
@@ -33,8 +39,10 @@ export const PortalProvider = forwardRef<HTMLDivElement, PortalProps>(
             zIndex: depth,
             display: "flex",
             flexDirection: "column",
-            position: "fixed",
             transition: `opacity 100ms ease-in`,
+            background: "$translucent",
+            border: "1px solid $border",
+            borderRadius: "$sm",
             ...css
           }}
         >
