@@ -8,7 +8,7 @@ export const Logo: React.FC = () => {
       viewBox="0 0 694 90"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      css={{ fill: "$text", height: 20 }}
+      css={{ fill: "$text", height: 20, width: 140 }}
     >
       <path
         d="M248.261 22.1901H230.466L251.968 88.5124H271.123L292.625 22.1901H274.83L261.365 72.1488L248.261 22.1901Z"

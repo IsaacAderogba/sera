@@ -1,3 +1,4 @@
+import { Box } from "../components/Box";
 import { Button } from "../components/Button";
 import { Flex } from "../components/Flex";
 import { Form, FormCheckbox, FormInput, FormSelect } from "../components/Form";
@@ -9,26 +10,24 @@ export const AuthView: React.FC = () => {
   const { state, setThemePreference } = useThemeContext();
   return (
     <Flex
+      className="drag"
       css={{
         background: "$translucent",
         height: "100%",
         width: "100%",
-        justifyContent: "center",
-        alignItems: "center",
         flexDirection: "column",
-        justify: "center",
-        align: "center",
-        p: "$md",
-        overflow: "auto",
-        "-webkit-app-region": "drag"
+        overflow: "auto"
       }}
     >
       <Flex
+        className="no-drag"
         css={{
+          margin: "auto",
           flexDirection: "column",
           alignItems: "center",
           gap: "$lg",
-          "-webkit-app-region": "no-drag"
+          maxWidth: "420px",
+          width: "100%"
         }}
       >
         <Logo />
@@ -37,7 +36,6 @@ export const AuthView: React.FC = () => {
             background: "$surface",
             borderRadius: "$base",
             padding: "$lg",
-            maxWidth: "420px",
             width: "100%",
             gap: "$lg",
             flexDirection: "column",
@@ -45,33 +43,8 @@ export const AuthView: React.FC = () => {
             border: "1px solid $border"
           }}
         >
-          {/* <Tooltip content="Tooltip content" placement="top"> */}
           <Title>welcome back heading</Title>
-          {/* </Tooltip> */}
-          {/* <Text>auth form</Text> */}
           <Flex css={{ flexDirection: "column", gap: "$sm", width: "100%" }}>
-            {/* <Form
-              size="default"
-              initialValues={{ foo: "bar" }}
-              onSubmit={(e, values) => {}}
-            >
-              todo
-            </Form> */}
-
-            {/* <Input placeholder="Email" />
-            <Checkbox size="default">
-              <Text>hello</Text>
-            </Checkbox>
-
-            <Select
-              defaultValue="item"
-              options={[
-                { type: "item", value: "item", label: "Item" },
-                { type: "divider", value: "divider" },
-                { type: "item", value: "item-1", label: "Item 2" }
-              ]}
-            /> */}
-
             <Form
               size="default"
               initialValues={{

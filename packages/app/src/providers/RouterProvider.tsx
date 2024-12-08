@@ -1,4 +1,4 @@
-import { Fragment, PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
 import { AuthView } from "../views/AuthView";
 import { ProfilePreviewView } from "../views/ProfilePreviewView";
@@ -46,11 +46,7 @@ const AuthRoute: React.FC = () => {
     );
   }
 
-  return (
-    <Fragment>
-      <AuthView />
-    </Fragment>
-  );
+  return <AuthView />;
 };
 
 const ProfileRoute: React.FC = () => {
