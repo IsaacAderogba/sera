@@ -1,11 +1,11 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ComponentProps } from "@stitches/react";
+import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { useManagedState } from "../hooks/useManagedState";
 import { useRelativePosition } from "../hooks/useRelativePosition";
 import { styled } from "../utilities/stitches";
-import { Box } from "./Box";
-import { Portal } from "./Portal";
 import { Divider } from "./Divider";
+import { Portal } from "./Portal";
 
 interface SelectProps extends TriggerProps {
   options: SelectOption[];
@@ -52,6 +52,12 @@ export const Select: React.FC<SelectProps> = ({
     .filter(isSelectItem)
     .find(option => option.value === value)?.label;
 
+  const navigation = useKeyboardNavigation({
+    enabled: open,
+    defaultValue: value,
+    values: options.filter(isSelectItem).map(item => item.value)
+  });
+
   return (
     <Trigger
       ref={triggerRef}
@@ -61,10 +67,21 @@ export const Select: React.FC<SelectProps> = ({
       onFocusCapture={onFocusCapture}
       onClickCapture={onClickCapture}
       css={{ position: "relative", ...props.css }}
+      tabIndex={0}
+      onKeyDown={event => {
+        if (event.key !== "Enter") return;
+
+        if (!open) {
+          onOpenChange(true);
+        } else if (navigation.value) {
+          onValueChange(navigation.value);
+          onOpenChange(false);
+        }
+      }}
       {...props}
     >
       <Option>{children}</Option>
-      <ChevronDownIcon width={20} />
+      <ChevronDownIcon width={20} style={{ marginRight: 8 }} />
       <Portal
         container={triggerRef.current || undefined}
         ref={portalRef}
@@ -77,7 +94,7 @@ export const Select: React.FC<SelectProps> = ({
           // left: `${point.x}px`,
           opacity: open ? 1 : 0,
           boxShadow: "$sm",
-          padding: "$xs $sm",
+          padding: "$xs",
           background: "$surface",
           width: "100%"
         }}
@@ -90,6 +107,8 @@ export const Select: React.FC<SelectProps> = ({
           return (
             <Option
               key={option.value}
+              active={option.value === navigation.value}
+              onMouseOver={() => navigation.onValueChange(option.value)}
               onClick={() => {
                 onValueChange(option.value);
                 onOpenChange(false);
@@ -105,6 +124,7 @@ export const Select: React.FC<SelectProps> = ({
 };
 
 const Option = styled("div", {
+  borderRadius: "$sm",
   variants: {
     size: {
       compact: {
@@ -121,9 +141,14 @@ const Option = styled("div", {
         lineHeight: "$base",
         letterSpacing: "$base"
       }
+    },
+    active: {
+      true: {
+        background: "$neutral"
+      }
     }
   },
-  defaultVariants: { size: "default" }
+  defaultVariants: { size: "default", active: false }
 });
 
 const Trigger = styled("div", {
