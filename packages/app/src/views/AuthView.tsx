@@ -3,6 +3,7 @@ import { Checkbox } from "../components/Checkbox";
 import { Flex } from "../components/Flex";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
+import { Popover } from "../components/Popover";
 import { Select } from "../components/Select";
 import { Tooltip } from "../components/Tooltip";
 import { Text, Title } from "../components/Typography";
@@ -61,7 +62,7 @@ export const AuthView: React.FC = () => {
               todo
             </Form> */}
 
-            <Input placeholder="Email" />
+            {/* <Input placeholder="Email" />
             <Checkbox size="default">
               <Text>hello</Text>
             </Checkbox>
@@ -73,9 +74,15 @@ export const AuthView: React.FC = () => {
                 { type: "divider", value: "divider" },
                 { type: "item", value: "item-1", label: "Item 2" }
               ]}
-            />
+            /> */}
 
-            <Button variant="solid">Solid button</Button>
+            <Popover
+              content="Foobar"
+              placement="top"
+              css={{ display: "flex", flexDirection: "column" }}
+            >
+              <Button variant="solid">Solid button</Button>
+            </Popover>
 
             <Button variant="soft">Soft button</Button>
 

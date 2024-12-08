@@ -83,6 +83,7 @@ export const Select: React.FC<SelectProps> = ({
       <Option>{children}</Option>
       <ChevronDownIcon width={20} style={{ marginRight: 8 }} />
       <Portal
+        open={open}
         container={triggerRef.current || undefined}
         ref={portalRef}
         onMouseEnter={onPopoverMouseEnter}
@@ -92,7 +93,6 @@ export const Select: React.FC<SelectProps> = ({
           top: `${point.y}px`,
           left: 0,
           // left: `${point.x}px`,
-          opacity: open ? 1 : 0,
           boxShadow: "$sm",
           padding: "$xs",
           background: "$surface",

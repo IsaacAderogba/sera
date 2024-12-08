@@ -7,20 +7,20 @@ import { FlexProps } from "./Flex";
 import { Box } from "./Box";
 import { Portal } from "./Portal";
 
-export interface TooltipProps
+export interface PopoverProps
   extends RelativePositionProps,
     Omit<FlexProps, "content"> {
   content: React.ReactNode;
 }
 
-export const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
+export const Popover: React.FC<PropsWithChildren<PopoverProps>> = ({
   placement,
   ignore,
   onOpenChange,
   open: openProp,
   placementOffset,
   position = "fixed",
-  trigger,
+  trigger = ["click"],
   children,
   content,
   ...props
@@ -30,6 +30,7 @@ export const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
     onFocusCapture,
     onPopoverMouseEnter,
     onPopoverMouseLeave,
+    onTriggerClick,
     onTriggerMouseEnter,
     onTriggerMouseLeave,
     open,
@@ -50,6 +51,7 @@ export const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
     <Fragment>
       <Box
         ref={triggerRef}
+        onClick={onTriggerClick}
         onMouseEnter={onTriggerMouseEnter}
         onMouseLeave={onTriggerMouseLeave}
         onFocusCapture={onFocusCapture}
@@ -59,15 +61,15 @@ export const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
         {children}
       </Box>
       <Portal
+        open={open}
         ref={portalRef}
         onMouseEnter={onPopoverMouseEnter}
         onMouseLeave={onPopoverMouseLeave}
-        open={open}
         css={{
           position,
           top: `${point.y}px`,
           left: `${point.x}px`,
-          pointerEvents: "none",
+          opacity: open ? 1 : 0,
           boxShadow: "$sm",
           padding: "$xs $sm",
           background: "$translucent",

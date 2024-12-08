@@ -10,18 +10,22 @@ export interface PortalStore {
   depth: number;
 }
 
-export interface PortalProps extends BoxProps {
+export interface ContainerProps extends BoxProps {
   container?: HTMLElement;
 }
 
-const ReactPortal = forwardRef<HTMLDivElement, PortalProps>(
+const ReactPortal = forwardRef<HTMLDivElement, ContainerProps>(
   ({ container = globalThis.document.body, ...props }, ref) => {
     return createPortal(<Box {...props} ref={ref} />, container);
   }
 );
 
+export interface PortalProps extends ContainerProps {
+  open: boolean;
+}
+
 export const Portal = forwardRef<HTMLDivElement, PortalProps>(
-  ({ children, css, ...props }, ref) => {
+  ({ children, css, open, ...props }, ref) => {
     const portal = usePortal();
     const depth = portal ? portal.depth + 1 : Z_INDEX.Higher;
     const Container = portal ? Box : ReactPortal;
@@ -42,6 +46,8 @@ export const Portal = forwardRef<HTMLDivElement, PortalProps>(
             transition: `opacity 100ms ease-in`,
             border: "1px solid $border",
             borderRadius: "$sm",
+            pointerEvents: open ? "auto" : "none",
+            opacity: open ? 1 : 0,
             ...css
           }}
         >
