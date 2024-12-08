@@ -1,6 +1,4 @@
 import {
-  Context,
-  useContext,
   DependencyList,
   EffectCallback,
   useEffect,

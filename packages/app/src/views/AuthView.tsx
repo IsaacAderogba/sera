@@ -80,7 +80,7 @@ export const AuthView: React.FC = () => {
                 remember: false,
                 select: "item"
               }}
-              onSubmit={(e, values) => {
+              onSubmit={(_e, values) => {
                 console.log("values", values);
               }}
             >

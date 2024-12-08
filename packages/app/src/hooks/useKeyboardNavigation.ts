@@ -1,7 +1,6 @@
-import { useCallback, useEffect } from "react";
-import { useDeepMemo } from "./useDeepEquals";
-import { useManagedState } from "./useManagedState";
+import { useEffect } from "react";
 import { useValueRef } from "./useManagedRefs";
+import { useManagedState } from "./useManagedState";
 
 interface KeyboardNavigationProps {
   enabled: boolean;
