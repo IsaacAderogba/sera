@@ -1,9 +1,5 @@
 import { styled } from "../utilities/stitches";
 
-/**
- * i think the problem is the font size
- */
-
 export const Button = styled("button", {
   all: "unset",
   display: "inline-flex",
