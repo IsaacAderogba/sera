@@ -1,12 +1,12 @@
-import { Fragment, PropsWithChildren, useMemo } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
-import { Route } from "../patterns/Route/Route";
-import { createRoutePath, useRouteParams } from "../patterns/Route/useRoute";
 import { AuthView } from "../views/AuthView";
 import { ProfilePreviewView } from "../views/ProfilePreviewView";
 import { ProfileView } from "../views/ProfileView";
-import { useAppStore } from "./AppProvider";
-import { useProfileStore } from "./DataProvider";
+import { useAppContext } from "./AppContext";
+import { useProfileContext } from "./DataContext";
+import { createRoutePath } from "../utilities/route";
+import { Route, useRouteParams } from "../components/Route";
 
 export const MainRouterProvider: React.FC<PropsWithChildren> = () => {
   return (
@@ -33,7 +33,7 @@ export const MenubarRouterProvider: React.FC<PropsWithChildren> = () => {
 const AuthRoute: React.FC = () => {
   const loading = useIsLoading();
 
-  const { state: profileState } = useProfileStore();
+  const { state: profileState } = useProfileContext();
   const profile = useMemo(() => {
     return Object.values(profileState)[0];
   }, [profileState]);
@@ -46,18 +46,14 @@ const AuthRoute: React.FC = () => {
     );
   }
 
-  return (
-    <Fragment>
-      <AuthView />
-    </Fragment>
-  );
+  return <AuthView />;
 };
 
 const ProfileRoute: React.FC = () => {
-  // const loading = useIsLoading();
-  // const hasProfile = useHasProfile();
-  // if (loading) return null; // return loading screen component
-  // if (!hasProfile) return null; // return auth view component
+  const loading = useIsLoading();
+  const hasProfile = useHasProfile();
+  if (loading) return null; // return loading screen component
+  if (!hasProfile) return null; // return auth view component
 
   return <ProfileView />;
 };
@@ -73,14 +69,14 @@ const ProfilePreviewRoute: React.FC = () => {
 
 const useHasProfile = () => {
   const { profileId } = useRouteParams("/profiles/:profileId");
-  const { state: profileState } = useProfileStore();
+  const { state: profileState } = useProfileContext();
   return useMemo(() => {
-    return Boolean(profileState[profileId]);
+    return Boolean(profileState[profileId]?.token);
   }, [profileId, profileState]);
 };
 
 const useIsLoading = () => {
-  const { state: appState } = useAppStore();
+  const { state: appState } = useAppContext();
   return useMemo(() => {
     const { dataStatus } = appState;
     return Object.values(dataStatus).some(status => status === "loading");

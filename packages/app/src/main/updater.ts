@@ -46,8 +46,9 @@ autoUpdater.on("update-downloaded", async info => {
 
 export const checkForUpdates = async () => {
   try {
-    await autoUpdater.checkForUpdates();
+    return await autoUpdater.checkForUpdates();
   } catch (err) {
     console.log(`Error checking for updates`, err);
+    return null;
   }
 };

@@ -66,9 +66,9 @@ export const createAppWindow = async (state: Partial<WindowState> = {}) => {
     ...bounds,
     minWidth: 500,
     minHeight: 400,
-    transparent: false
-    // titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
-    // trafficLightPosition: { x: 12, y: 16 }
+    transparent: false,
+    titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
+    trafficLightPosition: { x: 12, y: 16 }
   });
 
   setWindowState(appWindow.id, { bounds: appWindow.getBounds() });
@@ -147,7 +147,8 @@ const createWindow = (
     webPreferences: {
       preload: path.join(__dirname, "..", "preload", "index.mjs"),
       sandbox: false,
-      backgroundThrottling: false
+      backgroundThrottling: false,
+      partition: "persist:shared"
     },
     transparent: true,
     vibrancy: "fullscreen-ui",

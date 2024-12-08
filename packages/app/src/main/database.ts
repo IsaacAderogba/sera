@@ -53,7 +53,7 @@ const createIPCAdapter = <T extends keyof ItemRecord>(
       });
 
       const data = await database.table(table).where({ id }).first();
-      broadcast(-1, "change", { action: "created", data });
+      await broadcast(-1, "change", { action: "created", data });
       return data;
     },
     update: async (id, item) => {
@@ -63,14 +63,14 @@ const createIPCAdapter = <T extends keyof ItemRecord>(
         .update({ ...item, updatedAt: new Date().toISOString() });
 
       const data = await database.table(table).where({ id }).first();
-      broadcast(-1, "change", { action: "updated", data });
+      await broadcast(-1, "change", { action: "updated", data });
       return data;
     },
     delete: async id => {
       const database = await connectDatabase(table);
       const data = await database.table(table).where({ id }).first();
       if (data) {
-        broadcast(-1, "change", { action: "deleted", data });
+        await broadcast(-1, "change", { action: "deleted", data });
         await database.table(table).where({ id }).delete();
       }
     }
