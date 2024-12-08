@@ -125,17 +125,16 @@ export const Select: React.FC<SelectProps> = ({
 
 const Option = styled("div", {
   borderRadius: "$sm",
+  minHeight: "1em",
   variants: {
     size: {
       compact: {
-        minHeight: "16px",
         padding: "$xxs $xs",
         fontSize: "$sm",
         lineHeight: "$sm",
         letterSpacing: "$sm"
       },
       default: {
-        minHeight: "20px",
         padding: "$xs $sm",
         fontSize: "$base",
         lineHeight: "$base",
@@ -167,6 +166,10 @@ const Trigger = styled("div", {
   transition: "borderColor 100ms",
   backgroundColor: "transparent",
   variants: {
+    size: {
+      compact: {},
+      default: {}
+    },
     danger: {
       true: {
         borderColor: "$danger",
@@ -184,6 +187,10 @@ function isSelectItem(option: SelectOption): option is SelectItem {
   return option.type === "item";
 }
 
-type SelectOption = SelectItem | SelectDivider;
-type SelectItem = { value: string; type: "item"; label: React.ReactNode };
-type SelectDivider = { value: string; type: "divider" };
+export type SelectOption = SelectItem | SelectDivider;
+export type SelectItem = {
+  value: string;
+  type: "item";
+  label: React.ReactNode;
+};
+export type SelectDivider = { value: string; type: "divider" };

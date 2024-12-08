@@ -1,36 +1,36 @@
 import { CSS, styled } from "../utilities/stitches";
 
-const extraSmallTextSize: CSS = {
+export const extraSmallTextSize: CSS = {
   fontSize: "$xs",
   lineHeight: "$xs",
   letterSpacing: "$xs"
 };
-const smallTextSize: CSS = {
+export const smallTextSize: CSS = {
   fontSize: "$sm",
   lineHeight: "$sm",
   letterSpacing: "$sm"
 };
-const baseTextSize: CSS = {
+export const baseTextSize: CSS = {
   fontSize: "$base",
   lineHeight: "$base",
   letterSpacing: "$base"
 };
-const mediumTextSize: CSS = {
+export const mediumTextSize: CSS = {
   fontSize: "$md",
   lineHeight: "$md",
   letterSpacing: "$md"
 };
-const largeTextSize: CSS = {
+export const largeTextSize: CSS = {
   fontSize: "$lg",
   lineHeight: "$lg",
   letterSpacing: "$lg"
 };
-const extraLargeTextSize: CSS = {
+export const extraLargeTextSize: CSS = {
   fontSize: "$xl",
   lineHeight: "$xl",
   letterSpacing: "$xl"
 };
-const extraExtraLargeTextSize: CSS = {
+export const extraExtraLargeTextSize: CSS = {
   fontSize: "$xxl",
   lineHeight: "$xxl",
   letterSpacing: "$xxl"

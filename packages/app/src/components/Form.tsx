@@ -1,13 +1,13 @@
 import {
   createContext,
   Dispatch,
-  FocusEventHandler,
   FormEvent,
   PropsWithChildren,
   Reducer,
   useMemo,
   useReducer
 } from "react";
+import { useDeepLayoutEffect } from "../hooks/useDeepEquals";
 import {
   FieldConfig,
   FieldValues,
@@ -17,8 +17,12 @@ import {
 import { createContextHook } from "../utilities/react";
 import { styled } from "../utilities/stitches";
 import { Size } from "../utilities/types";
+import { Flex, FlexProps } from "./Flex";
+import { Input } from "./Input";
+import { baseTextSize, extraSmallTextSize, smallTextSize } from "./Typography";
+import { Checkbox } from "./Checkbox";
+import { Select, SelectOption } from "./Select";
 
-const StyledForm = styled("form");
 export function Form<V extends FieldValues>({
   initialValues,
   size,
@@ -37,20 +41,7 @@ export function Form<V extends FieldValues>({
       size,
       state,
       dispatch,
-      validations,
-      queryFieldProps: name => {
-        const hasSubmitted = state.submitted;
-        const hasBlurred = state.blurs[name];
-        const hasErrors = validations[name]?.errors.length > 0;
-        const showError = (hasSubmitted || hasBlurred) && hasErrors;
-
-        return {
-          "aria-invalid": hasErrors,
-          onBlur: () => dispatch({ type: "blur", payload: { name } }),
-          name,
-          error: showError
-        };
-      }
+      validations
     }),
     [size, state, dispatch, validations]
   );
@@ -73,16 +64,178 @@ export function Form<V extends FieldValues>({
     </FormContext.Provider>
   );
 }
-export const FormCheckbox: React.FC = () => {
-  return null;
+const StyledForm = styled("form", {
+  display: "flex",
+  flexDirection: "column",
+  variants: {
+    size: { compact: { gap: "$xxs" }, default: { gap: "$xxs" } }
+  },
+  defaultVariants: { size: "default" }
+});
+
+interface FormItemProps extends FlexProps {
+  validation?: FieldConfig;
+  label: string;
+  name: string;
+}
+
+const FormItem: React.FC<PropsWithChildren<FormItemProps>> = ({
+  children,
+  validation,
+  label,
+  name
+}) => {
+  const { dispatch, validations } = useForm();
+  const error = useFormError(name);
+
+  useDeepLayoutEffect(() => {
+    if (!validation) return;
+    dispatch({ type: "register", payload: { name, field: validation } });
+    return () => dispatch({ type: "unregister", payload: { name } });
+  }, [name, validation]);
+
+  return (
+    <Flex css={{ flexDirection: "column", position: "relative" }}>
+      {label && (
+        <FormLabel htmlFor={name} css={{ paddingBottom: "$xs" }}>
+          {label}
+        </FormLabel>
+      )}
+      {children}
+      <FormError error={error}>
+        {validations[name]?.errors[0]?.message || ""}
+      </FormError>
+    </Flex>
+  );
 };
 
-export const FormInput: React.FC = () => {
-  return null;
+export const FormLabel = styled("label", {
+  color: "$text",
+  fontFamily: "$sans",
+  fontWeight: "$normal",
+  variants: {
+    size: {
+      compact: { ...smallTextSize },
+      default: { ...baseTextSize }
+    }
+  },
+  defaultVariants: { size: "default" }
+});
+
+const FormError = styled("div", {
+  color: "$danger",
+  opacity: 0,
+  transition: "opacity 100ms",
+  variants: {
+    size: {
+      compact: { height: "16px", ...extraSmallTextSize },
+      default: { height: "16px", ...smallTextSize }
+    },
+    error: { true: { opacity: 1 } }
+  },
+  defaultVariants: { size: "default" }
+});
+
+export interface FormInputProps extends FormItemProps {}
+export const FormInput: React.FC<FormInputProps> = ({
+  name,
+  label,
+  validation,
+  ...props
+}) => {
+  const { size, state, dispatch } = useForm();
+  const error = useFormError(name);
+
+  return (
+    <FormItem name={name} label={label} validation={validation} {...props}>
+      <Input
+        id={name}
+        size={size}
+        danger={error}
+        onBlur={() => dispatch({ type: "blur", payload: { name } })}
+        value={state.values[name]}
+        onChange={e => {
+          dispatch({
+            type: "change",
+            payload: { name, value: e.target.value }
+          });
+        }}
+      />
+    </FormItem>
+  );
 };
 
-export const FormSelect: React.FC = () => {
-  return null;
+export interface FormCheckboxProps extends FormItemProps {}
+export const FormCheckbox: React.FC<FormCheckboxProps> = ({
+  name,
+  label,
+  validation,
+  ...props
+}) => {
+  const { size, state, dispatch } = useForm();
+  const error = useFormError(name);
+
+  return (
+    <FormItem name={name} label="" validation={validation} {...props}>
+      <Checkbox
+        id={name}
+        size={size}
+        danger={error}
+        onBlur={() => dispatch({ type: "blur", payload: { name } })}
+        checked={state.values[name]}
+        onCheckedChange={value => {
+          dispatch({ type: "change", payload: { name, value } });
+        }}
+      >
+        <FormLabel htmlFor={name}>{label}</FormLabel>
+      </Checkbox>
+    </FormItem>
+  );
+};
+
+export interface FormSelectProps extends FormItemProps {
+  options: SelectOption[];
+}
+
+export const FormSelect: React.FC<FormSelectProps> = ({
+  name,
+  label,
+  validation,
+  options,
+  ...props
+}) => {
+  const { size, state, dispatch } = useForm();
+  const error = useFormError(name);
+
+  return (
+    <FormItem name={name} label={label} validation={validation} {...props}>
+      <Select
+        id={name}
+        size={size}
+        danger={error}
+        options={options}
+        onBlur={() => dispatch({ type: "blur", payload: { name } })}
+        value={state.values[name]}
+        onValueChange={value => {
+          dispatch({
+            type: "change",
+            payload: { name, value }
+          });
+        }}
+      />
+    </FormItem>
+  );
+};
+
+const useFormError = (name: string) => {
+  const { state, validations } = useForm();
+  return useMemo(() => {
+    const hasSubmitted = state.submitted;
+    const hasBlurred = state.blurs[name];
+    const hasErrors = validations[name]?.errors.length > 0;
+    const showError = (hasSubmitted || hasBlurred) && hasErrors;
+    return showError;
+  }, [state, validations, name]);
 };
 
 const FormContext = createContext<FormStore<any> | undefined>(undefined);
@@ -95,7 +248,8 @@ const initState = <V extends FieldValues>(values: V): FormState => {
 const formReducer: Reducer<FormState, FormAction> = (state, action) => {
   switch (action.type) {
     case "change": {
-      const values = { ...state.values, ...action.payload };
+      const { name, value } = action.payload;
+      const values = { ...state.values, [name]: value };
       return { ...state, values };
     }
     case "blur": {
@@ -126,14 +280,6 @@ interface FormStore<V extends FieldValues> {
   state: FormState<V>;
   dispatch: Dispatch<FormAction>;
   validations: Record<keyof V, ValidatorResult>;
-  queryFieldProps: <T extends HTMLElement>(
-    name: string
-  ) => {
-    "aria-invalid": boolean;
-    onBlur: FocusEventHandler<T>;
-    name: string;
-    error: boolean;
-  };
 }
 
 interface FormState<V extends FieldValues = any> {
@@ -143,15 +289,18 @@ interface FormState<V extends FieldValues = any> {
   submitted: boolean;
 }
 
-type ChangeAction = { type: "change"; payload: any };
+type ChangeAction = {
+  type: "change";
+  payload: { name: string; value: unknown };
+};
 type BlurAction = { type: "blur"; payload: { name: string } };
-type SubmitAction = { type: "submit"; payload: any };
+type SubmitAction = { type: "submit"; payload: boolean };
+type ResetAction = { type: "reset"; payload: FormState };
 type RegisterAction = {
   type: "register";
   payload: { name: string; field: FieldConfig };
 };
 type UnregisterAction = { type: "unregister"; payload: { name: string } };
-type ResetAction = { type: "reset"; payload: FormState };
 type FormAction =
   | ChangeAction
   | BlurAction

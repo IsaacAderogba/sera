@@ -69,7 +69,6 @@ export const Popover: React.FC<PropsWithChildren<PopoverProps>> = ({
           position,
           top: `${point.y}px`,
           left: `${point.x}px`,
-          opacity: open ? 1 : 0,
           boxShadow: "$sm",
           padding: "$xs $sm",
           background: "$translucent",

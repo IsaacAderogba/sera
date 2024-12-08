@@ -23,7 +23,7 @@ export const Input = styled("input", {
         letterSpacing: "$sm"
       },
       default: {
-        padding: "$xs $sm",
+        padding: "$xxs $sm",
         fontSize: "$base",
         lineHeight: "$base",
         letterSpacing: "$base"

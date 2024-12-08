@@ -2,7 +2,7 @@ import { styled } from "../utilities/stitches";
 import { ComponentProps } from "@stitches/react";
 import { useManagedState } from "../hooks/useManagedState";
 
-type CheckboxProps = ComponentProps<typeof HiddenCheckbox> & {
+export type CheckboxProps = ComponentProps<typeof HiddenCheckbox> & {
   children?: React.ReactNode;
   onCheckedChange?: (checked: boolean) => void;
 };
@@ -55,7 +55,7 @@ const CheckboxContainer = styled("label", {
 
 const HiddenCheckbox = styled("input", {
   display: "none",
-  variants: { size: { compact: {}, default: {} } }
+  variants: { size: { compact: {}, default: {} }, danger: { true: {} } }
 });
 
 const StyledCheckbox = styled("div", {
@@ -81,7 +81,15 @@ const StyledCheckbox = styled("div", {
           color: "$foreground"
         }
       }
+    },
+    danger: {
+      true: {
+        borderColor: "$danger",
+        "&:active": { borderColor: "$danger" },
+        "&:focus-visible": { borderColor: "$danger" },
+        "&:hover": { borderColor: "$danger" }
+      }
     }
   },
-  defaultVariants: { size: "default", checked: false }
+  defaultVariants: { size: "default", checked: false, danger: false }
 });

@@ -1,11 +1,7 @@
 import { Button } from "../components/Button";
-import { Checkbox } from "../components/Checkbox";
 import { Flex } from "../components/Flex";
-import { Input } from "../components/Input";
+import { Form, FormCheckbox, FormInput, FormSelect } from "../components/Form";
 import { Logo } from "../components/Logo";
-import { Popover } from "../components/Popover";
-import { Select } from "../components/Select";
-import { Tooltip } from "../components/Tooltip";
 import { Text, Title } from "../components/Typography";
 import { useThemeContext } from "../providers/ThemeContext";
 
@@ -76,19 +72,48 @@ export const AuthView: React.FC = () => {
               ]}
             /> */}
 
-            <Popover
-              content="Foobar"
-              placement="top"
-              css={{ display: "flex", flexDirection: "column" }}
+            <Form
+              size="default"
+              initialValues={{
+                name: "",
+                email: "",
+                remember: false,
+                select: "item"
+              }}
+              onSubmit={(e, values) => {
+                console.log("values", values);
+              }}
             >
-              <Button variant="solid">Solid button</Button>
-            </Popover>
+              <FormInput
+                label="Name"
+                name="name"
+                validation={{
+                  string: { label: "Name", required: true, min: 1 }
+                }}
+              />
+              <FormInput
+                label="Email"
+                name="email"
+                validation={{ email: { label: "Email", required: true } }}
+              />
+              <FormSelect
+                label="Select"
+                name="select"
+                options={[
+                  { type: "item", value: "item", label: "Item" },
+                  { type: "divider", value: "divider" },
+                  { type: "item", value: "item-1", label: "Item 2" }
+                ]}
+                validation={{
+                  string: { label: "Select", required: true, min: 1 }
+                }}
+              />
+              <FormCheckbox label="Remember me" name="remember" />
 
-            <Button variant="soft">Soft button</Button>
-
-            <Button variant="outline">Outline button</Button>
-
-            <Button variant="ghost">Ghost button</Button>
+              <Button variant="solid" css={{ marginTop: "$sm" }}>
+                Solid button
+              </Button>
+            </Form>
           </Flex>
         </Flex>
         <Text size="compact" secondary>
