@@ -32,7 +32,7 @@ export const Portal = forwardRef<HTMLDivElement, PortalProps>(
       <PortalContext.Provider value={value}>
         <Container
           ref={ref}
-          onClick={event => event.preventDefault()}
+          onClick={event => event.stopPropagation()}
           className="glass"
           {...props}
           css={{
@@ -40,7 +40,6 @@ export const Portal = forwardRef<HTMLDivElement, PortalProps>(
             display: "flex",
             flexDirection: "column",
             transition: `opacity 100ms ease-in`,
-            background: "$translucent",
             border: "1px solid $border",
             borderRadius: "$sm",
             ...css

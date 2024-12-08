@@ -5,7 +5,7 @@ import { useDismissable } from "./useDismissable";
 export interface RelativePositionProps {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  placement: Placement;
+  placement?: Placement;
   placementOffset?: number;
   position?: "fixed" | "absolute";
   trigger?: ("hover" | "click")[];
@@ -18,7 +18,7 @@ export const useRelativePosition = <
 >({
   open: openProp,
   onOpenChange: onOpenChangeProp,
-  placement,
+  placement = "bottom",
   placementOffset,
   position = "fixed",
   trigger = ["hover"],
@@ -58,10 +58,9 @@ export const useRelativePosition = <
   );
 
   const hoverableProps = useHoverable({
-    onClick: event => {
+    onClick: () => {
       if (!trigger.includes("click")) return;
 
-      event.preventDefault();
       if (open) {
         onOpenChange(false);
         setClicked(false);

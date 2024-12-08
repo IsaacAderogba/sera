@@ -69,7 +69,8 @@ export const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
           pointerEvents: "none",
           opacity: open ? 1 : 0,
           boxShadow: "$sm",
-          padding: "$xs $sm"
+          padding: "$xs $sm",
+          background: "$translucent"
         }}
       >
         {content}

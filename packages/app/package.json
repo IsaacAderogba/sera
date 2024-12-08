@@ -21,6 +21,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@heroicons/react": "^2.2.0",
     "@playwright/test": "^1.49.0",
     "@stitches/react": "^1.2.8",
     "@types/react": "^18.3.3",

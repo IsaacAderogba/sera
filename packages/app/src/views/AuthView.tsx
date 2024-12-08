@@ -3,6 +3,7 @@ import { Checkbox } from "../components/Checkbox";
 import { Flex } from "../components/Flex";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
+import { Select } from "../components/Select";
 import { Tooltip } from "../components/Tooltip";
 import { Text, Title } from "../components/Typography";
 import { useThemeContext } from "../providers/ThemeContext";
@@ -47,9 +48,9 @@ export const AuthView: React.FC = () => {
             border: "1px solid $border"
           }}
         >
-          <Tooltip content="Tooltip content" placement="top">
-            <Title>welcome back heading</Title>
-          </Tooltip>
+          {/* <Tooltip content="Tooltip content" placement="top"> */}
+          <Title>welcome back heading</Title>
+          {/* </Tooltip> */}
           {/* <Text>auth form</Text> */}
           <Flex css={{ flexDirection: "column", gap: "$sm", width: "100%" }}>
             {/* <Form
@@ -64,6 +65,15 @@ export const AuthView: React.FC = () => {
             <Checkbox size="default">
               <Text>hello</Text>
             </Checkbox>
+
+            <Select
+              defaultValue="item"
+              options={[
+                { type: "item", value: "item", label: "Item" },
+                { type: "divider", value: "divider" },
+                { type: "item", value: "item-1", label: "Item 2" }
+              ]}
+            />
 
             <Button variant="solid">Solid button</Button>
 
