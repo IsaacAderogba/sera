@@ -11,6 +11,7 @@ export const connectDatabase = async (table?: string): Promise<Knex> => {
 
   database = knex({
     client: "sqlite3",
+    useNullAsDefault: true,
     connection: {
       filename: path.join(app.getPath("userData"), "database.sqlite3")
     },
@@ -35,36 +36,48 @@ export const disconnectDatabase = async () => {
 const createIPCAdapter = <T extends keyof ItemRecord>(
   table: T
 ): IPCAdapter<ItemRecord[T]> => {
+  const deserializeItem = (item: any) => ({
+    ...item,
+    data: JSON.parse(item.data)
+  });
+
   return {
     read: async id => {
       const database = await connectDatabase(table);
-      return database.table(table).where({ id }).first();
+      const data = database.table(table).where({ id }).first();
+      return data ? deserializeItem(data) : undefined;
     },
     list: async () => {
       const database = await connectDatabase(table);
-      return database.table(table).select("*");
+      const list = database.table(table).select("*");
+      return (await list).map(item => deserializeItem(item));
     },
     create: async item => {
       const database = await connectDatabase(table);
       const [id] = await database.table(table).insert({
         ...item,
+        data: item.data || {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
 
       const data = await database.table(table).where({ id }).first();
       await broadcast(-1, "change", { action: "created", data });
-      return data;
+      return deserializeItem(data);
     },
     update: async (id, item) => {
       const database = await connectDatabase(table);
-      await database
-        .where({ id })
-        .update({ ...item, updatedAt: new Date().toISOString() });
+
+      const previous = await database.table(table).where({ id }).first();
+      await database.where({ id }).update({
+        ...item,
+        data: { ...JSON.parse(previous.data), ...item.data },
+        updatedAt: new Date().toISOString()
+      });
 
       const data = await database.table(table).where({ id }).first();
       await broadcast(-1, "change", { action: "updated", data });
-      return data;
+      return deserializeItem(data);
     },
     delete: async id => {
       const database = await connectDatabase(table);

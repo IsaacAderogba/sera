@@ -61,10 +61,14 @@ export type IPCAdapter<Type extends Item> = {
   read: (id: number) => Promise<Type | undefined>;
   list: () => Promise<Type[]>;
   create: (
-    record: Omit<Type, "id" | "createdAt" | "updatedAt">
+    record: Omit<Type, "id" | "type" | "createdAt" | "updatedAt">
   ) => Promise<Type>;
-  update: (id: number, record: Partial<Type>) => Promise<Type>;
+  update: (id: number, record: DeepPartial<Type>) => Promise<Type>;
   delete: (id: number) => Promise<void>;
+};
+
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
 };
 
 export type Item = Profile | Playlist | Song | PlaylistSong;
@@ -78,16 +82,19 @@ export type ItemRecord = {
 export interface Profile extends Node {
   type: "profile";
   token: string | null;
+  data: object;
 }
 
 export interface Playlist extends Node {
   type: "playlist";
   profileId: number;
+  data: object;
 }
 
 export interface Song extends Node {
   type: "song";
   profileId: number;
+  data: object;
 }
 
 export interface PlaylistSong extends Node {
@@ -95,10 +102,12 @@ export interface PlaylistSong extends Node {
   profileId: number;
   playlistId: number;
   songId: number;
+  data: object;
 }
 
 interface Node {
   id: number;
+  data: object;
   createdAt: string;
   updatedAt: string;
 }

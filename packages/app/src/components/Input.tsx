@@ -19,13 +19,13 @@ export const Input = styled("input", {
       compact: {
         padding: "$xxs $xs",
         fontSize: "$sm",
-        lineHeight: "$sm",
+        lineHeight: "$xs",
         letterSpacing: "$sm"
       },
       default: {
-        padding: "$xxs $sm",
+        padding: "$xs $sm",
         fontSize: "$base",
-        lineHeight: "$base",
+        lineHeight: "$sm",
         letterSpacing: "$base"
       }
     },

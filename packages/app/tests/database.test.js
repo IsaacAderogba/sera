@@ -34,7 +34,9 @@ test.beforeEach(async () => {
 
 test("creates a profile", async () => {
   const database = connectDatabase();
-  const [id] = await database.table("profiles").insert({ token: "foobar" });
+  const [id] = await database
+    .table("profiles")
+    .insert({ token: "foobar", data: JSON.stringify({ key: "value" }) });
 
   const profile = await database.table("profiles").where({ id }).first();
   expect(profile.token).toEqual("foobar");

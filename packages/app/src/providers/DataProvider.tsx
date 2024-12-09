@@ -67,6 +67,9 @@ function createProvider<T extends Item>(
   const { adapter, Context } = options;
   const Provider: React.FC<PropsWithChildren> = ({ children }) => {
     const [state, setState] = useState<Record<string, T>>({});
+    useEffect(() => {
+      console.log(`[${type}]`, { ...state });
+    }, [type, state]);
 
     const onSnapshotChange = useCallback((snapshots: ItemSnapshot<T>[]) => {
       setState(state => {

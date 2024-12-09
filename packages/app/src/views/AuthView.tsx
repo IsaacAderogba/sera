@@ -1,12 +1,11 @@
 import { Button } from "../components/Button";
 import { Flex } from "../components/Flex";
-import { Form, FormCheckbox, FormInput, FormSelect } from "../components/Form";
+import { Form, FormInput } from "../components/Form";
 import { Logo } from "../components/Logo";
 import { Text, Title } from "../components/Typography";
-import { useThemeContext } from "../providers/ThemeContext";
+import { client } from "../utilities/client";
 
 export const AuthView: React.FC = () => {
-  const { state, setThemePreference } = useThemeContext();
   return (
     <Flex
       className="drag"
@@ -42,64 +41,42 @@ export const AuthView: React.FC = () => {
             border: "1px solid $border"
           }}
         >
-          <Title>welcome back heading</Title>
+          <Flex
+            css={{ flexDirection: "column", gap: "$xs", alignItems: "center" }}
+          >
+            <Title variant="h4">Welcome back</Title>
+            <Text size="compact" secondary>
+              Please enter your token to get started.
+            </Text>
+          </Flex>
           <Flex css={{ flexDirection: "column", gap: "$sm", width: "100%" }}>
             <Form
               size="default"
-              initialValues={{
-                name: "",
-                email: "",
-                remember: false,
-                select: "item"
-              }}
-              onSubmit={(_e, values) => {
-                console.log("values", values);
+              initialValues={{ token: "" }}
+              onSubmit={async (_e, { token }) => {
+                await client.adapters.profiles.create({ token, data: {} });
               }}
             >
               <FormInput
-                label="Name"
-                name="name"
+                label="Token"
+                name="token"
                 validation={{
-                  string: { label: "Name", required: true, min: 1 }
+                  string: { label: "Token", required: true, min: 1 }
                 }}
               />
-              <FormInput
-                label="Email"
-                name="email"
-                validation={{ email: { label: "Email", required: true } }}
-              />
-              <FormSelect
-                label="Select"
-                name="select"
-                options={[
-                  { type: "item", value: "item", label: "Item" },
-                  { type: "divider", value: "divider" },
-                  { type: "item", value: "item-1", label: "Item 2" }
-                ]}
-                validation={{
-                  string: { label: "Select", required: true, min: 1 }
-                }}
-              />
-              <FormCheckbox label="Remember me" name="remember" />
-
-              <Button variant="solid" css={{ marginTop: "$sm" }}>
-                Solid button
+              <Button variant="solid" css={{ marginTop: "$xs" }}>
+                Log in
               </Button>
             </Form>
           </Flex>
         </Flex>
         <Text size="compact" secondary>
-          Don't have a token? Create one <a href="#">link</a>.
+          Don't have a token? Create one{" "}
+          <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">
+            here
+          </a>
+          .
         </Text>
-        <Button
-          onClick={() => {
-            setThemePreference(state.mode === "dark" ? "light" : "dark", {
-              persist: true
-            });
-          }}
-        >
-          Toggle Theme
-        </Button>
       </Flex>
     </Flex>
   );

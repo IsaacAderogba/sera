@@ -1,3 +1,4 @@
+import { ComponentProps } from "@stitches/react";
 import { styled } from "../utilities/stitches";
 
 export const Button = styled("button", {
@@ -59,7 +60,8 @@ export const Button = styled("button", {
         "&:hover": { background: "$neutral" }
       }
     },
-    danger: { true: {} }
+    danger: { true: {} },
+    icon: { true: {} }
   },
   compoundVariants: [
     {
@@ -89,6 +91,16 @@ export const Button = styled("button", {
       variant: "ghost",
       danger: true,
       css: { color: "$danger" }
+    },
+    {
+      size: "compact",
+      icon: true,
+      css: { padding: "0", height: "20px", width: "20px" }
+    },
+    {
+      size: "default",
+      icon: true,
+      css: { padding: "0", height: "24px", width: "24px" }
     }
   ],
 
@@ -99,3 +111,5 @@ export const Button = styled("button", {
     danger: false
   }
 });
+
+export type ButtonProps = ComponentProps<typeof Button>;
