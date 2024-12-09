@@ -1,18 +1,29 @@
 import { Box } from "../../components/Box";
 import { Flex } from "../../components/Flex";
+import { Profile } from "../../preload/ipc";
 import { ThemeSwitchButton } from "../Button/ThemeSwitchButton";
+import { ProfileDropdown } from "../Profile/ProfileDropdown";
 
-export const AppHeader: React.FC = () => {
+export interface AppHeaderProps {
+  profile?: Profile;
+}
+
+export const AppHeader: React.FC<AppHeaderProps> = ({ profile }) => {
   return (
     <Flex
       css={{
-        padding: "$base $base $base 80px",
-        justifyContent: "space-between"
+        height: 48,
+        padding: "0 $base 0 72px",
+        justifyContent: "space-between",
+        alignItems: "center",
+        border: "1px solid red"
       }}
     >
-      <Box>direction controls</Box>
-      <Flex>
+      <Box>Todo</Box>
+
+      <Flex css={{ alignItems: "center", gap: "$sm" }}>
         <ThemeSwitchButton />
+        {profile && <ProfileDropdown profile={profile} />}
       </Flex>
     </Flex>
   );

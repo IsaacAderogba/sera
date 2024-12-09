@@ -1,13 +1,16 @@
 import { Switch } from "react-router-dom";
-import { Box } from "../components/Box";
 import { Flex } from "../components/Flex";
+import { Route, useRouteParams } from "../components/Route";
 import { AppHeader } from "../patterns/Header/AppHeader";
 import { AppSidebar } from "../patterns/Sidebar/AppSidebar";
-import { Route } from "../components/Route";
-import { PlaylistView } from "./PlaylistView";
 import { BrowseView } from "./BrowseView";
+import { PlaylistView } from "./PlaylistView";
+import { useProfile } from "../patterns/Profile/useProfile";
 
 export const ProfileView: React.FC = () => {
+  const { profileId } = useRouteParams("/profiles/:profileId");
+  const profile = useProfile(profileId);
+
   return (
     <Flex
       css={{
@@ -17,7 +20,7 @@ export const ProfileView: React.FC = () => {
         flexDirection: "column"
       }}
     >
-      <AppHeader />
+      <AppHeader profile={profile} />
       <Flex>
         <AppSidebar />
         <Switch>

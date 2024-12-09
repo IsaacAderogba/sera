@@ -95,12 +95,24 @@ export const Button = styled("button", {
     {
       size: "compact",
       icon: true,
-      css: { padding: "0", height: "20px", width: "20px" }
+      css: {
+        padding: "0",
+        minHeight: "20px",
+        minWidth: "20px",
+        maxHeight: "20px",
+        maxWidth: "20px"
+      }
     },
     {
       size: "default",
       icon: true,
-      css: { padding: "0", height: "24px", width: "24px" }
+      css: {
+        padding: "0",
+        minHeight: "24px",
+        minWidth: "24px",
+        maxHeight: "24px",
+        maxWidth: "24px"
+      }
     }
   ],
 
