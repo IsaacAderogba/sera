@@ -16,7 +16,9 @@ export const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
         { type: "item", value: "2", label: "Item 2" }
       ]}
     >
-      <Button icon>U</Button>
+      <Button icon tabIndex={-1}>
+        U
+      </Button>
     </Dropdown>
   );
 };

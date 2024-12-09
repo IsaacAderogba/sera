@@ -12,7 +12,7 @@ declare global {
 export type Invoke = <T extends keyof IPCInvokeEvents>(
   subject: T,
   ...data: Parameters<IPCInvokeEvents[T]>
-) => Promise<ReturnType<Awaited<IPCInvokeEvents[T]>>>;
+) => ReturnType<Awaited<IPCInvokeEvents[T]>>;
 
 export type Publish = <T extends keyof IPCBroadcastEvents>(
   subject: T,
@@ -33,8 +33,10 @@ export type IPCBroadcastEvents = {
 };
 
 export type IPCInvokeEvents = {
-  foo: (hi: string) => Promise<boolean>;
-  bar: (oh: number) => Promise<number>;
+  canGoBack: () => Promise<boolean>;
+  goBack: () => Promise<void>;
+  canGoForward: () => Promise<boolean>;
+  goForward: () => Promise<void>;
 };
 
 export type ItemSnapshot<T extends Item = Item> = {

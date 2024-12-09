@@ -1,11 +1,17 @@
 import { Switch } from "react-router-dom";
+import { Box } from "../components/Box";
 import { Flex } from "../components/Flex";
 import { Route, useRouteParams } from "../components/Route";
-import { AppHeader } from "../patterns/Header/AppHeader";
+import { ThemeSwitchButton } from "../patterns/Button/ThemeSwitchButton";
+import { ProfileDropdown } from "../patterns/Profile/ProfileDropdown";
+import { useProfile } from "../patterns/Profile/useProfile";
 import { AppSidebar } from "../patterns/Sidebar/AppSidebar";
 import { BrowseView } from "./BrowseView";
 import { PlaylistView } from "./PlaylistView";
-import { useProfile } from "../patterns/Profile/useProfile";
+import {
+  NavigateBackButton,
+  NavigateForwardButton
+} from "../patterns/Button/NavigateButton";
 
 export const ProfileView: React.FC = () => {
   const { profileId } = useRouteParams("/profiles/:profileId");
@@ -20,7 +26,25 @@ export const ProfileView: React.FC = () => {
         flexDirection: "column"
       }}
     >
-      <AppHeader profile={profile} />
+      <Flex
+        css={{
+          height: 48,
+          padding: "0 $base 0 72px",
+          justifyContent: "space-between",
+          alignItems: "center",
+          border: "1px solid red"
+        }}
+      >
+        <Flex css={{ alignItems: "center" }}>
+          <NavigateBackButton />
+          <NavigateForwardButton />
+        </Flex>
+
+        <Flex css={{ alignItems: "center", gap: "$sm" }}>
+          <ThemeSwitchButton />
+          {profile && <ProfileDropdown profile={profile} />}
+        </Flex>
+      </Flex>
       <Flex>
         <AppSidebar />
         <Switch>

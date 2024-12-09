@@ -20,11 +20,9 @@ export const Button = styled("button", {
       true: {
         border: "1px solid transparent !important",
         cursor: "not-allowed",
-        color: "$label !important",
-        background: "$disable !important",
+        color: "$disable !important",
         "&:hover, &:active": {
           opacity: "1 !important",
-          background: "$disable !important",
           borderColor: "transparent !important"
         }
       }
@@ -71,6 +69,16 @@ export const Button = styled("button", {
         border: "1px solid $danger",
         background: "$danger",
         color: "white"
+      }
+    },
+    {
+      variant: "solid",
+      disabled: true,
+      css: {
+        background: "$disable !important",
+        "&:hover, &:active": {
+          background: "$disable !important"
+        }
       }
     },
     {
