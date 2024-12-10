@@ -6,6 +6,7 @@ import {
 import { FlexProps } from "./Flex";
 import { Box } from "./Box";
 import { Portal } from "./Portal";
+import { Text } from "./Typography";
 
 export interface TooltipProps
   extends RelativePositionProps,
@@ -74,7 +75,9 @@ export const Tooltip: React.FC<PropsWithChildren<TooltipProps>> = ({
           backdropFilter: "blur(4px)"
         }}
       >
-        {content}
+        <Text size="compact" secondary>
+          {content}
+        </Text>
       </Portal>
     </Fragment>
   );

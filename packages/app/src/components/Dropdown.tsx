@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ComponentProps } from "@stitches/react";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { useManagedState } from "../hooks/useManagedState";
@@ -12,7 +11,7 @@ import { Portal } from "./Portal";
 import { PropsWithChildren } from "react";
 
 export interface DropdownProps extends RelativePositionProps {
-  triggerCSS?: CSS;
+  triggerProps?: TriggerProps;
   portalCSS?: CSS;
   options: Option[];
   defaultValue?: string;
@@ -26,9 +25,9 @@ export const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({
   onValueChange: onValueChangeProp,
   options,
   children,
-  triggerCSS = {},
   portalCSS = {},
   position = "fixed",
+  triggerProps,
   ...props
 }) => {
   const [value, onValueChange] = useManagedState({
@@ -72,7 +71,8 @@ export const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({
       onMouseLeave={onTriggerMouseLeave}
       onFocusCapture={onFocusCapture}
       onClickCapture={onClickCapture}
-      css={{ ...triggerCSS, position: "relative" }}
+      {...triggerProps}
+      css={{ ...triggerProps?.css, position: "relative" }}
       tabIndex={0}
       onKeyDown={event => {
         if (event.key !== "Enter") return;

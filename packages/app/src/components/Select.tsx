@@ -7,7 +7,7 @@ import {
   isDropdownItem
 } from "./Dropdown";
 
-interface SelectProps extends DropdownProps {}
+export interface SelectProps extends DropdownProps {}
 
 export const Select: React.FC<SelectProps> = ({
   defaultValue: defaultValueProp = "",

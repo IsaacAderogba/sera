@@ -9,7 +9,9 @@ export interface ProfileDropdownProps {
 export const ProfileDropdown: React.FC<ProfileDropdownProps> = () => {
   return (
     <Dropdown
-      triggerCSS={{ border: "1px solid transparent", position: "relative" }}
+      triggerProps={{
+        css: { border: "1px solid transparent", position: "relative" }
+      }}
       defaultValue="2"
       options={[
         { type: "item", value: "1", label: "Item 1" },

@@ -4,19 +4,17 @@ import { createRoutePath, RouteUnion } from "../utilities/route";
 
 export interface LinkProps<P extends RouteUnion>
   extends Omit<NavLinkProps, "to" | "params"> {
-  to: P["path"];
-  params?: P["params"];
+  route: P;
   children?: ReactNode;
 }
 
 export function Link<P extends RouteUnion>({
-  to,
-  params,
+  route,
   children,
   ...props
 }: LinkProps<P>) {
   return (
-    <NavLink to={createRoutePath(to, params)} {...props}>
+    <NavLink to={createRoutePath(route.path, route.params)} {...props}>
       {children}
     </NavLink>
   );

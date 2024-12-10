@@ -1,3 +1,5 @@
+import { ListView } from "./ListView";
+
 export const PlaylistView: React.FC = () => {
-  return <div>playlist view</div>;
+  return <ListView />;
 };

@@ -17,11 +17,11 @@ import {
 import { createContextHook } from "../utilities/react";
 import { styled } from "../utilities/stitches";
 import { Size } from "../utilities/types";
-import { Flex, FlexProps } from "./Flex";
-import { Input } from "./Input";
-import { baseTextSize, extraSmallTextSize, smallTextSize } from "./Typography";
 import { Checkbox } from "./Checkbox";
-import { Select, SelectOption } from "./Select";
+import { Flex } from "./Flex";
+import { Input } from "./Input";
+import { Select, SelectProps } from "./Select";
+import { baseTextSize, extraSmallTextSize, smallTextSize } from "./Typography";
 
 export function Form<V extends FieldValues>({
   initialValues,
@@ -73,7 +73,7 @@ const StyledForm = styled("form", {
   defaultVariants: { size: "default" }
 });
 
-interface FormItemProps extends FlexProps {
+interface FormItemProps {
   validation?: FieldConfig;
   label: string;
   name: string;
@@ -193,9 +193,7 @@ export const FormCheckbox: React.FC<FormCheckboxProps> = ({
   );
 };
 
-export interface FormSelectProps extends FormItemProps {
-  options: SelectOption[];
-}
+export interface FormSelectProps extends FormItemProps, SelectProps {}
 
 export const FormSelect: React.FC<FormSelectProps> = ({
   name,
@@ -210,11 +208,13 @@ export const FormSelect: React.FC<FormSelectProps> = ({
   return (
     <FormItem name={name} label={label} validation={validation} {...props}>
       <Select
-        id={name}
-        size={size}
-        danger={error}
+        triggerProps={{
+          id: name,
+          size,
+          danger: error,
+          onBlur: () => dispatch({ type: "blur", payload: { name } })
+        }}
         options={options}
-        onBlur={() => dispatch({ type: "blur", payload: { name } })}
         value={state.values[name]}
         onValueChange={value => {
           dispatch({

@@ -143,7 +143,8 @@ export const globalStyles = globalCss({
     textDecoration: "underline",
     outline: "none",
     color: "inherit",
-    transition: "opacity 100ms"
+    transition: "opacity 100ms",
+    cursor: "default"
   },
   "a:hover": { opacity: 0.8 },
   "i, em": {

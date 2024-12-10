@@ -1,3 +1,5 @@
+import { ListView } from "./ListView";
+
 export const BrowseView: React.FC = () => {
-  return <div>browse view</div>;
+  return <ListView />;
 };

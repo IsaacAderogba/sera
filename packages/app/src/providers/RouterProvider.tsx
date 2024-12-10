@@ -68,7 +68,8 @@ const ProfilePreviewRoute: React.FC = () => {
 };
 
 const useHasProfile = () => {
-  const { profileId } = useRouteParams("/profiles/:profileId");
+  const { profileId } = useRouteParams(["/profiles/:profileId"]);
+
   const { state: profileState } = useProfileContext();
   return useMemo(() => {
     return Boolean(profileState[profileId]?.token);
