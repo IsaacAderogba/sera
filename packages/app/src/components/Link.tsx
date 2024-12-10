@@ -14,7 +14,7 @@ export function Link<P extends RouteUnion>({
   ...props
 }: LinkProps<P>) {
   return (
-    <NavLink to={createRoutePath(route.path, route.params)} {...props}>
+    <NavLink to={createRoutePath(route)} {...props}>
       {children}
     </NavLink>
   );

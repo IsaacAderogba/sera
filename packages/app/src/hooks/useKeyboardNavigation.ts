@@ -2,18 +2,18 @@ import { useEffect } from "react";
 import { useValueRef } from "./useManagedRefs";
 import { useManagedState } from "./useManagedState";
 
-interface KeyboardNavigationProps {
+interface KeyboardNavigationProps<T> {
   enabled: boolean;
-  values: string[];
-  defaultValue?: string;
-  value?: string;
-  onValueChange?: (value: string) => void | Promise<void>;
+  values: T[];
+  defaultValue: T;
+  value?: T;
+  onValueChange?: (value: T) => void | Promise<void>;
 }
 
-export const useKeyboardNavigation = (props: KeyboardNavigationProps) => {
+export const useKeyboardNavigation = <T>(props: KeyboardNavigationProps<T>) => {
   const values = useValueRef(props.values);
   const [value, onValueChange] = useManagedState({
-    defaultState: props.defaultValue || "",
+    defaultState: props.defaultValue,
     state: props.value,
     onStateChange: props.onValueChange
   });
@@ -25,12 +25,20 @@ export const useKeyboardNavigation = (props: KeyboardNavigationProps) => {
       if (event.key === "ArrowUp") {
         onValueChange(value => {
           const index = values.current.indexOf(value);
-          return values.current[index - 1] || values.current[index];
+          return (
+            values.current[index - 1] ||
+            values.current[index] ||
+            values.current[0]
+          );
         });
       } else if (event.key === "ArrowDown") {
         onValueChange(value => {
           const index = values.current.indexOf(value);
-          return values.current[index + 1] || values.current[index];
+          return (
+            values.current[index + 1] ||
+            values.current[index] ||
+            values.current[0]
+          );
         });
       }
     };

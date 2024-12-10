@@ -23,7 +23,7 @@ export const {
       text: "rgba(000,000,000, 0.80)",
       label: "rgba(000,000,000, 0.60)",
       disable: "rgba(000,000,000, 0.25)",
-      border: "rgba(000,000,000, 0.15)",
+      border: "rgba(000,000,000, 0.12)",
       neutral: "rgba(000, 000, 000, 0.05)",
       danger: "#d10005c1",
       foreground: "rgb(26, 26, 26)",

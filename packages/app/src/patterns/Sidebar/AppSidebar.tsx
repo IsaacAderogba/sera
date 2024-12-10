@@ -57,7 +57,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   top: "50%",
                   marginTop: -2,
                   left: -6,
-                  background: isActive ? "$foreground" : "transparent",
+                  background: isActive ? "$text" : "transparent",
                   position: "absolute",
                   borderRadius: "100%",
                   transition: "background 100ms"

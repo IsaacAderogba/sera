@@ -16,8 +16,8 @@ import { PlaylistView } from "./PlaylistView";
 export const ProfileView: React.FC = () => {
   const { profileId } = useRouteParams(["/profiles/:profileId"]);
 
-  const profile = useProfile(parseInt(profileId));
-  const playlists = usePlaylists(parseInt(profileId));
+  const profile = useProfile(profileId);
+  const playlists = usePlaylists(profileId);
 
   return (
     <Flex
@@ -32,7 +32,7 @@ export const ProfileView: React.FC = () => {
         className="drag"
         css={{
           height: 48,
-          padding: "0 $base 0 72px",
+          padding: "0 $base 0 80px",
           justifyContent: "space-between",
           alignItems: "center"
         }}

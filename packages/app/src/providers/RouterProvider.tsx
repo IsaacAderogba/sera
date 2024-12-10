@@ -40,9 +40,13 @@ const AuthRoute: React.FC = () => {
 
   if (loading) return null; // return loading screen component
   if (profile) {
-    const profileId = `${profile.id}`;
     return (
-      <Redirect to={createRoutePath("/profiles/:profileId", { profileId })} />
+      <Redirect
+        to={createRoutePath({
+          path: "/profiles/:profileId",
+          params: { profileId: profile.id }
+        })}
+      />
     );
   }
 

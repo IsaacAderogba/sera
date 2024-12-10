@@ -89,29 +89,27 @@ export interface Profile extends Node {
 
 export interface Playlist extends Node {
   type: "playlist";
-  profileId: Id;
+  profileId: number;
   data: object;
 }
 
 export interface Song extends Node {
   type: "song";
-  profileId: Id;
+  profileId: number;
   data: object;
 }
 
 export interface PlaylistSong extends Node {
   type: "playlist_song";
-  profileId: Id;
-  playlistId: Id;
-  songId: Id;
+  profileId: number;
+  playlistId: number;
+  songId: number;
   data: object;
 }
 
 interface Node {
-  id: Id;
+  id: number;
   data: object;
   createdAt: string;
   updatedAt: string;
 }
-
-export type Id = number;

@@ -17,11 +17,14 @@ export const useRouteParams = (
 ) => {
   const location = useLocation();
   return useDeepMemo(() => {
-    const result = matchPath<Record<string, string>>(location.pathname, {
-      path,
-      ...props
-    });
+    const result =
+      matchPath(location.pathname, { path, ...props })?.params || {};
 
-    return result?.params || {};
+    const params: Record<string, number> = {};
+    for (const key in result) {
+      params[key] = parseInt(result[key]);
+    }
+
+    return params;
   }, [path, location.pathname, props]);
 };

@@ -1,15 +1,12 @@
-export const createRoutePath = <P extends RouteUnion>(
-  path: P["path"],
-  params?: P["params"]
-) => {
-  let route: string = path;
-  const paramObj: { [i: string]: any } = params || {};
+export const createRoutePath = <P extends RouteUnion>(route: P) => {
+  let name: string = route.path;
+  const paramObj: { [i: string]: any } = route.params || {};
 
   for (const key of Object.keys(paramObj)) {
-    route = route.replace(`:${key}`, paramObj[key]);
+    name = name.replace(`:${key}`, paramObj[key]);
   }
 
-  return route;
+  return name;
 };
 
 export type RouteUnion =
