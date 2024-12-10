@@ -1,13 +1,12 @@
-import { PropsWithChildren, useCallback } from "react";
+import { PropsWithChildren } from "react";
 import { Box } from "../components/Box";
 import { Divider } from "../components/Divider";
 import { Flex } from "../components/Flex";
-import { useValueRef } from "../hooks/useManagedRefs";
-import { Song } from "../preload/ipc";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
+import { SongPlayer } from "../patterns/Song/SongPlayer";
 import { SongPreview } from "../patterns/Song/SongPreview";
 import { useSong } from "../patterns/Song/useSong";
-import { SongPlayer } from "../patterns/Song/SongPlayer";
+import { Song } from "../preload/ipc";
 
 export interface ListViewProps {
   selectedId: number;
@@ -54,7 +53,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
         }}
       >
         <Box>{children}</Box>
-        <Divider />
+        <Divider css={{ margin: 0 }} />
         <Flex css={{ flexDirection: "column" }}>
           {songs.map(song => {
             return (
@@ -70,7 +69,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
       </Box>
       <Box
         css={{
-          minHeight: song ? "80px" : 0,
+          minHeight: song ? "56px" : 0,
           transition: `all 100ms`,
           boxShadow: "$sm",
           background: "$surface",

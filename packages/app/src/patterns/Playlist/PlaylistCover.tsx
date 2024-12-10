@@ -10,7 +10,7 @@ export const PlaylistCover: React.FC<PlaylistCoverProps> = ({
   css = {},
   playlist
 }) => {
-  const title = playlist.data.title || "Unknown";
+  const title = playlist.data.title || "Untitled";
   return (
     <Tooltip
       placement="right"

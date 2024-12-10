@@ -158,7 +158,6 @@ const Trigger = styled("div", {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  width: "100%",
   color: "$text",
   borderRadius: "$sm",
   border: "1px solid",

@@ -35,6 +35,7 @@ export const Select: React.FC<SelectProps> = ({
       value={value}
       onValueChange={onValueChange}
       portalCSS={{ minWidth: "100%", left: 0 }}
+      triggerProps={{ css: { width: "100%" } }}
     >
       <DropdownOption>{children}</DropdownOption>
       <ChevronDownIcon width={20} style={{ marginRight: 8 }} />
