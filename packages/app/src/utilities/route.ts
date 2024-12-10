@@ -3,7 +3,7 @@ export const createRoutePath = <P extends RouteUnion>(
   params?: P["params"]
 ) => {
   let route: string = path;
-  const paramObj: { [i: string]: string } = params || {};
+  const paramObj: { [i: string]: any } = params || {};
 
   for (const key of Object.keys(paramObj)) {
     route = route.replace(`:${key}`, paramObj[key]);
@@ -26,17 +26,17 @@ export type MainRoute = { path: "/main"; params: Record<string, never> };
 export type MenubarRoute = { path: "/menubar"; params: Record<string, never> };
 export type ProfileRoute = {
   path: "/profiles/:profileId";
-  params: { profileId: string };
+  params: { profileId: number };
 };
 export type ProfileSongRoute = {
   path: "/profiles/:profileId/songs/:songId";
-  params: { profileId: string; songId: string };
+  params: { profileId: number; songId: number };
 };
 export type ProfilePlaylistRoute = {
   path: "/profiles/:profileId/playlists/:playlistId";
-  params: { profileId: string; playlistId: string };
+  params: { profileId: number; playlistId: number };
 };
 export type ProfilePlaylistSongRoute = {
   path: "/profiles/:profileId/playlists/:playlistId/songs/:songId";
-  params: { profileId: string; playlistId: string; songId: string };
+  params: { profileId: number; playlistId: number; songId: number };
 };

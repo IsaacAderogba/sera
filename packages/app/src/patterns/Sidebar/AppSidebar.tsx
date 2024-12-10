@@ -8,6 +8,7 @@ import { client } from "../../utilities/client";
 import { PlaylistCover } from "../Playlist/PlaylistCover";
 import { useRouteParams } from "../../components/Route";
 import { Link } from "../../components/Link";
+import { Box } from "../../components/Box";
 
 export interface AppSidebarProps extends FlexProps {
   profile: Profile;
@@ -38,27 +39,28 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         css={{ flex: 1, flexDirection: "column", gap: "$sm", width: "100%" }}
       >
         {playlists.map(playlist => {
+          const isActive = playlist.id === parseInt(playlistId);
           return (
             <Link
               key={playlist.id}
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none", position: "relative" }}
               route={{
                 path: "/profiles/:profileId/playlists/:playlistId",
-                params: {
-                  profileId: profile.id.toString(),
-                  playlistId: playlist.id.toString()
-                }
+                params: { profileId: profile.id, playlistId: playlist.id }
               }}
             >
-              <PlaylistCover
-                key={playlist.id}
-                playlist={playlist}
+              <PlaylistCover key={playlist.id} playlist={playlist} />
+              <Box
                 css={{
-                  border: "1px solid",
-                  borderColor:
-                    playlist.id === parseInt(playlistId)
-                      ? "$disable"
-                      : "transparent"
+                  width: "4px",
+                  height: "4px",
+                  top: "50%",
+                  marginTop: -2,
+                  left: -6,
+                  background: isActive ? "$foreground" : "transparent",
+                  position: "absolute",
+                  borderRadius: "100%",
+                  transition: "background 100ms"
                 }}
               />
             </Link>
