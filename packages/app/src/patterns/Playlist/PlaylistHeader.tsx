@@ -44,7 +44,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist }) => {
                 const { profileId } = playlist;
                 const song = await client.adapters.songs.create({
                   profileId: playlist.profileId,
-                  data: { title: "" }
+                  data: { title: "", description: "" }
                 });
 
                 await client.adapters.playlists_songs.create({

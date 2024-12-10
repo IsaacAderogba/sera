@@ -55,10 +55,11 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
         <Box>{children}</Box>
         <Divider css={{ margin: 0 }} />
         <Flex css={{ flexDirection: "column" }}>
-          {songs.map(song => {
+          {songs.map((song, i) => {
             return (
               <SongPreview
                 key={song.id}
+                trackNumber={i + 1}
                 active={selectedId === song.id}
                 song={song}
                 onClick={() => navigation.onValueChange(song.id)}

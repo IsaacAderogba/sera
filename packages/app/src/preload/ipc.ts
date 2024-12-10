@@ -98,7 +98,10 @@ export interface Playlist extends Node {
 export interface Song extends Node {
   type: "song";
   profileId: number;
-  data: { title: string };
+  data: {
+    title: string;
+    description: string;
+  };
 }
 
 export interface PlaylistSong extends Node {

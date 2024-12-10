@@ -1,5 +1,6 @@
-import { Flex, FlexProps } from "../../components/Flex";
+import { FlexProps } from "../../components/Flex";
 import { Tooltip } from "../../components/Tooltip";
+import { Text } from "../../components/Typography";
 import { Playlist } from "../../preload/ipc";
 
 export interface PlaylistCoverProps extends FlexProps {
@@ -26,7 +27,7 @@ export const PlaylistCover: React.FC<PlaylistCoverProps> = ({
         ...css
       }}
     >
-      {title[0]}
+      <Text>{title[0]}</Text>
     </Tooltip>
   );
 };

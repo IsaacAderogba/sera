@@ -85,7 +85,7 @@ const FormItem: React.FC<PropsWithChildren<FormItemProps>> = ({
   label,
   name
 }) => {
-  const { dispatch, validations } = useForm();
+  const { size, dispatch, validations } = useForm();
   const error = useFormError(name);
 
   useDeepLayoutEffect(() => {
@@ -97,7 +97,7 @@ const FormItem: React.FC<PropsWithChildren<FormItemProps>> = ({
   return (
     <Flex css={{ flexDirection: "column", position: "relative" }}>
       {label && (
-        <FormLabel htmlFor={name} css={{ paddingBottom: "$xs" }}>
+        <FormLabel htmlFor={name} size={size} css={{ paddingBottom: "$xs" }}>
           {label}
         </FormLabel>
       )}

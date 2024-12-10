@@ -62,9 +62,11 @@ const createIPCAdapter = <T extends keyof ItemRecord>(
         updatedAt: new Date().toISOString()
       });
 
-      const data = await database.table(table).where({ id }).first();
+      const data = deserializeItem(
+        await database.table(table).where({ id }).first()
+      );
       await broadcast(-1, "change", { action: "created", data });
-      return deserializeItem(data);
+      return data;
     },
     update: async (id, item) => {
       const database = await connectDatabase(table);
@@ -79,9 +81,11 @@ const createIPCAdapter = <T extends keyof ItemRecord>(
           updatedAt: new Date().toISOString()
         });
 
-      const data = await database.table(table).where({ id }).first();
+      const data = deserializeItem(
+        await database.table(table).where({ id }).first()
+      );
       await broadcast(-1, "change", { action: "updated", data });
-      return deserializeItem(data);
+      return data;
     },
     delete: async id => {
       const database = await connectDatabase(table);
