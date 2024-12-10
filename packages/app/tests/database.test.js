@@ -38,6 +38,11 @@ test("creates a profile", async () => {
     .table("profiles")
     .insert({ token: "foobar", data: JSON.stringify({ key: "value" }) });
 
+  await database
+    .table("profiles")
+    .where({ id })
+    .update({ data: JSON.stringify({ foo: "bar" }) });
+
   const profile = await database.table("profiles").where({ id }).first();
   expect(profile.token).toEqual("foobar");
 });

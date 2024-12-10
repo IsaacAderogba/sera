@@ -70,7 +70,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
       </Box>
       <Box
         css={{
-          minHeight: song ? "100px" : 0,
+          minHeight: song ? "80px" : 0,
           transition: `all 100ms`,
           boxShadow: "$sm",
           background: "$surface",

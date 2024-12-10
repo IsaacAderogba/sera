@@ -8,24 +8,25 @@ export interface PlaylistCoverProps extends FlexProps {
 
 export const PlaylistCover: React.FC<PlaylistCoverProps> = ({
   css = {},
-  ...props
+  playlist
 }) => {
+  const title = playlist.data.title || "Unknown";
   return (
-    <Tooltip placement="right" content="A">
-      <Flex
-        css={{
-          justifyContent: "center",
-          alignItems: "center",
-          background: "$neutral",
-          width: "100%",
-          aspectRatio: "1 / 1",
-          borderRadius: "$sm",
-          ...css
-        }}
-        {...props}
-      >
-        A
-      </Flex>
+    <Tooltip
+      placement="right"
+      content={title}
+      css={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "$neutral",
+        width: "100%",
+        aspectRatio: "1 / 1",
+        borderRadius: "$sm",
+        ...css
+      }}
+    >
+      {title[0]}
     </Tooltip>
   );
 };

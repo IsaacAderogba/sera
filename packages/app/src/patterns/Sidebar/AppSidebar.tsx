@@ -39,7 +39,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         css={{ flex: 1, flexDirection: "column", gap: "$sm", width: "100%" }}
       >
         {playlists.map(playlist => {
-          const isActive = playlist.id === parseInt(playlistId);
+          const isActive = playlist.id === playlistId;
           return (
             <Link
               key={playlist.id}

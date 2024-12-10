@@ -90,13 +90,17 @@ export interface Profile extends Node {
 export interface Playlist extends Node {
   type: "playlist";
   profileId: number;
-  data: object;
+  data: {
+    title: string;
+  };
 }
 
 export interface Song extends Node {
   type: "song";
   profileId: number;
-  data: object;
+  data: {
+    title: string;
+  };
 }
 
 export interface PlaylistSong extends Node {

@@ -6,6 +6,8 @@ import { ListView } from "./ListView";
 import { client } from "../utilities/client";
 import { useHistory } from "react-router-dom";
 import { createRoutePath } from "../utilities/route";
+import { PlaylistHeader } from "../patterns/Playlist/PlaylistHeader";
+import { usePlaylist } from "../patterns/Playlist/useProfile";
 
 export const PlaylistView: React.FC = () => {
   const history = useHistory();
@@ -14,6 +16,7 @@ export const PlaylistView: React.FC = () => {
     "/profiles/:profileId/playlists/:playlistId"
   ]);
 
+  const playlist = usePlaylist(playlistId);
   const songs = usePlaylistSongs(playlistId);
 
   return (
@@ -28,7 +31,8 @@ export const PlaylistView: React.FC = () => {
         history.push(path);
       }}
     >
-      <Button
+      <PlaylistHeader playlist={playlist} songs={songs} />
+      {/* <Button
         onClick={async () => {
           if (!profileId || !playlistId) return;
           const song = await client.adapters.songs.create({
@@ -47,7 +51,7 @@ export const PlaylistView: React.FC = () => {
         }}
       >
         <PlusIcon width={20} />
-      </Button>
+      </Button> */}
     </ListView>
   );
 };

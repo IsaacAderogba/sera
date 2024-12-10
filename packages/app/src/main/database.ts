@@ -21,6 +21,7 @@ export const connectDatabase = async (table?: string): Promise<Knex> => {
   });
 
   try {
+    // await database.migrate.rollback({}, true);
     await database.migrate.latest();
   } catch (error) {
     console.error("Migration error", error);
@@ -56,7 +57,7 @@ const createIPCAdapter = <T extends keyof ItemRecord>(
       const database = await connectDatabase(table);
       const [id] = await database.table(table).insert({
         ...item,
-        data: item.data || {},
+        data: JSON.stringify(item.data || {}),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
@@ -69,11 +70,14 @@ const createIPCAdapter = <T extends keyof ItemRecord>(
       const database = await connectDatabase(table);
 
       const previous = await database.table(table).where({ id }).first();
-      await database.where({ id }).update({
-        ...item,
-        data: { ...JSON.parse(previous.data), ...item.data },
-        updatedAt: new Date().toISOString()
-      });
+      await database
+        .table(table)
+        .where({ id })
+        .update({
+          ...item,
+          data: JSON.stringify({ ...JSON.parse(previous.data), ...item.data }),
+          updatedAt: new Date().toISOString()
+        });
 
       const data = await database.table(table).where({ id }).first();
       await broadcast(-1, "change", { action: "updated", data });
