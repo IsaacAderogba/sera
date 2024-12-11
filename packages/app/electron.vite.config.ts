@@ -11,6 +11,11 @@ export default defineConfig({
       outDir: path.join("dist", "main"),
       lib: {
         entry: path.join("src", "main", "index.ts")
+      },
+      rollupOptions: {
+        output: {
+          format: "cjs"
+        }
       }
     }
   },

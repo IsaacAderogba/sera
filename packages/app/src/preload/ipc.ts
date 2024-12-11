@@ -37,6 +37,8 @@ export type IPCInvokeEvents = {
   goBack: () => Promise<void>;
   canGoForward: () => Promise<boolean>;
   goForward: () => Promise<void>;
+
+  generateBackgroundMusic: (song: Song) => Promise<string>;
 };
 
 export type ItemSnapshot<T extends Item = Item> = {
@@ -101,6 +103,10 @@ export interface Song extends Node {
   data: {
     title: string;
     description: string;
+    audioPath?: string;
+    audioMetadata?: {
+      durationSeconds: number;
+    };
   };
 }
 

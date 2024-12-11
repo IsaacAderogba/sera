@@ -1,6 +1,9 @@
-import { IpcMainInvokeEvent } from "electron";
+import { ElevenLabsClient } from "elevenlabs";
+import { app, IpcMainInvokeEvent } from "electron";
 import { IPCInvokeEvents } from "../preload/ipc";
 import { adapters } from "./database";
+import path from "path";
+import fs from "fs";
 
 export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
   event: IpcMainInvokeEvent,
@@ -17,7 +20,47 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
     canGoBack: async () => event.sender.navigationHistory.canGoBack(),
     goBack: async () => event.sender.navigationHistory.goBack(),
     canGoForward: async () => event.sender.navigationHistory.canGoForward(),
-    goForward: async () => event.sender.navigationHistory.goForward()
+    goForward: async () => event.sender.navigationHistory.goForward(),
+
+    generateBackgroundMusic: async song => {
+      const client = new ElevenLabsClient({
+        apiKey: import.meta.env["MAIN_VITE_ELEVENLABS_API_KEY"]
+      });
+
+      const readable = await client.textToSoundEffects.convert({
+        text: song.data.description,
+        duration_seconds: 15
+      });
+
+      const audioPath = await new Promise<string>((resolve, reject) => {
+        const audioPath = path.join(
+          app.getPath("userData"),
+          `${song.id}-${new Date().getTime()}.mp3`
+        );
+
+        console.log("audio path", audioPath);
+        const writable = fs.createWriteStream(audioPath);
+        readable.pipe(writable);
+
+        writable.on("finish", () => {
+          console.log("Audio has been written successfully!");
+          resolve(audioPath);
+        });
+
+        writable.on("error", err => {
+          console.error("Error writing file:", err);
+          reject(err);
+        });
+
+        return audioPath;
+      });
+
+      await adapters.songs.update(song.id, {
+        data: { audioPath, audioMetadata: { durationSeconds: 15 } }
+      });
+
+      return audioPath;
+    }
   };
 
   handler = handlers[subject];

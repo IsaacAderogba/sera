@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/Button";
 import { Form, FormInput } from "../../components/Form";
 import { Popover } from "../../components/Popover";
@@ -12,6 +12,7 @@ export interface SongGeneratorPopoverProps {
 export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
   song
 }) => {
+  const [state, setState] = useState({ loading: false });
   return (
     <Popover
       placement="top"
@@ -24,10 +25,17 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
             description: song.data.description
           }}
           onSubmit={async (_e, { title, description }) => {
-            await client.adapters.songs.update(song.id, {
-              profileId: song.profileId,
-              data: { title, description }
-            });
+            setState({ loading: true });
+            try {
+              const updatedSong = await client.adapters.songs.update(song.id, {
+                profileId: song.profileId,
+                data: { title, description }
+              });
+
+              await client.invoke("generateBackgroundMusic", updatedSong);
+            } finally {
+              setState({ loading: false });
+            }
           }}
         >
           <FormInput
@@ -38,14 +46,18 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
             }}
           />
           <FormInput
-            label="Description"
+            label="Prompt"
             name="description"
             validation={{
               string: { label: "Description", required: true, min: 1 }
             }}
           />
-          <Button variant="solid" css={{ marginTop: "$xs" }}>
-            Generate song
+          <Button
+            disabled={state.loading}
+            variant="solid"
+            css={{ marginTop: "$xs" }}
+          >
+            {state.loading ? "Generating..." : "Generate song"}
           </Button>
         </Form>
       }
