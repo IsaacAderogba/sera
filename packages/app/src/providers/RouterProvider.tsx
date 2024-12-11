@@ -1,7 +1,7 @@
 import { PropsWithChildren, useMemo } from "react";
 import { BrowserRouter, Redirect, Switch } from "react-router-dom";
 import { AuthView } from "../views/AuthView";
-import { ProfilePreviewView } from "../views/ProfilePreviewView";
+import { AudioPlayerView } from "../views/AudioPlayerView";
 import { ProfileView } from "../views/ProfileView";
 import { useAppContext } from "./AppContext";
 import { useProfileContext } from "./DataContext";
@@ -56,8 +56,8 @@ const AuthRoute: React.FC = () => {
 const ProfileRoute: React.FC = () => {
   const loading = useIsLoading();
   const hasProfile = useHasProfile();
-  if (loading) return null; // return loading screen component
-  if (!hasProfile) return null; // return auth view component
+  if (loading) return null;
+  if (!hasProfile) return null;
 
   return <ProfileView />;
 };
@@ -65,10 +65,10 @@ const ProfileRoute: React.FC = () => {
 const ProfilePreviewRoute: React.FC = () => {
   const loading = useIsLoading();
   const hasProfile = useHasProfile();
-  if (loading) return null; // return loading screen component
-  if (!hasProfile) return null; // return auth view component
+  if (loading) return null;
+  if (!hasProfile) return null;
 
-  return <ProfilePreviewView />;
+  return <AudioPlayerView />;
 };
 
 const useHasProfile = () => {

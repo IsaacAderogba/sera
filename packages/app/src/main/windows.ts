@@ -93,8 +93,8 @@ export const createAppWindow = async (state: Partial<WindowState> = {}) => {
 
 const createMenubarWindow = async () => {
   const trayWindow = createWindow("menubar", {
-    width: 350,
-    height: 450,
+    width: 300,
+    height: 72,
     fullscreenable: false,
     resizable: false,
     maximizable: false,
@@ -105,7 +105,7 @@ const createMenubarWindow = async () => {
 
   trayWindow.setVisibleOnAllWorkspaces(true);
   trayWindow.setAlwaysOnTop(true);
-  trayWindow.on("blur", () => trayWindow.hide());
+  // trayWindow.on("blur", () => trayWindow.hide());
   trayWindow.on("show", () => trayWindow.focus());
 
   const trayImage = nativeImage

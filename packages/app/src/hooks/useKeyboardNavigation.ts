@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useValueRef } from "./useManagedRefs";
 import { useManagedState } from "./useManagedState";
 
@@ -18,28 +18,31 @@ export const useKeyboardNavigation = <T>(props: KeyboardNavigationProps<T>) => {
     onStateChange: props.onValueChange
   });
 
+  const previous = useCallback(() => {
+    onValueChange(value => {
+      const index = values.current.indexOf(value);
+      return (
+        values.current[index - 1] || values.current[index] || values.current[0]
+      );
+    });
+  }, []);
+
+  const next = useCallback(() => {
+    onValueChange(value => {
+      const index = values.current.indexOf(value);
+      return (
+        values.current[index + 1] || values.current[index] || values.current[0]
+      );
+    });
+  }, []);
+
   useEffect(() => {
     if (!props.enabled) return;
-
     const onKeydown: KeyboardEventHandler = event => {
       if (event.key === "ArrowUp") {
-        onValueChange(value => {
-          const index = values.current.indexOf(value);
-          return (
-            values.current[index - 1] ||
-            values.current[index] ||
-            values.current[0]
-          );
-        });
+        previous();
       } else if (event.key === "ArrowDown") {
-        onValueChange(value => {
-          const index = values.current.indexOf(value);
-          return (
-            values.current[index + 1] ||
-            values.current[index] ||
-            values.current[0]
-          );
-        });
+        next();
       }
     };
 
@@ -47,9 +50,9 @@ export const useKeyboardNavigation = <T>(props: KeyboardNavigationProps<T>) => {
     return () => {
       document.removeEventListener("keydown", onKeydown);
     };
-  }, [props.enabled]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [props.enabled, next, previous]);
 
-  return { value, onValueChange };
+  return { value, next, previous, onValueChange };
 };
 
 type KeyboardEventHandler = (e: KeyboardEvent | React.KeyboardEvent) => void;

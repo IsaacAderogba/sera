@@ -5,7 +5,12 @@ import { createContextHook } from "../utilities/react";
 export const AudioContext = createContext<AudioStore | undefined>(undefined);
 export const useAudioContext = createContextHook(AudioContext);
 
-export type AudioState = AudioAction;
+export type AudioState = {
+  type: "play" | "playing" | "pause";
+  playlistId: number;
+  songId: number;
+  time: number;
+};
 
 export interface AudioStore {
   state: AudioState;

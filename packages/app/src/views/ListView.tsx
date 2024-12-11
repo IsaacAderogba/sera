@@ -9,6 +9,7 @@ import { SongGeneratorPopover } from "../patterns/Song/SongGeneratorPopover";
 import { SongPreview } from "../patterns/Song/SongPreview";
 import { useSong } from "../patterns/Song/useSong";
 import { Song } from "../preload/types";
+import { useAudioContext } from "../providers/AudioContext";
 
 export interface ListViewProps {
   selectedId: number;
@@ -24,6 +25,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
   onNavigate,
   children
 }) => {
+  const { state, dispatch } = useAudioContext();
   const song = useSong(selectedId);
   const navigation = useKeyboardNavigation({
     enabled: true,
@@ -100,10 +102,20 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
               <SongControls
                 playlistId={playlistId}
                 song={song}
-                onPlay={() => {}}
-                onPause={() => {}}
-                onNext={() => {}}
-                onPrevious={() => {}}
+                onPause={song => {
+                  dispatch({ type: "pause", playlistId, songId: song.id });
+                }}
+                onPlay={song => {
+                  dispatch({ type: "play", playlistId, songId: song.id });
+                }}
+                onNext={song => {
+                  navigation.onValueChange(state.songId);
+                  dispatch({ type: "play", playlistId, songId: song.id });
+                }}
+                onPrevious={song => {
+                  navigation.onValueChange(state.songId);
+                  dispatch({ type: "play", playlistId, songId: song.id });
+                }}
               />
             </Flex>
             <Flex css={{ flex: 1, justifyContent: "flex-end" }}>

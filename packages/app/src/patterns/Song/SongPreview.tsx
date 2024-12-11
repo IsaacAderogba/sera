@@ -3,6 +3,8 @@ import { Song } from "../../preload/types";
 import { styled } from "../../utilities/stitches";
 import { Text } from "../../components/Typography";
 import { Flex } from "../../components/Flex";
+import { useAudioContext } from "../../providers/AudioContext";
+import { PlayIcon } from "@heroicons/react/24/outline";
 
 export interface SongPreviewProps extends StyledProps {
   trackNumber: number;
@@ -14,11 +16,15 @@ export const SongPreview: React.FC<SongPreviewProps> = ({
   trackNumber,
   ...props
 }) => {
+  const { state } = useAudioContext();
+  const isPlaying = state.songId === song.id && state.type !== "pause";
+
   return (
     <Styled {...props}>
       <Flex css={{ alignItems: "center", gap: "$base" }}>
         <Text secondary>{trackNumber}</Text>
         <Text>{song.data.title || "Untitled"}</Text>
+        {isPlaying ? <PlayIcon width={16} /> : null}
       </Flex>
       <Text size="compact" secondary>
         1:56

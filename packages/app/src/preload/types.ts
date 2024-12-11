@@ -55,13 +55,21 @@ export type AudioAction =
   | AudioPlayingAction
   | AudioPauseAction;
 
-export type AudioPlayAction = AudioBaseAction & { type: "play" };
-export type AudioPlayingAction = AudioBaseAction & { type: "playing" };
-export type AudioPauseAction = AudioBaseAction & { type: "pause" };
-export type AudioBaseAction = {
+export type AudioPlayAction = {
+  type: "play";
+  playlistId: number;
+  songId: number;
+};
+export type AudioPlayingAction = {
+  type: "playing";
   playlistId: number;
   songId: number;
   time: number;
+};
+export type AudioPauseAction = {
+  type: "pause";
+  playlistId: number;
+  songId: number;
 };
 
 export interface IPCContext {
