@@ -1,14 +1,15 @@
-import { createContext, Dispatch, SetStateAction } from "react";
+import { createContext, Dispatch } from "react";
+import { AudioAction } from "../preload/types";
 import { createContextHook } from "../utilities/react";
 
 export const AudioContext = createContext<AudioStore | undefined>(undefined);
 export const useAudioContext = createContextHook(AudioContext);
 
-export interface AudioState {}
+export type AudioState = AudioAction;
 
 export interface AudioStore {
   state: AudioState;
-  setState: Dispatch<SetStateAction<AudioState>>;
+  dispatch: Dispatch<AudioAction>;
 }
 
 export type AudioPreferenceOptions = { persist: boolean };

@@ -1,7 +1,8 @@
-import { ThemePreference } from "../preload/types";
+import { AudioAction, ThemePreference } from "../preload/types";
 
 interface CacheSchema {
   "theme-preference": ThemePreference;
+  "audio-action": AudioAction;
 }
 
 export class Cache {

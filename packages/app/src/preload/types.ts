@@ -30,6 +30,7 @@ export type Subscribe = <T extends keyof IPCBroadcastEvents>(
 export type IPCBroadcastEvents = {
   change: (snapshot: ItemSnapshot) => Promise<void> | void;
   themePreferenceChange: (preference: ThemePreference) => Promise<void> | void;
+  audioAction: (action: AudioAction) => Promise<void> | void;
 };
 
 export type IPCInvokeEvents = {
@@ -48,6 +49,20 @@ export type ItemSnapshot<T extends Item = Item> = {
 
 export type ThemePreference = "dark" | "light" | "system";
 export type ThemeMode = "dark" | "light";
+
+export type AudioAction =
+  | AudioPlayAction
+  | AudioPlayingAction
+  | AudioPauseAction;
+
+export type AudioPlayAction = AudioBaseAction & { type: "play" };
+export type AudioPlayingAction = AudioBaseAction & { type: "playing" };
+export type AudioPauseAction = AudioBaseAction & { type: "pause" };
+export type AudioBaseAction = {
+  playlistId: number;
+  songId: number;
+  time: number;
+};
 
 export interface IPCContext {
   platform: Platform;
