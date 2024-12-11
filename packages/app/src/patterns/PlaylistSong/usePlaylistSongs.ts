@@ -22,6 +22,6 @@ export const usePlaylistSongs = (playlistId: number): Song[] => {
       }
     }
 
-    return songs;
+    return songs.sort((a, b) => a.id - b.id);
   }, [playlistId, songState, playlistSongState]);
 };

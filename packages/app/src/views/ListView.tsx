@@ -3,18 +3,22 @@ import { Box } from "../components/Box";
 import { Divider } from "../components/Divider";
 import { Flex } from "../components/Flex";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
-import { SongPlayer } from "../patterns/Song/SongPlayer";
+import { SongControls } from "../patterns/Song/SongControls";
+import { SongDropdown } from "../patterns/Song/SongDropdown";
+import { SongGeneratorPopover } from "../patterns/Song/SongGeneratorPopover";
 import { SongPreview } from "../patterns/Song/SongPreview";
 import { useSong } from "../patterns/Song/useSong";
 import { Song } from "../preload/types";
 
 export interface ListViewProps {
   selectedId: number;
+  playlistId: number;
   songs: Song[];
   onNavigate: (id: number) => void;
 }
 
 export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
+  playlistId,
   selectedId,
   songs,
   onNavigate,
@@ -78,7 +82,35 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
           overflow: "hidden"
         }}
       >
-        {song ? <SongPlayer song={song} /> : null}
+        {song ? (
+          <Flex
+            css={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              height: "100%",
+              padding: "$base"
+            }}
+          >
+            <Flex css={{ alignItems: "center", flex: 1 }}>
+              <SongGeneratorPopover song={song} />
+            </Flex>
+            <Flex
+              css={{ alignItems: "center", justifyContent: "center", flex: 1 }}
+            >
+              <SongControls
+                playlistId={playlistId}
+                song={song}
+                onPlay={() => {}}
+                onPause={() => {}}
+                onNext={() => {}}
+                onPrevious={() => {}}
+              />
+            </Flex>
+            <Flex css={{ flex: 1, justifyContent: "flex-end" }}>
+              <SongDropdown song={song} />
+            </Flex>
+          </Flex>
+        ) : null}
       </Box>
     </Flex>
   );

@@ -18,6 +18,7 @@ export const PlaylistView: React.FC = () => {
 
   return (
     <ListView
+      playlistId={playlistId}
       selectedId={songId}
       songs={songs}
       onNavigate={id => {

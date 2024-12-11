@@ -3,12 +3,13 @@ import { useSongs } from "../patterns/Song/useSongs";
 import { ListView } from "./ListView";
 
 export const BrowseView: React.FC = () => {
-  const { profileId, songId } = useRouteParams([
-    "/profiles/:profileId/songs/:songId",
-    "/profiles/:profileId"
-  ]);
+  return null;
+  // const { profileId, songId } = useRouteParams([
+  //   "/profiles/:profileId/songs/:songId",
+  //   "/profiles/:profileId"
+  // ]);
 
-  const songs = useSongs(profileId);
+  // const songs = useSongs(profileId);
 
-  return <ListView selectedId={songId} songs={songs} onNavigate={() => {}} />;
+  // return <ListView selectedId={songId} songs={songs} onNavigate={() => {}} />;
 };
