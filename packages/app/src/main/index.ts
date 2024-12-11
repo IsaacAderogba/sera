@@ -7,7 +7,7 @@ import {
 import { APP_MODEL_ID } from "./constants";
 import { connectDatabase, disconnectDatabase } from "./database";
 import { onIPCInvoke } from "./invoke";
-import { setContentSecurityPolicy } from "./policies";
+import { handleProtocols, setContentSecurityPolicy } from "./policies";
 import { checkForUpdates } from "./updater";
 import {
   activateWindows,
@@ -23,6 +23,7 @@ app
   .whenReady()
   .then(async () => {
     app.setAppUserModelId(APP_MODEL_ID);
+    handleProtocols();
 
     ipcMain.on("message", onIPCBroadcast);
     ipcMain.handle("message", onIPCInvoke);

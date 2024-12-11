@@ -32,11 +32,9 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
         duration_seconds: 15
       });
 
-      const audioPath = await new Promise<string>((resolve, reject) => {
-        const audioPath = path.join(
-          app.getPath("userData"),
-          `${song.id}-${new Date().getTime()}.mp3`
-        );
+      const audioFilename = await new Promise<string>((resolve, reject) => {
+        const audioFilename = `${song.id}-${new Date().getTime()}.mp3`;
+        const audioPath = path.join(app.getPath("userData"), audioFilename);
 
         console.log("audio path", audioPath);
         const writable = fs.createWriteStream(audioPath);
@@ -44,7 +42,7 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
 
         writable.on("finish", () => {
           console.log("Audio has been written successfully!");
-          resolve(audioPath);
+          resolve(audioFilename);
         });
 
         writable.on("error", err => {
@@ -56,10 +54,10 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
       });
 
       await adapters.songs.update(song.id, {
-        data: { audioPath, audioMetadata: { durationSeconds: 15 } }
+        data: { audioFilename, audioMetadata: { durationSeconds: 15 } }
       });
 
-      return audioPath;
+      return audioFilename;
     }
   };
 

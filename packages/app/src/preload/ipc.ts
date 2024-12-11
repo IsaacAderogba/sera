@@ -103,7 +103,7 @@ export interface Song extends Node {
   data: {
     title: string;
     description: string;
-    audioPath?: string;
+    audioFilename?: string;
     audioMetadata?: {
       durationSeconds: number;
     };
