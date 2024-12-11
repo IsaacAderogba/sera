@@ -3,7 +3,7 @@ import { Button } from "../../components/Button";
 import { Divider } from "../../components/Divider";
 import { Flex, FlexProps } from "../../components/Flex";
 import { Tooltip } from "../../components/Tooltip";
-import { Playlist, Profile } from "../../preload/ipc";
+import { Playlist, Profile } from "../../preload/types";
 import { client } from "../../utilities/client";
 import { PlaylistCover } from "../Playlist/PlaylistCover";
 import { useRouteParams } from "../../components/Route";

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useSongContext } from "../../providers/DataContext";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 
 export const useSongs = (profileId: number) => {
   const { state } = useSongContext();

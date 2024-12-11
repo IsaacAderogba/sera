@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ThemeMode, ThemePreference } from "../preload/ipc";
+import { ThemeMode, ThemePreference } from "../preload/types";
 import { createContextHook } from "../utilities/react";
 
 export const ThemeContext = createContext<ThemeStore | undefined>(undefined);

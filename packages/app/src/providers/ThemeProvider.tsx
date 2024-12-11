@@ -5,7 +5,7 @@ import {
   useMemo,
   useState
 } from "react";
-import { ThemeMode, ThemePreference } from "../preload/ipc";
+import { ThemeMode, ThemePreference } from "../preload/types";
 import { cache } from "../utilities/cache";
 import { globalStyles, themeModes } from "../utilities/stitches";
 import {

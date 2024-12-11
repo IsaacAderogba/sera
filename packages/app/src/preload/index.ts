@@ -6,7 +6,7 @@ import {
   ItemRecord,
   Publish,
   Subscribe
-} from "./ipc";
+} from "./types";
 
 const invoke: Invoke = (subject, ...args) => {
   console.log("[invoke]", subject, ...args);

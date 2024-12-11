@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../../components/Button";
 import { Form, FormInput } from "../../components/Form";
 import { Popover } from "../../components/Popover";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 import { client } from "../../utilities/client";
 
 export interface SongGeneratorPopoverProps {

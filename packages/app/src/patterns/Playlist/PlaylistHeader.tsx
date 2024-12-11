@@ -3,7 +3,7 @@ import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { Text } from "../../components/Typography";
 import { useDebounceCallback } from "../../hooks/useDebounce";
-import { Playlist, Song } from "../../preload/ipc";
+import { Playlist, Song } from "../../preload/types";
 import { client } from "../../utilities/client";
 import { PlaylistCover } from "./PlaylistCover";
 import { Button } from "../../components/Button";

@@ -1,5 +1,5 @@
 import { Flex, FlexProps } from "../../components/Flex";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 import { SongControls } from "./SongControls";
 import { SongDropdown } from "./SongDropdown";
 import { SongGeneratorPopover } from "./SongGeneratorPopover";

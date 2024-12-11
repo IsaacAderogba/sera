@@ -6,7 +6,7 @@ import {
   WebContentsView
 } from "electron";
 import os from "os";
-import { IPCBroadcastEvents, IPCContext, Platform } from "../preload/ipc";
+import { IPCBroadcastEvents, IPCContext, Platform } from "../preload/types";
 
 export const onIPCBroadcast = <T extends keyof IPCBroadcastEvents>(
   event: IpcMainEvent,

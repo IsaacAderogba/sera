@@ -1,6 +1,6 @@
 import { Flex, FlexProps } from "../../components/Flex";
 import { Text } from "../../components/Typography";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 
 export interface SongControlsProps extends FlexProps {
   song: Song;

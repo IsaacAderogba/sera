@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { usePlaylistContext } from "../../providers/DataContext";
-import { Playlist } from "../../preload/ipc";
+import { Playlist } from "../../preload/types";
 
 export const usePlaylists = (profileId: number) => {
   const { state } = usePlaylistContext();

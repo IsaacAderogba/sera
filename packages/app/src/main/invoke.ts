@@ -1,6 +1,6 @@
 import { ElevenLabsClient } from "elevenlabs";
 import { app, IpcMainInvokeEvent } from "electron";
-import { IPCInvokeEvents } from "../preload/ipc";
+import { IPCInvokeEvents } from "../preload/types";
 import { adapters } from "./database";
 import path from "path";
 import fs from "fs";

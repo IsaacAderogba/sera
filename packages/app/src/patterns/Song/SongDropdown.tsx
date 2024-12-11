@@ -1,7 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Button } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 
 export interface SongDropdownProps {
   song: Song;

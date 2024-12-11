@@ -6,7 +6,7 @@ import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { SongPlayer } from "../patterns/Song/SongPlayer";
 import { SongPreview } from "../patterns/Song/SongPreview";
 import { useSong } from "../patterns/Song/useSong";
-import { Song } from "../preload/ipc";
+import { Song } from "../preload/types";
 
 export interface ListViewProps {
   selectedId: number;

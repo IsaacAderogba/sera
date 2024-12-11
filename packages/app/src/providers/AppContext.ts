@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { Item } from "../preload/ipc";
+import { Item } from "../preload/types";
 import { createContextHook } from "../utilities/react";
 
 export const AppContext = createContext<AppStore | undefined>(undefined);

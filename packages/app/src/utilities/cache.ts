@@ -1,4 +1,4 @@
-import { ThemePreference } from "../preload/ipc";
+import { ThemePreference } from "../preload/types";
 
 interface CacheSchema {
   "theme-preference": ThemePreference;

@@ -1,5 +1,5 @@
 import { ComponentProps } from "@stitches/react";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 import { styled } from "../../utilities/stitches";
 import { Text } from "../../components/Typography";
 import { Flex } from "../../components/Flex";

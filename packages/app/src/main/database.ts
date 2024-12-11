@@ -1,7 +1,7 @@
 import { app } from "electron";
 import knex, { Knex } from "knex";
 import path from "node:path";
-import { IPCAdapter, IPCAdaptersInterface, ItemRecord } from "../preload/ipc";
+import { IPCAdapter, IPCAdaptersInterface, ItemRecord } from "../preload/types";
 import { RESOURCES_FOLDER } from "./constants";
 import { broadcast } from "./broadcast";
 

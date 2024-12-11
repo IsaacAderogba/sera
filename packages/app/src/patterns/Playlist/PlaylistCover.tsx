@@ -1,7 +1,7 @@
 import { FlexProps } from "../../components/Flex";
 import { Tooltip } from "../../components/Tooltip";
 import { Text } from "../../components/Typography";
-import { Playlist } from "../../preload/ipc";
+import { Playlist } from "../../preload/types";
 
 export interface PlaylistCoverProps extends FlexProps {
   playlist: Playlist;

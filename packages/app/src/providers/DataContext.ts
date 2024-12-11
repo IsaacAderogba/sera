@@ -1,5 +1,5 @@
 import { createContext, Dispatch, SetStateAction } from "react";
-import { Item, Playlist, PlaylistSong, Profile, Song } from "../preload/ipc";
+import { Item, Playlist, PlaylistSong, Profile, Song } from "../preload/types";
 import { createContextHook } from "../utilities/react";
 
 export const ProfileContext = createContext<DataStore<Profile> | undefined>(

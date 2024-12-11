@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Song } from "../../preload/ipc";
+import { Song } from "../../preload/types";
 import {
   usePlaylistSongContext,
   useSongContext

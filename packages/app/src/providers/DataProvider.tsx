@@ -16,7 +16,7 @@ import {
   PlaylistSong,
   Profile,
   Song
-} from "../preload/ipc";
+} from "../preload/types";
 import { useAppContext } from "./AppContext";
 import {
   PlaylistContext,

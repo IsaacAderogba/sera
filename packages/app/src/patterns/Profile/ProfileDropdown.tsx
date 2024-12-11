@@ -1,6 +1,6 @@
 import { Button } from "../../components/Button";
 import { Dropdown } from "../../components/Dropdown";
-import { Profile } from "../../preload/ipc";
+import { Profile } from "../../preload/types";
 
 export interface ProfileDropdownProps {
   profile: Profile;
