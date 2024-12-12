@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useRef, useState } from "react";
 import { Box } from "../components/Box";
 import { Divider } from "../components/Divider";
 import { Flex } from "../components/Flex";
@@ -10,6 +10,7 @@ import { SongPreview } from "../patterns/Song/SongPreview";
 import { useSong } from "../patterns/Song/useSong";
 import { Song } from "../preload/types";
 import { Grid } from "../components/Grid";
+import { useDismissable } from "../hooks/useDismissable";
 
 export interface ListViewProps {
   selectedId: number;
@@ -25,9 +26,15 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
   onNavigate,
   children
 }) => {
-  const song = useSong(selectedId);
-  const navigation = useKeyboardNavigation({
+  const [navigationEnabled, setNavigationEnabled] = useState(false);
+  const listRef = useRef<HTMLDivElement>(null);
+  const dismissiableProps = useDismissable(listRef, {
     enabled: true,
+    onDismiss: () => setNavigationEnabled(false)
+  });
+
+  useKeyboardNavigation({
+    enabled: navigationEnabled,
     defaultValue: selectedId,
     value: selectedId,
     values: songs.map(song => song.id),
@@ -36,6 +43,8 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
       onNavigate(id);
     }
   });
+
+  const song = useSong(selectedId);
 
   return (
     <Flex
@@ -52,14 +61,19 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
           boxShadow: "$sm",
           background: "$surface",
           borderRadius: "$sm",
-          overflow: "hidden",
+          overflow: "auto",
           height: "100%",
           width: "100%"
         }}
       >
         <Box>{children}</Box>
         <Divider css={{ margin: 0 }} />
-        <Flex css={{ flexDirection: "column" }}>
+        <Flex
+          {...dismissiableProps}
+          ref={listRef}
+          onPointerDown={() => setNavigationEnabled(true)}
+          css={{ height: "100%", overflow: "auto", flexDirection: "column" }}
+        >
           {songs.map((song, i) => {
             return (
               <SongPreview
@@ -67,7 +81,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
                 trackNumber={i + 1}
                 active={selectedId === song.id}
                 song={song}
-                onClick={() => navigation.onValueChange(song.id)}
+                onClick={() => onNavigate(song.id)}
               />
             );
           })}
@@ -103,7 +117,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
                 song={song}
                 onSongChange={song => {
                   if (song.id === selectedId) return;
-                  navigation.onValueChange(song.id);
+                  onNavigate(song.id);
                 }}
               />
             </Flex>

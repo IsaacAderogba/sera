@@ -23,7 +23,7 @@ export const SongPreview: React.FC<SongPreviewProps> = ({
   return (
     <Styled {...props}>
       <Flex css={{ alignItems: "center", gap: "$base" }}>
-        <Text secondary>{trackNumber}</Text>
+        <Text secondary>{trackNumber}.</Text>
         <Text>{song.data.title || "Untitled"}</Text>
         {isPlaying ? <PlayIcon width={16} /> : null}
       </Flex>
