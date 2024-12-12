@@ -11,4 +11,6 @@ export const ELECTRON_RENDERER_URL = IS_DEVELOPMENT
   : "";
 
 export const RESOURCES_FOLDER = path.join(__dirname, "..", "..", "resources");
+export const DEEPLINK_PROTOCOL = IS_DEVELOPMENT ? "sera-dev" : "sera";
+
 export const { NODE_ENV } = process.env;

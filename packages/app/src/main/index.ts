@@ -2,12 +2,17 @@ import {
   BrowserWindow,
   app,
   autoUpdater as electronUpdater,
-  ipcMain
+  ipcMain,
+  session
 } from "electron";
 import { APP_MODEL_ID } from "./constants";
 import { connectDatabase, disconnectDatabase } from "./database";
 import { onIPCInvoke } from "./invoke";
-import { handleProtocols, setContentSecurityPolicy } from "./policies";
+import {
+  handleProtocols,
+  registerProtocolSchemes,
+  setContentSecurityPolicy
+} from "./policies";
 import { checkForUpdates } from "./updater";
 import {
   activateWindows,
@@ -17,13 +22,14 @@ import {
 import { onIPCBroadcast } from "./broadcast";
 import { initializeMenus } from "./menus";
 
+registerProtocolSchemes();
 const databaseConnection = connectDatabase();
 
 app
   .whenReady()
   .then(async () => {
     app.setAppUserModelId(APP_MODEL_ID);
-    handleProtocols();
+    handleProtocols(session.fromPartition("persist:shared"));
 
     ipcMain.on("message", onIPCBroadcast);
     ipcMain.handle("message", onIPCInvoke);

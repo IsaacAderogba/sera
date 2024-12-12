@@ -8,9 +8,9 @@ export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin({ include: externals })],
     build: {
-      outDir: path.join("dist", "main"),
+      outDir: path.join(__dirname, "dist", "main"),
       lib: {
-        entry: path.join("src", "main", "index.ts")
+        entry: path.join(__dirname, "src", "main", "index.ts")
       },
       rollupOptions: {
         output: {
@@ -22,20 +22,20 @@ export default defineConfig({
   preload: {
     plugins: [externalizeDepsPlugin({ include: externals })],
     build: {
-      outDir: path.join("dist", "preload"),
+      outDir: path.join(__dirname, "dist", "preload"),
       lib: {
-        entry: path.join("src", "preload", "index.ts")
+        entry: path.join(__dirname, "src", "preload", "index.ts")
       }
     }
   },
   renderer: {
-    root: path.join("src", "renderer"),
+    root: path.join(__dirname, "src", "renderer"),
     build: {
-      outDir: path.join("dist", "renderer"),
+      outDir: path.join(__dirname, "dist", "renderer"),
       rollupOptions: {
         input: {
-          main: path.join("src", "renderer", "main.html"),
-          menubar: path.join("src", "renderer", "menubar.html")
+          main: path.join(__dirname, "src", "renderer", "main.html"),
+          menubar: path.join(__dirname, "src", "renderer", "menubar.html")
         }
       }
     },

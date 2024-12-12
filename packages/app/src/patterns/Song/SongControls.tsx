@@ -7,39 +7,43 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
-import { Text } from "../../components/Typography";
-import { Song } from "../../preload/types";
-import { usePlaylistSongs } from "../PlaylistSong/usePlaylistSongs";
-import { useAudioContext } from "../../providers/AudioContext";
 import { Tooltip } from "../../components/Tooltip";
+import { Text } from "../../components/Typography";
+import { useCallbackRef } from "../../hooks/useManagedRefs";
+import { Song } from "../../preload/types";
+import { useAudioContext } from "../../providers/AudioContext";
+import { usePlaylistSongs } from "../PlaylistSong/usePlaylistSongs";
 
 export interface SongControlsProps {
   playlistId: number;
   song: Song;
-  onPlay: (song: Song) => void;
-  onPause: (song: Song) => void;
-  onNext: (song: Song) => void;
-  onPrevious: (song: Song) => void;
+  onSongChange?: (song: Song) => void;
 }
 
 export const SongControls: React.FC<SongControlsProps> = ({
   playlistId,
   song,
-  onPlay,
-  onPause,
-  onNext,
-  onPrevious
+  onSongChange
 }) => {
-  const { state } = useAudioContext();
+  const { state, dispatch } = useAudioContext();
   const songs = usePlaylistSongs(playlistId);
   const { previous, next } = useMemo(() => {
     const index = songs.findIndex(s => s.id === song.id);
     return { previous: songs[index - 1], next: songs[index + 1] };
   }, [song.id, songs]);
 
-  const isPlaying = useDelayedValue(
+  const isSongPlaying = useDelayedValue(
     state.songId === song.id && state.type !== "pause"
   );
+
+  const onChangeSong = useCallbackRef((type: "play" | "pause", song: Song) => {
+    onSongChange?.(song);
+    if (song.data.audioFilename) {
+      dispatch({ type, playlistId, songId: song.id });
+    } else {
+      dispatch({ type: "pause", playlistId, songId: song.id });
+    }
+  });
 
   return (
     <Flex
@@ -51,28 +55,26 @@ export const SongControls: React.FC<SongControlsProps> = ({
       }}
     >
       <Flex css={{ gap: "$sm" }}>
-        <Tooltip placement="top" content="Play previous">
+        <Button
+          variant="ghost"
+          icon
+          disabled={!previous}
+          onClick={() => onChangeSong("play", previous)}
+        >
+          <BackwardIcon width={20} />
+        </Button>
+
+        {song.data.audioFilename ? (
           <Button
-            variant="ghost"
+            variant="soft"
             icon
-            disabled={!previous}
-            onClick={() => {
-              if (!previous) return;
-              onPrevious(previous);
-            }}
+            onClick={() => onChangeSong(isSongPlaying ? "pause" : "play", song)}
           >
-            <BackwardIcon width={20} />
+            {isSongPlaying ? <PauseIcon width={20} /> : <PlayIcon width={20} />}
           </Button>
-        </Tooltip>
-        {isPlaying ? (
-          <Tooltip placement="top" content="Pause">
-            <Button variant="soft" icon onClick={() => onPause(song)}>
-              <PauseIcon width={20} />
-            </Button>
-          </Tooltip>
         ) : (
-          <Tooltip placement="top" content="Play">
-            <Button variant="soft" icon onClick={() => onPlay(song)}>
+          <Tooltip placement="top" content="Generated song required">
+            <Button variant="soft" icon danger={!song.data.audioFilename}>
               <PlayIcon width={20} />
             </Button>
           </Tooltip>
@@ -82,16 +84,13 @@ export const SongControls: React.FC<SongControlsProps> = ({
             variant="ghost"
             icon
             disabled={!next}
-            onClick={() => {
-              if (!next) return;
-              onNext(next);
-            }}
+            onClick={() => onChangeSong("play", next)}
           >
             <ForwardIcon width={20} />
           </Button>
         </Tooltip>
       </Flex>
-      <Text size="compact">audio track progress</Text>
+      <Text size="compact">{song.data.title || "Untitled"}</Text>
     </Flex>
   );
 };

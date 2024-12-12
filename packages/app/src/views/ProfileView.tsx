@@ -15,7 +15,6 @@ import { PlaylistView } from "./PlaylistView";
 
 export const ProfileView: React.FC = () => {
   const { profileId } = useRouteParams(["/profiles/:profileId"]);
-
   const profile = useProfile(profileId);
   const playlists = usePlaylists(profileId);
 

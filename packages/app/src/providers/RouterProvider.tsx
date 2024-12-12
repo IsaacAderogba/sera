@@ -1,5 +1,5 @@
 import { PropsWithChildren, useMemo } from "react";
-import { BrowserRouter, Redirect, Switch } from "react-router-dom";
+import { HashRouter, Redirect, Switch } from "react-router-dom";
 import { AuthView } from "../views/AuthView";
 import { AudioPlayerView } from "../views/AudioPlayerView";
 import { ProfileView } from "../views/ProfileView";
@@ -10,23 +10,23 @@ import { Route, useRouteParams } from "../components/Route";
 
 export const MainRouterProvider: React.FC<PropsWithChildren> = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route exact path={["/", "/main"]} component={AuthRoute} />
         <Route path="/profiles/:profileId" component={ProfileRoute} />
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
 export const MenubarRouterProvider: React.FC<PropsWithChildren> = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route exact path={["/", "/menubar"]} component={AuthRoute} />
         <Route path="/profiles/:profileId" component={ProfilePreviewRoute} />
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 

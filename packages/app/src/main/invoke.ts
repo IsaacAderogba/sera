@@ -26,37 +26,29 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
       const client = new ElevenLabsClient({
         apiKey: import.meta.env["MAIN_VITE_ELEVENLABS_API_KEY"]
       });
-
       const readable = await client.textToSoundEffects.convert({
         text: song.data.description,
         duration_seconds: 15
       });
-
       const audioFilename = await new Promise<string>((resolve, reject) => {
         const audioFilename = `${song.id}-${new Date().getTime()}.mp3`;
         const audioPath = path.join(app.getPath("userData"), audioFilename);
-
         console.log("audio path", audioPath);
         const writable = fs.createWriteStream(audioPath);
         readable.pipe(writable);
-
         writable.on("finish", () => {
           console.log("Audio has been written successfully!");
           resolve(audioFilename);
         });
-
         writable.on("error", err => {
           console.error("Error writing file:", err);
           reject(err);
         });
-
         return audioPath;
       });
-
       await adapters.songs.update(song.id, {
         data: { audioFilename, audioMetadata: { durationSeconds: 15 } }
       });
-
       return audioFilename;
     }
   };
