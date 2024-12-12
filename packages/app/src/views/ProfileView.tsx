@@ -5,7 +5,6 @@ import {
   NavigateBackButton,
   NavigateForwardButton
 } from "../patterns/Button/NavigateButton";
-import { ThemeSwitchButton } from "../patterns/Button/ThemeSwitchButton";
 import { usePlaylists } from "../patterns/Playlist/usePlaylists";
 import { ProfileDropdown } from "../patterns/Profile/ProfileDropdown";
 import { useProfile } from "../patterns/Profile/useProfile";
@@ -42,7 +41,6 @@ export const ProfileView: React.FC = () => {
         </Flex>
 
         <Flex className="no-drag" css={{ alignItems: "center", gap: "$sm" }}>
-          <ThemeSwitchButton />
           {profile && <ProfileDropdown profile={profile} />}
         </Flex>
       </Flex>

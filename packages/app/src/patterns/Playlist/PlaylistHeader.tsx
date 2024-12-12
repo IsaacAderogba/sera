@@ -12,6 +12,7 @@ import { Tooltip } from "../../components/Tooltip";
 import { useHistory } from "react-router-dom";
 import { createRoutePath } from "../../utilities/route";
 import { formatSeconds } from "../../utilities/lodash";
+import { PlaylistDropdown } from "./PlaylistDropdown";
 
 export interface PlaylistHeaderProps {
   playlist: Playlist;
@@ -47,56 +48,65 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
         playlist={playlist}
         css={{ height: "80px", width: "80px" }}
       />
-      <Flex css={{ flexDirection: "column", width: "100%", gap: "$xs" }}>
-        <Flex css={{ alignItems: "center" }}>
-          <Tooltip content="Add song">
-            <Button
-              icon
-              variant="ghost"
-              size="compact"
-              onClick={async () => {
-                const { profileId } = playlist;
-                const song = await client.adapters.songs.create({
-                  profileId: playlist.profileId,
-                  data: { title: "", description: "" }
-                });
+      <Flex
+        css={{
+          justifyContent: "space-between",
+          width: "100%",
+          alignItems: "start"
+        }}
+      >
+        <Flex css={{ flexDirection: "column", width: "100%", gap: "$xs" }}>
+          <Flex css={{ alignItems: "center" }}>
+            <Tooltip content="Add song">
+              <Button
+                icon
+                variant="ghost"
+                size="compact"
+                onClick={async () => {
+                  const { profileId } = playlist;
+                  const song = await client.adapters.songs.create({
+                    profileId: playlist.profileId,
+                    data: { title: "", description: "" }
+                  });
 
-                await client.adapters.playlists_songs.create({
-                  profileId,
-                  playlistId: playlist.id,
-                  songId: song.id,
-                  data: {}
-                });
-
-                const path = createRoutePath({
-                  path: "/profiles/:profileId/playlists/:playlistId/songs/:songId",
-                  params: {
+                  await client.adapters.playlists_songs.create({
                     profileId,
                     playlistId: playlist.id,
-                    songId: song.id
-                  }
-                });
-                history.push(path);
+                    songId: song.id,
+                    data: {}
+                  });
+
+                  const path = createRoutePath({
+                    path: "/profiles/:profileId/playlists/:playlistId/songs/:songId",
+                    params: {
+                      profileId,
+                      playlistId: playlist.id,
+                      songId: song.id
+                    }
+                  });
+                  history.push(path);
+                }}
+              >
+                <PlusIcon width={20} />
+              </Button>
+            </Tooltip>
+            <Input
+              autoFocus
+              variant="ghost"
+              placeholder="Playlist title..."
+              value={title}
+              onChange={e => {
+                const title = e.target.value;
+                onTitleChange(title);
+                debouncedTitleUpdate(playlist.id, { data: { title } });
               }}
-            >
-              <PlusIcon width={20} />
-            </Button>
-          </Tooltip>
-          <Input
-            autoFocus
-            variant="ghost"
-            placeholder="Playlist title..."
-            value={title}
-            onChange={e => {
-              const title = e.target.value;
-              onTitleChange(title);
-              debouncedTitleUpdate(playlist.id, { data: { title } });
-            }}
-          />
+            />
+          </Flex>
+          <Text size="compact" secondary css={{ paddingLeft: "$xs" }}>
+            Playlist - {songs.length} songs, {formattedSeconds}s
+          </Text>
         </Flex>
-        <Text size="compact" secondary css={{ paddingLeft: "$xs" }}>
-          Playlist - {songs.length} songs, {formattedSeconds}s
-        </Text>
+        <PlaylistDropdown playlist={playlist} />
       </Flex>
     </Flex>
   );

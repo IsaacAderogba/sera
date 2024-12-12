@@ -18,7 +18,7 @@ export const SongProgress: React.FC<SongProgressProps> = ({ song, time }) => {
       css={{
         gap: "$sm",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "space-between",
         width: "100%"
       }}
     >

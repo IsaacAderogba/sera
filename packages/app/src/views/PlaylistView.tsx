@@ -29,7 +29,7 @@ export const PlaylistView: React.FC = () => {
         history.push(path);
       }}
     >
-      <PlaylistHeader playlist={playlist} songs={songs} />
+      {playlist && <PlaylistHeader playlist={playlist} songs={songs} />}
     </ListView>
   );
 };

@@ -49,7 +49,7 @@ const Styled = styled("div", {
         letterSpacing: "$sm"
       },
       default: {
-        padding: "$sm",
+        padding: "$sm $lg",
         fontSize: "$base",
         lineHeight: "$base",
         letterSpacing: "$base"

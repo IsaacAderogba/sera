@@ -4,27 +4,28 @@ import {
   PauseIcon,
   PlayIcon
 } from "@heroicons/react/24/outline";
-import { PropsWithChildren, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "../../components/Button";
-import { Flex } from "../../components/Flex";
+import { Flex, FlexProps } from "../../components/Flex";
 import { Tooltip } from "../../components/Tooltip";
+import { Text } from "../../components/Typography";
 import { useCallbackRef } from "../../hooks/useManagedRefs";
 import { Song } from "../../preload/types";
 import { useAudioContext } from "../../providers/AudioContext";
 import { usePlaylistSongs } from "../PlaylistSong/usePlaylistSongs";
 import { SongProgress } from "./SongProgress";
 
-export interface SongControlsProps {
+export interface SongControlsProps extends FlexProps {
   playlistId: number;
   song: Song;
   onSongChange?: (song: Song) => void;
 }
 
-export const SongControls: React.FC<PropsWithChildren<SongControlsProps>> = ({
-  children,
+export const SongControls: React.FC<SongControlsProps> = ({
   playlistId,
   song,
-  onSongChange
+  onSongChange,
+  css = {}
 }) => {
   const { state, dispatch } = useAudioContext();
   const songs = usePlaylistSongs(playlistId);
@@ -53,20 +54,22 @@ export const SongControls: React.FC<PropsWithChildren<SongControlsProps>> = ({
         alignItems: "center",
         justifyContent: "center",
         gap: "$xxs",
-        width: "100%"
+        width: "100%",
+        ...css
       }}
     >
       <Flex
         css={{
           width: "100%",
           overflow: "hidden",
-          justifyContent: children ? "space-between" : "center",
+          justifyContent: "space-between",
           alignItems: "center",
-          gap: "$base",
-          padding: "0 $base"
+          gap: "$sm"
         }}
       >
-        {children}
+        <Text ellipsis secondary size="compact">
+          {song.data.title || "Untitled"}
+        </Text>
         <Flex css={{ gap: "$sm", flexShrink: 0 }}>
           <Button
             variant="ghost"

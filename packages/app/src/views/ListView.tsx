@@ -75,7 +75,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
       </Box>
       <Box
         css={{
-          minHeight: song ? "56px" : 0,
+          flexBasis: song ? "60px" : 0,
           transition: `all 100ms`,
           boxShadow: "$sm",
           background: "$surface",
@@ -90,7 +90,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
               justifyContent: "space-between",
               alignItems: "center",
               height: "100%",
-              padding: "$base",
+              padding: "0 $base",
               gap: "$base"
             }}
           >
@@ -108,7 +108,7 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
               />
             </Flex>
             <Flex css={{ justifyContent: "flex-end" }}>
-              <SongDropdown song={song} />
+              <SongDropdown playlistId={playlistId} song={song} />
             </Flex>
           </Grid>
         ) : null}

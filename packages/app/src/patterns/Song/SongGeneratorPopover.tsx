@@ -64,7 +64,7 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
       }
     >
       <Button css={{ maxWidth: "100%", display: "block" }} ellipsis>
-        {song.data.title || "Untitled"}
+        Generate song
       </Button>
     </Popover>
   );

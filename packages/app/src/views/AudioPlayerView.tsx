@@ -49,20 +49,11 @@ export const AudioPlayerView: React.FC = () => {
 
   if (!song) return <NoSong />;
   return (
-    <Flex
-      css={{
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-        background: "$translucent"
-      }}
-    >
-      <SongControls playlistId={state.playlistId} song={song}>
-        <Text ellipsis secondary size="compact">
-          {song.data.title || "Untitled"}
-        </Text>
-      </SongControls>
-    </Flex>
+    <SongControls
+      playlistId={state.playlistId}
+      song={song}
+      css={{ background: "$translucent", height: "100%", padding: "0 $base" }}
+    />
   );
 };
 

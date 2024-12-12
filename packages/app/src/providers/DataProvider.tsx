@@ -69,7 +69,7 @@ function createProvider<T extends Item>(
     const [state, setState] = useState<Record<string, T>>({});
     useEffect(() => {
       console.log(`[${type}]`, { ...state });
-    }, [type, state]);
+    }, [state]);
 
     const onSnapshotChange = useCallback((snapshots: ItemSnapshot<T>[]) => {
       setState(state => {
