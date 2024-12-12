@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Flex } from "../../components/Flex";
 import { Input } from "../../components/Input";
 import { Text } from "../../components/Typography";
@@ -11,13 +11,17 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { Tooltip } from "../../components/Tooltip";
 import { useHistory } from "react-router-dom";
 import { createRoutePath } from "../../utilities/route";
+import { formatSeconds } from "../../utilities/lodash";
 
 export interface PlaylistHeaderProps {
   playlist: Playlist;
   songs: Song[];
 }
 
-export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist }) => {
+export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({
+  playlist,
+  songs
+}) => {
   const history = useHistory();
 
   const [title, onTitleChange] = useState(playlist.data.title || "");
@@ -26,6 +30,16 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist }) => {
     client.adapters.playlists.update,
     [playlist.id]
   );
+
+  const formattedSeconds = useMemo(() => {
+    let seconds = 0;
+    for (const song of songs) {
+      if (!song.data.audioMetadata) continue;
+      seconds += song.data.audioMetadata.durationSeconds;
+    }
+
+    return formatSeconds(seconds);
+  }, [songs]);
 
   return (
     <Flex css={{ padding: "$md", gap: "$sm", alignItems: "center" }}>
@@ -81,7 +95,7 @@ export const PlaylistHeader: React.FC<PlaylistHeaderProps> = ({ playlist }) => {
           />
         </Flex>
         <Text size="compact" secondary css={{ paddingLeft: "$xs" }}>
-          Playlist - 14 songs, 49 mins, 23 seconds
+          Playlist - {songs.length} songs, {formattedSeconds}s
         </Text>
       </Flex>
     </Flex>

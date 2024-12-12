@@ -19,3 +19,14 @@ export function isEqual(firstValue: unknown, secondValue: unknown): boolean {
   // otherwise just compare the values directly
   return firstValue === secondValue;
 }
+
+export function formatSeconds(seconds = 0): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  // Pad minutes and seconds with leading zeros if necessary
+  const formattedMinutes = String(minutes).padStart(1, "0");
+  const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+}

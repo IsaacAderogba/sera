@@ -93,8 +93,8 @@ export const createAppWindow = async (state: Partial<WindowState> = {}) => {
 
 const createMenubarWindow = async () => {
   const trayWindow = createWindow("menubar", {
-    width: 300,
-    height: 72,
+    width: 260,
+    height: 64,
     fullscreenable: false,
     resizable: false,
     maximizable: false,

@@ -62,7 +62,7 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
         </Form>
       }
     >
-      <Button>Generate</Button>
+      <Button>{song.data.title || "Untitled"}</Button>
     </Popover>
   );
 };

@@ -5,6 +5,7 @@ import { Text } from "../../components/Typography";
 import { Flex } from "../../components/Flex";
 import { useAudioContext } from "../../providers/AudioContext";
 import { PlayIcon } from "@heroicons/react/24/outline";
+import { formatSeconds } from "../../utilities/lodash";
 
 export interface SongPreviewProps extends StyledProps {
   trackNumber: number;
@@ -27,7 +28,7 @@ export const SongPreview: React.FC<SongPreviewProps> = ({
         {isPlaying ? <PlayIcon width={16} /> : null}
       </Flex>
       <Text size="compact" secondary>
-        1:56
+        {formatSeconds(song.data.audioMetadata?.durationSeconds)}
       </Text>
     </Styled>
   );

@@ -8,11 +8,11 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
 import { Tooltip } from "../../components/Tooltip";
-import { Text } from "../../components/Typography";
 import { useCallbackRef } from "../../hooks/useManagedRefs";
 import { Song } from "../../preload/types";
 import { useAudioContext } from "../../providers/AudioContext";
 import { usePlaylistSongs } from "../PlaylistSong/usePlaylistSongs";
+import { SongProgress } from "./SongProgress";
 
 export interface SongControlsProps {
   playlistId: number;
@@ -90,7 +90,10 @@ export const SongControls: React.FC<SongControlsProps> = ({
           </Button>
         </Tooltip>
       </Flex>
-      <Text size="compact">{song.data.title || "Untitled"}</Text>
+      <SongProgress
+        song={song}
+        time={state.songId === song.id ? state.time || 0 : 0}
+      />
     </Flex>
   );
 };

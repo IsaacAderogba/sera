@@ -34,14 +34,8 @@ export const AudioProvider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 const getAudioState = (): AudioState => {
-  return (
-    cache.get("audio-action") || {
-      type: "pause",
-      playlistId: 0,
-      songId: 0,
-      time: 0
-    }
-  );
+  const previous = cache.get("audio-action") || {};
+  return { type: "pause", playlistId: 0, songId: 0, time: 0, ...previous };
 };
 
 const audioReducer: Reducer<AudioState, AudioAction> = (state, action) => {
