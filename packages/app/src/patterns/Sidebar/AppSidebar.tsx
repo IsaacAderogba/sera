@@ -9,6 +9,8 @@ import { PlaylistCover } from "../Playlist/PlaylistCover";
 import { useRouteParams } from "../../components/Route";
 import { Link } from "../../components/Link";
 import { Box } from "../../components/Box";
+import { useHistory } from "react-router-dom";
+import { createRoutePath } from "../../utilities/route";
 
 export interface AppSidebarProps extends FlexProps {
   profile: Profile;
@@ -19,6 +21,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   profile,
   playlists
 }) => {
+  const history = useHistory();
   const { playlistId } = useRouteParams([
     "/profiles/:profileId/playlists/:playlistId",
     "/profiles/:profileId/playlists/:playlistId/songs/:songId"
@@ -73,10 +76,16 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           icon
           variant="ghost"
           onClick={async () => {
-            await client.adapters.playlists.create({
+            const { id, profileId } = await client.adapters.playlists.create({
               profileId: profile.id,
-              data: {}
+              data: { title: "" }
             });
+
+            const path = createRoutePath({
+              path: "/profiles/:profileId/playlists/:playlistId",
+              params: { profileId, playlistId: id }
+            });
+            history.push(path);
           }}
         >
           <PlusIcon width={20} />

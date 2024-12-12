@@ -57,7 +57,11 @@ export const AudioPlayerView: React.FC = () => {
         background: "$translucent"
       }}
     >
-      <SongControls playlistId={state.playlistId} song={song} />
+      <SongControls playlistId={state.playlistId} song={song}>
+        <Text ellipsis secondary size="compact">
+          {song.data.title || "Untitled"}
+        </Text>
+      </SongControls>
     </Flex>
   );
 };

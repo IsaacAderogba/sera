@@ -15,6 +15,7 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
   const [state, setState] = useState({ loading: false });
   return (
     <Popover
+      css={{ width: "100%" }}
       placement="top"
       content={
         <Form
@@ -62,7 +63,9 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
         </Form>
       }
     >
-      <Button>{song.data.title || "Untitled"}</Button>
+      <Button css={{ maxWidth: "100%", display: "block" }} ellipsis>
+        {song.data.title || "Untitled"}
+      </Button>
     </Popover>
   );
 };

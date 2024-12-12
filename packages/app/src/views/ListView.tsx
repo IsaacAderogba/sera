@@ -9,6 +9,7 @@ import { SongGeneratorPopover } from "../patterns/Song/SongGeneratorPopover";
 import { SongPreview } from "../patterns/Song/SongPreview";
 import { useSong } from "../patterns/Song/useSong";
 import { Song } from "../preload/types";
+import { Grid } from "../components/Grid";
 
 export interface ListViewProps {
   selectedId: number;
@@ -83,20 +84,20 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
         }}
       >
         {song ? (
-          <Flex
+          <Grid
             css={{
+              gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
               justifyContent: "space-between",
               alignItems: "center",
               height: "100%",
-              padding: "$base"
+              padding: "$base",
+              gap: "$base"
             }}
           >
-            <Flex css={{ alignItems: "center", flex: 1 }}>
+            <Flex css={{ alignItems: "center" }}>
               <SongGeneratorPopover song={song} />
             </Flex>
-            <Flex
-              css={{ alignItems: "center", justifyContent: "center", flex: 1 }}
-            >
+            <Flex css={{ alignItems: "center", justifyContent: "center" }}>
               <SongControls
                 playlistId={playlistId}
                 song={song}
@@ -106,10 +107,10 @@ export const ListView: React.FC<PropsWithChildren<ListViewProps>> = ({
                 }}
               />
             </Flex>
-            <Flex css={{ flex: 1, justifyContent: "flex-end" }}>
+            <Flex css={{ justifyContent: "flex-end" }}>
               <SongDropdown song={song} />
             </Flex>
-          </Flex>
+          </Grid>
         ) : null}
       </Box>
     </Flex>

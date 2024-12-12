@@ -4,7 +4,7 @@ import {
   PauseIcon,
   PlayIcon
 } from "@heroicons/react/24/outline";
-import { useEffect, useMemo, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import { Button } from "../../components/Button";
 import { Flex } from "../../components/Flex";
 import { Tooltip } from "../../components/Tooltip";
@@ -20,7 +20,8 @@ export interface SongControlsProps {
   onSongChange?: (song: Song) => void;
 }
 
-export const SongControls: React.FC<SongControlsProps> = ({
+export const SongControls: React.FC<PropsWithChildren<SongControlsProps>> = ({
+  children,
   playlistId,
   song,
   onSongChange
@@ -51,44 +52,63 @@ export const SongControls: React.FC<SongControlsProps> = ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "$xxs"
+        gap: "$xxs",
+        width: "100%"
       }}
     >
-      <Flex css={{ gap: "$sm" }}>
-        <Button
-          variant="ghost"
-          icon
-          disabled={!previous}
-          onClick={() => onChangeSong("play", previous)}
-        >
-          <BackwardIcon width={20} />
-        </Button>
-
-        {song.data.audioFilename ? (
-          <Button
-            variant="soft"
-            icon
-            onClick={() => onChangeSong(isSongPlaying ? "pause" : "play", song)}
-          >
-            {isSongPlaying ? <PauseIcon width={20} /> : <PlayIcon width={20} />}
-          </Button>
-        ) : (
-          <Tooltip placement="top" content="Generated song required">
-            <Button variant="soft" icon danger={!song.data.audioFilename}>
-              <PlayIcon width={20} />
-            </Button>
-          </Tooltip>
-        )}
-        <Tooltip placement="top" content="Play next">
+      <Flex
+        css={{
+          width: "100%",
+          overflow: "hidden",
+          justifyContent: children ? "space-between" : "center",
+          alignItems: "center",
+          gap: "$base",
+          padding: "0 $base"
+        }}
+      >
+        {children}
+        <Flex css={{ gap: "$sm", flexShrink: 0 }}>
           <Button
             variant="ghost"
             icon
-            disabled={!next}
-            onClick={() => onChangeSong("play", next)}
+            disabled={!previous}
+            onClick={() => onChangeSong("play", previous)}
           >
-            <ForwardIcon width={20} />
+            <BackwardIcon width={20} />
           </Button>
-        </Tooltip>
+
+          {song.data.audioFilename ? (
+            <Button
+              variant="soft"
+              icon
+              onClick={() =>
+                onChangeSong(isSongPlaying ? "pause" : "play", song)
+              }
+            >
+              {isSongPlaying ? (
+                <PauseIcon width={20} />
+              ) : (
+                <PlayIcon width={20} />
+              )}
+            </Button>
+          ) : (
+            <Tooltip placement="top" content="Generated song required">
+              <Button variant="soft" icon danger={!song.data.audioFilename}>
+                <PlayIcon width={20} />
+              </Button>
+            </Tooltip>
+          )}
+          <Tooltip placement="top" content="Play next">
+            <Button
+              variant="ghost"
+              icon
+              disabled={!next}
+              onClick={() => onChangeSong("play", next)}
+            >
+              <ForwardIcon width={20} />
+            </Button>
+          </Tooltip>
+        </Flex>
       </Flex>
       <SongProgress
         song={song}

@@ -3,6 +3,7 @@ import { styled } from "../utilities/stitches";
 
 export const Button = styled("button", {
   all: "unset",
+  boxSizing: "border-box",
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -33,6 +34,13 @@ export const Button = styled("button", {
       },
       default: {
         padding: "6px 12px"
+      }
+    },
+    ellipsis: {
+      true: {
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap"
       }
     },
     variant: {

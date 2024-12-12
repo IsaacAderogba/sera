@@ -1,4 +1,5 @@
 import { Button } from "../components/Button";
+import { Card } from "../components/Card";
 import { Flex } from "../components/Flex";
 import { Form, FormInput } from "../components/Form";
 import { Logo } from "../components/Logo";
@@ -29,16 +30,13 @@ export const AuthView: React.FC = () => {
         }}
       >
         <Logo />
-        <Flex
+        <Card
           css={{
-            background: "$surface",
-            borderRadius: "$base",
-            padding: "$lg",
-            width: "100%",
-            gap: "$lg",
+            display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            border: "1px solid $border"
+            padding: "$lg",
+            gap: "$lg"
           }}
         >
           <Flex
@@ -69,7 +67,7 @@ export const AuthView: React.FC = () => {
               </Button>
             </Form>
           </Flex>
-        </Flex>
+        </Card>
         <Text size="compact" secondary>
           Don't have a token? Create one{" "}
           <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank">
