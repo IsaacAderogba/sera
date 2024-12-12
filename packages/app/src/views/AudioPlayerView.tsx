@@ -14,9 +14,13 @@ export const AudioPlayerView: React.FC = () => {
     if (!song?.id) return;
 
     switch (state.type) {
-      case "play":
-        if (song.data.audioFilename) {
-          audioRef.current.src = `audio://${song.data.audioFilename}`;
+      case "play": {
+        const audioFileName = `audio://${song.data.audioFilename}`;
+        if (audioRef.current.src === audioFileName) {
+          audioRef.current.play();
+          dispatch({ ...state, type: "playing" });
+        } else if (song.data.audioFilename) {
+          audioRef.current.src = audioFileName;
           audioRef.current.loop = true;
           audioRef.current.play();
           dispatch({ ...state, type: "playing" });
@@ -24,6 +28,7 @@ export const AudioPlayerView: React.FC = () => {
           dispatch({ ...state, type: "pause" });
         }
         return;
+      }
       case "playing": {
         const timeout = setTimeout(() => {
           dispatch({
