@@ -1,6 +1,6 @@
 # Music Player
 
-A simple spotify-like app for playing generated background msuic.
+A simple spotify-like app for playing generated background music.
 
 ![Header](site/light-player-home.png)
 
