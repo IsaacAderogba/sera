@@ -4,6 +4,8 @@ on:
   push:
     branches-ignore:
       - main
+    paths:
+      - 'packages/player/**'
 
 jobs:
   build:
@@ -14,8 +16,8 @@ jobs:
         with:
           node-version: 20
       - run: yarn
-      - run: cd packages/app && yarn build:test
-      - run: cd packages/app && yarn test
+      - run: cd packages/player && yarn build:test
+      - run: cd packages/player && yarn test
         env:
           DEBUG: "pw:browser*"
 
