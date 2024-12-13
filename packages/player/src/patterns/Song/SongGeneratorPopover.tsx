@@ -15,7 +15,7 @@ export const SongGeneratorPopover: React.FC<SongGeneratorPopoverProps> = ({
   const [state, setState] = useState({ loading: false });
   return (
     <Popover
-      css={{ width: "100%" }}
+      css={{ overflow: "hidden" }}
       placement="top"
       content={
         <Form

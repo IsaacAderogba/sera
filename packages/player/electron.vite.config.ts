@@ -2,17 +2,16 @@ import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
 
-const externals = ["knex"];
-
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ include: externals })],
+    plugins: [externalizeDepsPlugin()],
     build: {
       outDir: path.join(__dirname, "dist", "main"),
       lib: {
         entry: path.join(__dirname, "src", "main", "index.ts")
       },
       rollupOptions: {
+        external: ["knex"],
         output: {
           format: "cjs"
         }
@@ -20,7 +19,7 @@ export default defineConfig({
     }
   },
   preload: {
-    plugins: [externalizeDepsPlugin({ include: externals })],
+    plugins: [externalizeDepsPlugin()],
     build: {
       outDir: path.join(__dirname, "dist", "preload"),
       lib: {

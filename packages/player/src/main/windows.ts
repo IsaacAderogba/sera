@@ -105,7 +105,7 @@ const createMenubarWindow = async () => {
 
   trayWindow.setVisibleOnAllWorkspaces(true);
   trayWindow.setAlwaysOnTop(true);
-  // trayWindow.on("blur", () => trayWindow.hide());
+  trayWindow.on("blur", () => trayWindow.hide());
   trayWindow.on("show", () => trayWindow.focus());
 
   const trayImage = nativeImage
