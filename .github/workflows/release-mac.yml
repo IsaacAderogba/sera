@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20
       - run: yarn
-      - run: cd packages/app && yarn release
+      - run: cd packages/player && yarn release
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
