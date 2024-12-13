@@ -12,7 +12,7 @@ declare global {
 export type Invoke = <T extends keyof IPCInvokeEvents>(
   subject: T,
   ...data: Parameters<IPCInvokeEvents[T]>
-) => ReturnType<Awaited<IPCInvokeEvents[T]>>;
+) => ReturnType<IPCInvokeEvents[T]>;
 
 export type Publish = <T extends keyof IPCBroadcastEvents>(
   subject: T,

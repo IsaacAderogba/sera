@@ -2,11 +2,11 @@ import { useHistory } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Flex } from "../components/Flex";
-import { Logo } from "../components/Logo";
+import { useRouteParams } from "../components/Route";
 import { Text, Title } from "../components/Typography";
+import { SoundWaveLogo } from "../patterns/Logo/SoundWaveLogo";
 import { client } from "../utilities/client";
 import { createRoutePath } from "../utilities/route";
-import { useRouteParams } from "../components/Route";
 
 export const BrowseView: React.FC = () => {
   const { profileId } = useRouteParams(["/profiles/:profileId"]);
@@ -24,7 +24,7 @@ export const BrowseView: React.FC = () => {
           width: "100%"
         }}
       >
-        <Logo />
+        <SoundWaveLogo />
         <Card
           css={{ display: "flex", flexDirection: "column", padding: "$lg" }}
         >

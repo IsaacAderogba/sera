@@ -2,8 +2,8 @@ import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Flex } from "../components/Flex";
 import { Form, FormInput } from "../components/Form";
-import { Logo } from "../components/Logo";
 import { Text, Title } from "../components/Typography";
+import { SoundWaveLogo } from "../patterns/Logo/SoundWaveLogo";
 import { client } from "../utilities/client";
 
 export const AuthView: React.FC = () => {
@@ -29,7 +29,7 @@ export const AuthView: React.FC = () => {
           width: "100%"
         }}
       >
-        <Logo />
+        <SoundWaveLogo />
         <Card
           css={{
             display: "flex",
