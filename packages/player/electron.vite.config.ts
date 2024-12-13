@@ -4,17 +4,11 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()],
+    plugins: [externalizeDepsPlugin({ include: ["knex", "elevenlabs"] })],
     build: {
       outDir: path.join(__dirname, "dist", "main"),
       lib: {
         entry: path.join(__dirname, "src", "main", "index.ts")
-      },
-      rollupOptions: {
-        external: ["knex"],
-        output: {
-          format: "cjs"
-        }
       }
     }
   },
