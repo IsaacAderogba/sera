@@ -24,7 +24,7 @@ yarn dev
 
 Once running, enter your ElevenLabs [access token](https://elevenlabs.io/) to log in. You can then create custom playlists and use the "Generate song" button to generate background music according to your desired prompt.
 
-## Architecture
+## Structure
 
 Each project folder within the `src` directory helps define a core piece of the project:
 
