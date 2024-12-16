@@ -27,7 +27,7 @@ export const createAppWindow = async () => {
   const panelWindow = createWindow("main", {
     type: "panel",
     width: 640,
-    height: 380,
+    height: 320,
     fullscreenable: false,
     resizable: false,
     maximizable: false,

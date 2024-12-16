@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -7,13 +8,20 @@ import {
   SunIcon,
   TrashIcon
 } from "@heroicons/react/24/outline";
-import { Button, IconButton, Text } from "@radix-ui/themes";
+import { Button, IconButton, Text, TextArea } from "@radix-ui/themes";
 import { Item } from "../preload/types";
 import { useAppContext } from "../providers/AppContext";
 import { AppProvider } from "../providers/AppProvider";
 import { ThemeProvider } from "../providers/ThemeProvider";
 import { styled } from "../utilities/stitches";
 import { useThemeContext } from "../providers/ThemeContext";
+import {
+  DependencyList,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 export const MainApp: React.FC = () => {
   return (
@@ -94,6 +102,7 @@ const PanelBody: React.FC = () => {
 const PanelFooter: React.FC = () => {
   const { state, dispatch } = useAppContext();
   const { state: themeState, setThemePreference } = useThemeContext();
+  const [loading, setLoading] = useState(false);
   const { index, items } = state;
   const { mode } = themeState;
 
@@ -172,10 +181,28 @@ const PanelFooter: React.FC = () => {
       </Flex>
       <Flex css={{ flex: 1, justifyContent: "end" }}>
         <Button
+          loading={loading}
           highContrast
           size="2"
-          onClick={() => {
-            // paste into foregrounded app or generate track
+          onClick={async () => {
+            if (!item) return;
+            setLoading(true);
+
+            try {
+              if (item.audioFilename) {
+                // todo
+              } else {
+                dispatch({
+                  type: "update-item",
+                  payload: {
+                    id: item.id,
+                    item: await window.ipc.invoke("generateMusic", item)
+                  }
+                });
+              }
+            } finally {
+              setLoading(false);
+            }
           }}
         >
           {item?.audioFilename ? "Paste in background" : "Generate"}
@@ -187,8 +214,20 @@ const PanelFooter: React.FC = () => {
 
 const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
   const { state, dispatch } = useAppContext();
-  const { items } = state;
 
+  const [prompt, onPromptChange] = useState(item.prompt);
+  useEffect(() => onPromptChange(item.prompt), [item.id]);
+  const debouncedPromptUpdate = useDebounceCallback(
+    (prompt: string) => {
+      return dispatch({
+        type: "update-item",
+        payload: { id: item.id, item: { prompt } }
+      });
+    },
+    [item.id]
+  );
+
+  const { items } = state;
   const selectedId = state.items[state.index]?.id;
   const isSelectedItem = item.id === selectedId;
   const isItemPlaying = isSelectedItem && state.audio.type !== "pause";
@@ -199,7 +238,20 @@ const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
 
   return (
     <Flex css={{ flexDirection: "column", height: "100%" }}>
-      <Flex css={{ padding: "$base", flex: 1 }}>editor</Flex>
+      <Flex css={{ padding: "$md $base", flex: 1, width: "100%" }}>
+        <TextArea
+          size="3"
+          variant="soft"
+          placeholder="Enter prompt..."
+          style={{ width: "100%", background: "transparent", outline: "none" }}
+          value={prompt}
+          onChange={e => {
+            const title = e.target.value;
+            onPromptChange(title);
+            debouncedPromptUpdate(title);
+          }}
+        />
+      </Flex>
       <Flex
         css={{
           padding: "$base",
@@ -237,12 +289,7 @@ const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             variant="solid"
             color="gray"
             highContrast
-            style={{
-              margin: 0,
-              position: "absolute",
-              width: "28px",
-              height: "28px"
-            }}
+            style={{ position: "absolute", width: "28px", height: "28px" }}
           >
             {isItemPlaying ? <PauseIcon width={16} /> : <PlayIcon width={16} />}
           </IconButton>
@@ -254,7 +301,6 @@ const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
 };
 
 const Span = styled("span");
-const Box = styled("div");
 const Flex = styled("div", { display: "flex" });
 const Progress = styled("progress", {});
 const Card = styled("div", {
@@ -267,11 +313,36 @@ const Card = styled("div", {
   height: "100%"
 });
 
+function useDebounceCallback<T extends (...args) => void>(
+  func: T,
+  deps: DependencyList,
+  delay = 500
+) {
+  const timer = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    return () => {
+      if (!timer.current) return;
+      clearTimeout(timer.current);
+    };
+  }, deps);
+
+  const debouncedFunction = useCallback((...args) => {
+    const newTimer = setTimeout(() => {
+      func(...args);
+    }, delay);
+
+    clearTimeout(timer.current);
+    timer.current = newTimer;
+  }, deps);
+
+  return debouncedFunction as T;
+}
+
 function formatSeconds(seconds = 0): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
 
-  // Pad minutes and seconds with leading zeros if necessary
   const formattedMinutes = String(minutes).padStart(1, "0");
   const formattedSeconds = String(remainingSeconds).padStart(2, "0");
 
