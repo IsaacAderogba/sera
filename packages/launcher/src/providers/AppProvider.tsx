@@ -24,6 +24,7 @@ const getAppState = (): AppState => {
 
   return {
     index: 0,
+    audio: { type: "pause", time: 0 },
     items: [
       { id: generateId(), prompt: "", audioDuration: 0, audioFilename: "" }
     ]

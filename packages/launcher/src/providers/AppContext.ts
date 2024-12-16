@@ -16,6 +16,7 @@ export interface AppStore {
 }
 
 export interface AppState {
+  audio: { type: "play" | "playing" | "pause"; time: number };
   index: number;
   items: Item[];
 }
