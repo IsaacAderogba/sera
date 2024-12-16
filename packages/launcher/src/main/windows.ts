@@ -1,6 +1,7 @@
 import {
   BrowserWindow,
   BrowserWindowConstructorOptions,
+  globalShortcut,
   shell
 } from "electron";
 import path from "path";
@@ -23,18 +24,38 @@ export const initializeWindows = async () => {
 };
 
 export const createAppWindow = async () => {
-  const appWindow = createWindow("main", {
-    width: 1000,
-    height: 800,
-    minWidth: 500,
-    minHeight: 400,
-    transparent: false,
-    titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
-    trafficLightPosition: { x: 12, y: 16 }
+  const panelWindow = createWindow("main", {
+    type: "panel",
+    width: 640,
+    height: 380,
+    fullscreenable: false,
+    resizable: false,
+    maximizable: false,
+    center: true,
+    frame: false,
+    minimizable: false,
+    closable: false
   });
 
-  appWindow.once("ready-to-show", () => appWindow.show());
-  return appWindow;
+  panelWindow.setVisibleOnAllWorkspaces(true);
+  // panelWindow.on("blur", () => panelWindow.hide());
+  // panelWindow.on("show", () => panelWindow.focus());
+  panelWindow.on("close", e => {
+    e.preventDefault();
+    panelWindow.hide();
+  });
+
+  const togglePanelWindow = () => {
+    if (panelWindow.isVisible()) return panelWindow.hide();
+    panelWindow.moveTop();
+    panelWindow.show();
+  };
+
+  globalShortcut.register("CommandOrControl+Shift+Space", () => {
+    togglePanelWindow();
+  });
+
+  return panelWindow;
 };
 
 const createWindow = (

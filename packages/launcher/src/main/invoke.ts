@@ -15,13 +15,15 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
     setThemeSource: async themeSource => {
       nativeTheme.themeSource = themeSource;
     },
-    generateMusic: async description => {
+    generateMusic: async item => {
       const client = new ElevenLabsClient({
         apiKey: import.meta.env["MAIN_VITE_ELEVENLABS_API_KEY"]
       });
+
+      const audioDuration = 15;
       const readable = await client.textToSoundEffects.convert({
-        text: description,
-        duration_seconds: 15
+        text: item.prompt,
+        duration_seconds: audioDuration
       });
       const audioFilename = await new Promise<string>((resolve, reject) => {
         const audioFilename = `${new Date().getTime()}.mp3`;
@@ -40,7 +42,7 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
         return audioPath;
       });
 
-      return audioFilename;
+      return { ...item, audioFilename, audioDuration };
     }
   };
 
