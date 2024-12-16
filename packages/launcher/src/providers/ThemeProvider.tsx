@@ -46,6 +46,8 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
     window.localStorage.setItem("theme-preference", preference);
     window.ipc.invoke("setThemeSource", preference);
 
+    console.log("change theme");
+
     setState(state => ({ ...state, mode: setThemeMode(preference) }));
   }, []);
 

@@ -35,5 +35,8 @@ type UpdateItemAction = {
   payload: { id: string; item: Partial<Item> };
 };
 type DeleteItemAction = { type: "delete-item"; payload: { id: string } };
-type NavigateUpAction = { type: "navigate-up"; payload: never };
-type NavigateDownAction = { type: "navigate-down"; payload: never };
+type NavigateUpAction = { type: "navigate-up"; payload: Record<string, never> };
+type NavigateDownAction = {
+  type: "navigate-down";
+  payload: Record<string, never>;
+};
