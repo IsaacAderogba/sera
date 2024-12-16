@@ -205,7 +205,7 @@ const PanelFooter: React.FC = () => {
             }
           }}
         >
-          {item?.audioFilename ? "Paste in background" : "Generate"}
+          {item?.audioFilename ? "Save" : "Generate"}
         </Button>
       </Flex>
     </Flex>
