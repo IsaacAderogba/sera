@@ -290,6 +290,14 @@ const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             color="gray"
             highContrast
             style={{ position: "absolute", width: "28px", height: "28px" }}
+            onClick={() => {
+              if (!item.audioFilename) return;
+
+              dispatch({
+                type: "audio",
+                payload: { type: isItemPlaying ? "pause" : "play" }
+              });
+            }}
           >
             {isItemPlaying ? <PauseIcon width={16} /> : <PlayIcon width={16} />}
           </IconButton>

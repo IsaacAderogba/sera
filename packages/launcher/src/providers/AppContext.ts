@@ -26,7 +26,8 @@ export type AppAction =
   | UpdateItemAction
   | DeleteItemAction
   | NavigateUpAction
-  | NavigateDownAction;
+  | NavigateDownAction
+  | AudioAction;
 type CreateItemAction = {
   type: "create-item";
   payload: { item: Omit<Item, "id"> };
@@ -40,4 +41,9 @@ type NavigateUpAction = { type: "navigate-up"; payload: Record<string, never> };
 type NavigateDownAction = {
   type: "navigate-down";
   payload: Record<string, never>;
+};
+
+type AudioAction = {
+  type: "audio";
+  payload: Partial<{ type: "play" | "playing" | "pause"; time: number }>;
 };
