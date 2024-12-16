@@ -1,3 +1,4 @@
+import "@radix-ui/themes/styles.css";
 import ReactDOM from "react-dom/client";
 import { MainApp } from "./MainApp";
 

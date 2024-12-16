@@ -57,9 +57,9 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <ThemeContext.Provider value={value}>
       <Theme
-        accentColor="blue"
+        accentColor="gray"
         appearance={state.mode}
-        style={{ height: "100%" }}
+        style={{ height: "100%", background: "transparent" }}
       >
         {children}
       </Theme>
