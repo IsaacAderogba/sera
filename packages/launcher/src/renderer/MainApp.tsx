@@ -1,3 +1,5 @@
+import { ThemeProvider } from "../providers/ThemeProvider";
+
 export const MainApp: React.FC = () => {
-  return <div>todo</div>;
+  return <ThemeProvider>todo</ThemeProvider>;
 };

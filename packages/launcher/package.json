@@ -14,7 +14,9 @@
     "dev": "electron-vite dev --watch",
     "build": "yarn typecheck:node && yarn typecheck:web && electron-vite build"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@radix-ui/themes": "^3.1.6"
+  },
   "devDependencies": {
     "@heroicons/react": "^2.2.0",
     "@stitches/react": "^1.2.8",

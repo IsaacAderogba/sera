@@ -1,5 +1,5 @@
 import { ElevenLabsClient } from "elevenlabs";
-import { app, IpcMainInvokeEvent } from "electron";
+import { app, IpcMainInvokeEvent, nativeTheme } from "electron";
 import { IPCInvokeEvents } from "../preload/types";
 import path from "path";
 import fs from "fs";
@@ -12,6 +12,9 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
   console.log("[invoke]", subject);
 
   const handlers: Partial<IPCInvokeEvents> = {
+    setThemeSource: async themeSource => {
+      nativeTheme.themeSource = themeSource;
+    },
     generateMusic: async description => {
       const client = new ElevenLabsClient({
         apiKey: import.meta.env["MAIN_VITE_ELEVENLABS_API_KEY"]

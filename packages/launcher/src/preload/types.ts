@@ -9,8 +9,12 @@ export type Invoke = <T extends keyof IPCInvokeEvents>(
   ...data: Parameters<IPCInvokeEvents[T]>
 ) => ReturnType<IPCInvokeEvents[T]>;
 
+export type ThemePreference = "dark" | "light" | "system";
+export type ThemeMode = "dark" | "light";
+
 export type IPCInvokeEvents = {
   generateMusic: (description: string) => Promise<string>;
+  setThemeSource: (preference: ThemePreference) => Promise<void> | void;
 };
 
 export interface IPCContext {
