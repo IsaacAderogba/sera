@@ -7,8 +7,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 test("smoke test", async () => {
+  const executablePath = await getExecutablePath();
   const app = await electron.launch({
-    executablePath: await getExecutablePath(),
+    executablePath,
+    args: executablePath.includes("linux") ? ["--no-sandbox"] : [],
     env: {
       ...process.env,
       NODE_ENV: "test",
