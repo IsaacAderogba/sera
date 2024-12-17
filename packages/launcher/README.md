@@ -22,7 +22,7 @@ yarn
 yarn dev
 ```
 
-Once running, enter your ElevenLabs [access token](https://elevenlabs.io/) to log in. You can then create custom playlists and use the "Generate song" button to generate background music according to your desired prompt.
+Once running, enter your ElevenLabs [access token](https://elevenlabs.io/) to log in. You can then enter a prompt and click the "Generate" button to create a sound effect that you can then drag and drop into any other app.
 
 ## Structure
 

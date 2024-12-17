@@ -3,9 +3,10 @@ import { app, IpcMainInvokeEvent, nativeTheme } from "electron";
 import { IPCInvokeEvents } from "../preload/types";
 import path from "path";
 import fs from "fs";
+import { RESOURCES_FOLDER } from "./constants";
 
 export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
-  _event: IpcMainInvokeEvent,
+  event: IpcMainInvokeEvent,
   subject: T,
   ...data
 ) => {
@@ -43,6 +44,14 @@ export const onIPCInvoke = async <T extends keyof IPCInvokeEvents>(
       });
 
       return { ...item, audioFilename, audioDuration };
+    },
+    startDrag: audioFilename => {
+      const audioPath = path.join(app.getPath("userData"), audioFilename);
+
+      event.sender.startDrag({
+        file: audioPath,
+        icon: path.join(RESOURCES_FOLDER, "musical-note.png")
+      });
     }
   };
 

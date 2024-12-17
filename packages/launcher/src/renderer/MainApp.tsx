@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  ArrowsPointingOutIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   PauseIcon,
@@ -8,7 +9,7 @@ import {
   SunIcon,
   TrashIcon
 } from "@heroicons/react/24/outline";
-import { Button, IconButton, Text, TextArea } from "@radix-ui/themes";
+import { Button, IconButton, Text, TextArea, Tooltip } from "@radix-ui/themes";
 import { Item } from "../preload/types";
 import { useAppContext } from "../providers/AppContext";
 import { AppProvider } from "../providers/AppProvider";
@@ -181,31 +182,28 @@ const PanelFooter: React.FC = () => {
       </Flex>
       <Flex css={{ flex: 1, justifyContent: "end" }}>
         <Button
+          disabled={Boolean(item.audioFilename)}
           loading={loading}
           highContrast
           size="2"
           onClick={async () => {
             if (!item) return;
-            setLoading(true);
 
             try {
-              if (item.audioFilename) {
-                // todo
-              } else {
-                dispatch({
-                  type: "update-item",
-                  payload: {
-                    id: item.id,
-                    item: await window.ipc.invoke("generateMusic", item)
-                  }
-                });
-              }
+              setLoading(true);
+              dispatch({
+                type: "update-item",
+                payload: {
+                  id: item.id,
+                  item: await window.ipc.invoke("generateMusic", item)
+                }
+              });
             } finally {
               setLoading(false);
             }
           }}
         >
-          {item?.audioFilename ? "Save" : "Generate"}
+          Generate
         </Button>
       </Flex>
     </Flex>
@@ -302,7 +300,30 @@ const ItemComponent: React.FC<{ item: Item }> = ({ item }) => {
             {isItemPlaying ? <PauseIcon width={16} /> : <PlayIcon width={16} />}
           </IconButton>
         </Flex>
-        <Flex css={{ flex: 1, justifyContent: "end" }}></Flex>
+        <Flex css={{ flex: 1, justifyContent: "end" }}>
+          <Tooltip content="Drag into other apps">
+            <Flex
+              draggable={Boolean(item.audioFilename)}
+              onDragStart={event => {
+                event.preventDefault();
+                window.ipc.invoke("startDrag", item.audioFilename);
+              }}
+            >
+              <IconButton
+                id="drag"
+                size="2"
+                variant="ghost"
+                disabled={!item.audioFilename}
+                style={{ margin: 0 }}
+              >
+                <ArrowsPointingOutIcon
+                  width={20}
+                  style={{ transform: "rotate(45deg)" }}
+                />
+              </IconButton>
+            </Flex>
+          </Tooltip>
+        </Flex>
       </Flex>
     </Flex>
   );

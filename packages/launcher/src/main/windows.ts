@@ -38,7 +38,7 @@ export const createAppWindow = async () => {
   });
 
   panelWindow.setVisibleOnAllWorkspaces(true);
-  // panelWindow.on("blur", () => panelWindow.hide());
+  panelWindow.on("blur", () => panelWindow.hide());
   // panelWindow.on("show", () => panelWindow.focus());
   panelWindow.on("close", e => {
     e.preventDefault();

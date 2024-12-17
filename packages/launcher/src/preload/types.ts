@@ -12,6 +12,8 @@ export type Invoke = <T extends keyof IPCInvokeEvents>(
 export type IPCInvokeEvents = {
   generateMusic: (item: Item) => Promise<Item>;
   setThemeSource: (preference: ThemePreference) => Promise<void> | void;
+
+  startDrag: (audioFilename: string) => void;
 };
 
 export interface IPCContext {
