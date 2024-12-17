@@ -33,7 +33,7 @@ Each project folder within the `src` directory helps define a core piece of the 
 - `preload`: This directory contains files for setting up a preload script that runs before the Main/Menubar app is loaded into an appliation window (necessary for security purposes). These files also define the IPC communication contract that the main and renderer process need to adhere by.
 - `components`: This directory contains files for a custom React component library.
 - `patterns`: This directory contains files for reusable components that are built on top of the base library.
-- `views`: This directory contains the main user interface views, reusing code from the previously-defined patterns..
+- `views`: This directory contains the main user interface views, reusing code from the previously-defined patterns.
 - `hooks`: This directory contains reusable hooks such as `useValidations` which is used to support custom validation (the `Form` component uses this, for example).
 - `utilities`: This directory contains utility code that is used across the project.
 
