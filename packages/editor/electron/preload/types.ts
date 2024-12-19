@@ -1,6 +1,12 @@
+import { RenderMediaOnProgress } from "@remotion/renderer";
+
 declare global {
   interface Window {
-    ipc: { invoke: Invoke };
+    ipc: {
+      invoke: Invoke;
+      publish: Publish;
+      subscribe: Subscribe;
+    };
   }
 }
 
@@ -9,8 +15,27 @@ export type Invoke = <T extends keyof IPCInvokeEvents>(
   ...data: Parameters<IPCInvokeEvents[T]>
 ) => ReturnType<IPCInvokeEvents[T]>;
 
+export type Publish = <T extends keyof IPCBroadcastEvents>(
+  subject: T,
+  ...data: Parameters<IPCBroadcastEvents[T]>
+) => void;
+
+export type Subscribe = <T extends keyof IPCBroadcastEvents>(
+  subject: T,
+  listener: (
+    context: IPCContext,
+    ...data: Parameters<IPCBroadcastEvents[T]>
+  ) => void
+) => () => void;
+
+export type IPCBroadcastEvents = {
+  themeChange: (preference: ThemePreference) => Promise<void>;
+  renderChange: RenderMediaOnProgress;
+};
+
 export type IPCInvokeEvents = {
-  setThemeSource: (preference: ThemePreference) => Promise<void> | void;
+  render: (props: any) => Promise<void>;
+  bundle: (props: any) => Promise<void>;
 };
 
 export interface IPCContext {

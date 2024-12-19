@@ -22,6 +22,7 @@
   "include": [
     "electron.vite.config.*",
     "electron/main/**/*",
-    "electron/preload/**/*"
+    "electron/preload/**/*",
+    "electron/remotion/**/*"
   ]
 }
