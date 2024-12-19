@@ -131,3 +131,4 @@ dist
 .DS_Store
 test-results
 database.db3
+release
