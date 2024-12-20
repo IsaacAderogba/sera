@@ -1,3 +1,4 @@
+import { merge } from "lodash-es";
 import {
   combineReducers,
   configureStore,
@@ -9,28 +10,25 @@ import {
   useSelector as useReduxSelector
 } from "react-redux";
 import { createLogger } from "redux-logger";
-import { CompositionRenderProps } from "../remotion/types";
+import {
+  CompositionState,
+  EditorTrack,
+  EditorTrackItem
+} from "../remotion/types";
+import { DeepPartial } from "../utilities/types";
 
 export interface EditorState {
-  compositionUndo: CompositionRenderProps[];
-  composition: CompositionRenderProps;
-  compositionRedo: CompositionRenderProps[];
+  compositionUndo: CompositionState[];
+  composition: CompositionState;
+  compositionRedo: CompositionState[];
 }
 
 function getEditorState(): EditorState {
   return {
     compositionUndo: [],
     composition: {
-      titleText: "Welcome To Electron + Remotion",
-      titleColor: "#000000",
-      logoColor1: "#91EAE4",
-      logoColor2: "#86A8E7",
-      metadata: {
-        durationInFrames: 150,
-        compositionWidth: 1920,
-        compositionHeight: 1080,
-        fps: 30
-      }
+      tracks: {},
+      trackItems: {}
     },
     compositionRedo: []
   };
@@ -76,17 +74,76 @@ const editorSlice = createSlice({
 });
 
 function commitComposition(
-  state: CompositionRenderProps,
+  state: CompositionState,
   action: EditorAction
-): CompositionRenderProps {
+): CompositionState {
+  const tracks = { ...state.tracks };
+  const trackItems = { ...state.trackItems };
+
   switch (action.type) {
+    case "create-track": {
+      tracks[action.payload.data.id] = action.payload.data;
+      return { ...state, tracks };
+    }
+    case "update-track": {
+      const { id, data } = action.payload;
+      if (tracks[id]) tracks[id] = merge({}, tracks[id], data);
+      return { ...state, tracks };
+    }
+    case "delete-track": {
+      delete tracks[action.payload.id];
+      return { ...state, tracks };
+    }
+    case "create-track-item": {
+      trackItems[action.payload.data.id] = action.payload.data;
+      return { ...state, trackItems };
+    }
+    case "update-track-item": {
+      const { id, data } = action.payload;
+      if (trackItems[id]) trackItems[id] = merge({}, trackItems[id], data);
+      return { ...state, trackItems };
+    }
+    case "delete-track-item": {
+      delete trackItems[action.payload.id];
+      return { ...state, trackItems };
+    }
     default:
       return state;
   }
 }
 
-type EditorAction = EditorTodoAction;
-type EditorTodoAction = { type: "todo"; data: Record<string, never> };
+type EditorAction =
+  | EditorCreateTrackAction
+  | EditorUpdateTrackAction
+  | EditorDeleteTrackAction
+  | EditorCreateTrackItemAction
+  | EditorUpdateTrackItemAction
+  | EditorDeleteTrackItemAction;
+
+type EditorCreateTrackAction = {
+  type: "create-track";
+  payload: { data: EditorTrack };
+};
+type EditorUpdateTrackAction = {
+  type: "update-track";
+  payload: { id: string; data: DeepPartial<EditorTrack> };
+};
+type EditorDeleteTrackAction = {
+  type: "delete-track";
+  payload: { id: string };
+};
+type EditorCreateTrackItemAction = {
+  type: "create-track-item";
+  payload: { data: EditorTrackItem };
+};
+type EditorUpdateTrackItemAction = {
+  type: "update-track-item";
+  payload: { id: string; data: DeepPartial<EditorTrackItem> };
+};
+type EditorDeleteTrackItemAction = {
+  type: "delete-track-item";
+  payload: { id: string };
+};
 
 export type StoreState = {
   editor: EditorState;

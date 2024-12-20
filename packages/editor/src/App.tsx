@@ -2,7 +2,7 @@ import { Player } from "@remotion/player";
 import { StitchingState } from "@remotion/renderer";
 import { useEffect, useState } from "react";
 import { HelloWorld } from "./remotion/video/HelloWorld";
-import { CompositionRenderProps } from "./remotion/types";
+import { CompositionProps } from "./remotion/types";
 import { Flex } from "./components/Flex";
 
 interface RenderProgress {
@@ -17,7 +17,7 @@ interface RenderProgress {
 
 function App() {
   const [isRendering, setIsRendering] = useState(false);
-  const [inputProps, setInputProps] = useState<CompositionRenderProps>({
+  const [inputProps, setInputProps] = useState<CompositionProps>({
     titleText: "Welcome To Electron + Remotion",
     titleColor: "#000000",
     logoColor1: "#91EAE4",

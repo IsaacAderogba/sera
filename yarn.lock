@@ -1785,6 +1785,18 @@
   dependencies:
     "@types/node" "*"
 
+"@types/lodash-es@^4.17.12":
+  version "4.17.12"
+  resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.12.tgz#65f6d1e5f80539aa7cfbfc962de5def0cf4f341b"
+  integrity sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.17.13"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.13.tgz#786e2d67cfd95e32862143abe7463a7f90c300eb"
+  integrity sha512-lfx+dftrEZcdBPczf9d0Qv0x+j/rfNCMuC6OcfXmO8gkfeNAY88PgKUbvG56whcN23gc27yenwF6oJZXGFpYxg==
+
 "@types/ms@*":
   version "0.7.34"
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.34.tgz#10964ba0dee6ac4cd462e2795b6bebd407303433"
@@ -4977,6 +4989,11 @@ locate-path@^7.2.0:
   dependencies:
     p-locate "^6.0.0"
 
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
+
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
@@ -7093,6 +7110,11 @@ util-deprecate@^1.0.1, util-deprecate@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
+
+uuid@^11.0.3:
+  version "11.0.3"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-11.0.3.tgz#248451cac9d1a4a4128033e765d137e2b2c49a3d"
+  integrity sha512-d0z310fCWv5dJwnX1Y/MncBAqGMKEzlBb1AOf7z9K8ALnd0utBX/msg/fA0+sbyN1ihbMsLhrBlnl1ak7Wa0rg==
 
 value-equal@^1.0.1:
   version "1.0.1"

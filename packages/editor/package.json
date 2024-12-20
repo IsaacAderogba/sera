@@ -24,13 +24,16 @@
     "@remotion/renderer": "^4.0.241",
     "electron-log": "^5.2.4",
     "elevenlabs": "^1.50.2",
+    "lodash-es": "^4.17.21",
     "react-redux": "^9.2.0",
     "redux-logger": "^3.0.6",
-    "remotion": "^4.0.241"
+    "remotion": "^4.0.241",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@heroicons/react": "^2.2.0",
     "@stitches/react": "^1.2.8",
+    "@types/lodash-es": "^4.17.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/redux-logger": "^3.0.13",

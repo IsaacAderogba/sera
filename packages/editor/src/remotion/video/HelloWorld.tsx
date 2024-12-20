@@ -9,9 +9,9 @@ import {
 import { Logo } from "./HelloWorld/Logo";
 import { Subtitle } from "./HelloWorld/Subtitle";
 import { Title } from "./HelloWorld/Title";
-import { CompositionRenderProps } from "../types";
+import { CompositionProps } from "../types";
 
-export const HelloWorld: React.FC<CompositionRenderProps> = ({
+export const HelloWorld: React.FC<CompositionProps> = ({
   titleText: propOne,
   titleColor: propTwo,
   logoColor1,
