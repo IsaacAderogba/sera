@@ -4,8 +4,7 @@ import {
   selectComposition
 } from "@remotion/renderer";
 import { app, shell } from "electron";
-import log from "electron-log/main";
-import os from "os";
+import log from "electron-log/main.js";
 import path from "path";
 
 function isMusl(): boolean {

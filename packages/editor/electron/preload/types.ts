@@ -1,4 +1,4 @@
-import { RenderMediaOnProgress } from "@remotion/renderer";
+import type { RenderMediaOnProgress } from "@remotion/renderer";
 
 declare global {
   interface Window {

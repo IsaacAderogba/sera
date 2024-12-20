@@ -1,5 +1,5 @@
 import { IpcMainInvokeEvent } from "electron";
-import log from "electron-log/main";
+import log from "electron-log/main.js";
 import { IPCInvokeEvents } from "../preload/types";
 import { bundle } from "../remotion/bundle";
 import { render } from "../remotion/render";
