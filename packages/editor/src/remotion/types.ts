@@ -16,6 +16,8 @@ export interface CompositionState {
   trackItems: Record<string, EditorTrackItem>;
 }
 
+// i feel like duration should be derived
+
 export type EditorTrack = TextTrack | VideoTrack | AudioTrack;
 
 export interface TextTrack extends Track {

@@ -1,4 +1,4 @@
-import { app, session } from "electron";
+import { app, protocol, session } from "electron";
 import path from "path";
 import { DEEPLINK_PROTOCOL } from "./constants";
 
@@ -12,9 +12,32 @@ export const registerProtocolSchemes = () => {
   } else {
     app.setAsDefaultProtocolClient(DEEPLINK_PROTOCOL);
   }
+
+  protocol.registerSchemesAsPrivileged([
+    {
+      scheme: "video",
+      privileges: { bypassCSP: true, stream: true, supportFetchAPI: true }
+    },
+    {
+      scheme: "audio",
+      privileges: { bypassCSP: true, stream: true, supportFetchAPI: true }
+    }
+  ]);
 };
 
-export const handleProtocols = () => {};
+export const handleProtocols = (ses = session.defaultSession) => {
+  ses.protocol.handle("video", async request => {
+    const filename = request.url.substring("video://".length);
+    const videoPath = path.join(app.getPath("userData"), "video", filename);
+    return ses.fetch(`file://${videoPath}`);
+  });
+
+  ses.protocol.handle("audio", request => {
+    const filename = request.url.substring("audio://".length);
+    const audioPath = path.join(app.getPath("userData"), "audio", filename);
+    return ses.fetch(`file://${audioPath}`);
+  });
+};
 
 export const setContentSecurityPolicy = () => {
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
