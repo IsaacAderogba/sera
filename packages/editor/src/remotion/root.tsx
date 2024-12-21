@@ -12,7 +12,7 @@ export const RemotionRoot: React.FC = () => {
         id="DefaultComposition"
         // @ts-expect-error - skipping schema validation
         component={DefaultComposition}
-        durationInFrames={state.metadata.duration * state.metadata.fps}
+        durationInFrames={(state.metadata.duration / 1000) * state.metadata.fps}
         fps={state.metadata.fps}
         width={state.metadata.width}
         height={state.metadata.height}

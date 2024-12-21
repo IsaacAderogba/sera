@@ -1500,6 +1500,11 @@
   resolved "https://registry.yarnpkg.com/@remotion/compositor-win32-x64-msvc/-/compositor-win32-x64-msvc-4.0.241.tgz#d4071e8d80502b0e86b9202dcf9b0b32012d0079"
   integrity sha512-NZ/SEtx/wA/A8E2J3beLnz6IOLiVb3GDhJEehvze+Tw9KlXmKH9sWFfjo7a8gd753BmuBJMi9cjkyKLLahHIBw==
 
+"@remotion/media-parser@^4.0.241":
+  version "4.0.241"
+  resolved "https://registry.yarnpkg.com/@remotion/media-parser/-/media-parser-4.0.241.tgz#32b764f2a0e493094ed6d1a3fde3fb3427840532"
+  integrity sha512-4rFyEf3BPaTqZKnpgknsoJ4qE483k68+LjpMwKKYBVdrzXoy2f2WPpD57M4mlZLxuhKKmJP5H/hBE4wfMvy48Q==
+
 "@remotion/media-utils@4.0.241":
   version "4.0.241"
   resolved "https://registry.yarnpkg.com/@remotion/media-utils/-/media-utils-4.0.241.tgz#52ae5dc051ce7156b829d96af26782d7afe63ada"

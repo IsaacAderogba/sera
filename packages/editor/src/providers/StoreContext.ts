@@ -10,11 +10,7 @@ import {
   useSelector as useReduxSelector
 } from "react-redux";
 import { createLogger } from "redux-logger";
-import {
-  CompositionState,
-  EditorTrack,
-  EditorTrackItem
-} from "../remotion/types";
+import { CompositionState, EditorTrack, TrackItem } from "../remotion/types";
 import { initializeCompositionState } from "../remotion/utilities";
 import { DeepPartial } from "../utilities/types";
 
@@ -132,11 +128,11 @@ type EditorDeleteTrackAction = {
 };
 type EditorCreateTrackItemAction = {
   type: "create-track-item";
-  payload: { data: EditorTrackItem };
+  payload: { data: TrackItem };
 };
 type EditorUpdateTrackItemAction = {
   type: "update-track-item";
-  payload: { id: string; data: DeepPartial<EditorTrackItem> };
+  payload: { id: string; data: DeepPartial<TrackItem> };
 };
 type EditorDeleteTrackItemAction = {
   type: "delete-track-item";

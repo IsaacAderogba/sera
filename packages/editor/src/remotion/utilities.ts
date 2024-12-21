@@ -21,7 +21,9 @@ export const initializeCompositionState = (): CompositionState => {
         trackId: videoTrackId,
         name: "Video Example",
         type: "video",
-        duration: null,
+        from: 0,
+        duration: 0,
+        playbackRate: 1,
         data: { src: "video://video.mp4" }
       },
       [audioTrackItemId]: {
@@ -29,7 +31,9 @@ export const initializeCompositionState = (): CompositionState => {
         trackId: audioTrackId,
         name: "Audio Example",
         type: "audio",
-        duration: null,
+        from: 0,
+        duration: 0,
+        playbackRate: 1,
         data: { src: "audio://audio.mp3" }
       },
       [textTrackItemId]: {
@@ -37,12 +41,14 @@ export const initializeCompositionState = (): CompositionState => {
         trackId: textTrackId,
         name: "Text Example",
         type: "text",
-        duration: 5,
+        from: 0,
+        duration: 5000,
+        playbackRate: 1,
         data: { text: "Hello World" }
       }
     },
     metadata: {
-      duration: 5,
+      duration: 5000,
       fps: 30,
       width: 1920,
       height: 1080

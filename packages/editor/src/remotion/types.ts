@@ -12,8 +12,8 @@ export interface CompositionProps {
 }
 
 export interface CompositionState {
-  tracks: Record<string, EditorTrack>;
-  trackItems: Record<string, EditorTrackItem>;
+  tracks: Record<string, Track>;
+  trackItems: Record<string, TrackItem>;
   metadata: CompositionMetadata;
 }
 
@@ -24,28 +24,28 @@ export interface CompositionMetadata {
   height: number;
 }
 
-export type EditorTrack = TextTrack | VideoTrack | AudioTrack;
+export type Track = TextTrack | VideoTrack | AudioTrack;
 
-export interface TextTrack extends Track {
+export interface TextTrack extends BaseTrack {
   type: "text";
 }
 
-export interface VideoTrack extends Track {
+export interface VideoTrack extends BaseTrack {
   type: "video";
 }
 
-export interface AudioTrack extends Track {
+export interface AudioTrack extends BaseTrack {
   type: "audio";
 }
 
-interface Track {
+interface BaseTrack {
   id: string;
   type: DataType;
 }
 
-export type EditorTrackItem = TextTrackItem | VideoTrackItem | AudioTrackItem;
+export type TrackItem = TextTrackItem | VideoTrackItem | AudioTrackItem;
 
-export interface TextTrackItem extends TrackItem {
+export interface TextTrackItem extends BaseTrackItem {
   type: "text";
   data: TextData;
 }
@@ -54,7 +54,7 @@ export interface TextData extends BaseData {
   text: string;
 }
 
-export interface VideoTrackItem extends TrackItem {
+export interface VideoTrackItem extends BaseTrackItem {
   type: "video";
   data: VideoData;
 }
@@ -63,7 +63,7 @@ export interface VideoData extends BaseData {
   src: string;
 }
 
-export interface AudioTrackItem extends TrackItem {
+export interface AudioTrackItem extends BaseTrackItem {
   type: "audio";
   data: AudioData;
 }
@@ -72,12 +72,14 @@ export interface AudioData extends BaseData {
   src: string;
 }
 
-interface TrackItem {
+interface BaseTrackItem {
   id: string;
   trackId: string;
   name: string;
   type: DataType;
-  duration: number | null;
+  from: number;
+  duration: number;
+  playbackRate: number;
 }
 
 interface BaseData {}

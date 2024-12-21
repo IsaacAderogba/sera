@@ -20,6 +20,7 @@
     "@radix-ui/themes": "^3.1.6",
     "@reduxjs/toolkit": "^2.5.0",
     "@remotion/bundler": "^4.0.241",
+    "@remotion/media-parser": "^4.0.241",
     "@remotion/player": "^4.0.241",
     "@remotion/renderer": "^4.0.241",
     "electron-log": "^5.2.4",
