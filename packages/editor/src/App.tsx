@@ -1,7 +1,7 @@
 import { Player } from "@remotion/player";
 import { StitchingState } from "@remotion/renderer";
 import { useEffect, useState } from "react";
-import { HelloWorld } from "./remotion/video/HelloWorld";
+import { HelloWorld } from "./_remotion/video/HelloWorld";
 import { CompositionProps } from "./remotion/types";
 import { Flex } from "./components/Flex";
 

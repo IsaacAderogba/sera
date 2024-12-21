@@ -1,10 +1,10 @@
-import { merge } from "lodash-es";
 import {
   combineReducers,
   configureStore,
   createSlice,
   PayloadAction
 } from "@reduxjs/toolkit";
+import { merge } from "lodash-es";
 import {
   TypedUseSelectorHook,
   useSelector as useReduxSelector
@@ -15,6 +15,7 @@ import {
   EditorTrack,
   EditorTrackItem
 } from "../remotion/types";
+import { initializeCompositionState } from "../remotion/utilities";
 import { DeepPartial } from "../utilities/types";
 
 export interface EditorState {
@@ -26,10 +27,7 @@ export interface EditorState {
 function getEditorState(): EditorState {
   return {
     compositionUndo: [],
-    composition: {
-      tracks: {},
-      trackItems: {}
-    },
+    composition: initializeCompositionState(),
     compositionRedo: []
   };
 }

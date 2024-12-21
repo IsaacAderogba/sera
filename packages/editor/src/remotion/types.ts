@@ -14,9 +14,15 @@ export interface CompositionProps {
 export interface CompositionState {
   tracks: Record<string, EditorTrack>;
   trackItems: Record<string, EditorTrackItem>;
+  metadata: CompositionMetadata;
 }
 
-// i feel like duration should be derived
+export interface CompositionMetadata {
+  duration: number;
+  fps: number;
+  width: number;
+  height: number;
+}
 
 export type EditorTrack = TextTrack | VideoTrack | AudioTrack;
 
@@ -45,7 +51,7 @@ export interface TextTrackItem extends TrackItem {
 }
 
 export interface TextData extends BaseData {
-  src: string;
+  text: string;
 }
 
 export interface VideoTrackItem extends TrackItem {
@@ -58,7 +64,7 @@ export interface VideoData extends BaseData {
 }
 
 export interface AudioTrackItem extends TrackItem {
-  type: "video";
+  type: "audio";
   data: AudioData;
 }
 
@@ -71,7 +77,7 @@ interface TrackItem {
   trackId: string;
   name: string;
   type: DataType;
-  duration: number;
+  duration: number | null;
 }
 
 interface BaseData {}

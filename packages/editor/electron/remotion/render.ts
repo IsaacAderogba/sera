@@ -72,7 +72,7 @@ export async function render(
   inputProps: Record<string, unknown>,
   onProgress: RenderMediaOnProgress
 ) {
-  const compositionId = "HelloWorld";
+  const compositionId = "DefaultComposition";
 
   const bundleLocation = path.join(app.getAppPath(), "out", "remotion-bundle");
   log.info(`Bundle location: ${bundleLocation}`);

@@ -9,7 +9,7 @@ import {
 import { Logo } from "./HelloWorld/Logo";
 import { Subtitle } from "./HelloWorld/Subtitle";
 import { Title } from "./HelloWorld/Title";
-import { CompositionProps } from "../types";
+import { CompositionProps } from "../../remotion/types";
 
 export const HelloWorld: React.FC<CompositionProps> = ({
   titleText: propOne,
