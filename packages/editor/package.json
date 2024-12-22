@@ -26,6 +26,7 @@
     "electron-log": "^5.2.4",
     "elevenlabs": "^1.50.2",
     "lodash-es": "^4.17.21",
+    "mime": "^4.0.6",
     "react-redux": "^9.2.0",
     "redux-logger": "^3.0.6",
     "remotion": "^4.0.241",
