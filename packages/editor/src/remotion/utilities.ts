@@ -1,6 +1,6 @@
 import { CalculateMetadataFunction, VideoConfig } from "remotion";
 import { v4 } from "uuid";
-import { CompositionState, Track, TrackItem } from "./types";
+import { CompositionState, TrackItem } from "./types";
 
 export const calculateCompositionMetadata: CalculateMetadataFunction<
   CompositionState

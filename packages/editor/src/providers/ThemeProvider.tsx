@@ -38,7 +38,7 @@ export const ThemeProvider: React.FC<PropsWithChildren> = ({ children }) => {
     ) as ThemeMode;
 
     return {
-      mode: setThemeMode(preference || "light")
+      mode: setThemeMode(preference || "dark")
     };
   });
 
