@@ -1,5 +1,20 @@
+import { CalculateMetadataFunction, VideoConfig } from "remotion";
 import { v4 } from "uuid";
-import { CompositionState } from "./types";
+import { CompositionState, TrackItem } from "./types";
+
+export const calculateMetadata: CalculateMetadataFunction<
+  CompositionState
+> = async ({ props }) => {
+  const { fps, height, width } = props.metadata;
+
+  let durationInFrames = 0;
+  for (const id in props.trackItems) {
+    const item = props.trackItems[id];
+    durationInFrames += calculateFrames(item, { fps }).durationInFrames;
+  }
+
+  return { fps, durationInFrames, height, width, props };
+};
 
 export const initializeCompositionState = (): CompositionState => {
   const videoTrackId = v4();
@@ -42,16 +57,28 @@ export const initializeCompositionState = (): CompositionState => {
         name: "Text Example",
         type: "text",
         from: 0,
-        duration: 5000,
+        duration: 5,
         playbackRate: 1,
         data: { text: "Hello World" }
       }
     },
     metadata: {
-      duration: 5000,
+      duration: 5,
       fps: 30,
       width: 1920,
       height: 1080
     }
   };
+};
+
+export const calculateFrames = (
+  trackItem: TrackItem,
+  options: Pick<VideoConfig, "fps">
+) => {
+  const { fps } = options;
+
+  const from = trackItem.from * fps;
+  const durationInFrames = (trackItem.duration / trackItem.playbackRate) * fps;
+
+  return { from, durationInFrames };
 };

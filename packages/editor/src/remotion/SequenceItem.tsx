@@ -1,16 +1,6 @@
-import {
-  Audio,
-  OffthreadVideo,
-  Sequence,
-  useVideoConfig,
-  VideoConfig
-} from "remotion";
-import {
-  AudioTrackItem,
-  TextTrackItem,
-  TrackItem,
-  VideoTrackItem
-} from "./types";
+import { Audio, OffthreadVideo, Sequence, useVideoConfig } from "remotion";
+import { AudioTrackItem, TextTrackItem, VideoTrackItem } from "./types";
+import { calculateFrames } from "./utilities";
 
 export interface TextSequenceItemProps {
   trackItem: TextTrackItem;
@@ -74,14 +64,4 @@ export const AudioSequenceItem: React.FC<AudioSequenceItemProps> = ({
       <Audio src={trackItem.data.src} />
     </Sequence>
   );
-};
-
-const calculateFrames = (trackItem: TrackItem, options: VideoConfig) => {
-  const { fps } = options;
-
-  const from = (trackItem.from / 1000) * fps;
-  const durationInFrames =
-    (trackItem.duration / trackItem.playbackRate / 1000) * fps;
-
-  return { from, durationInFrames };
 };

@@ -11,11 +11,11 @@ export interface CompositionProps {
   };
 }
 
-export interface CompositionState {
+export type CompositionState = {
   tracks: Record<string, Track>;
   trackItems: Record<string, TrackItem>;
   metadata: CompositionMetadata;
-}
+};
 
 export interface CompositionMetadata {
   duration: number;
