@@ -6,6 +6,7 @@ import { useSelector } from "../providers/StoreContext";
 import { DefaultComposition } from "../remotion/DefaultComposition";
 import { calculateMetadata } from "../remotion/utilities";
 import { EditorPlayPauseButton } from "../patterns/Editor/EditorPlayPauseButton";
+import { EditorTimeDisplay } from "../patterns/Editor/EditorTimeDisplay";
 
 export const EditorView: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);
@@ -46,10 +47,20 @@ export const EditorView: React.FC = () => {
           borderTop: "1px solid $border"
         }}
       >
-        <Flex css={{ padding: "$base", justifyContent: "space-between" }}>
-          <Box>Left</Box>
-          <EditorPlayPauseButton playerRef={playerRef} />
-          <Box>Right</Box>
+        <Flex
+          css={{
+            padding: "$base",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
+          <Flex css={{ flex: 1, justifyContent: "start" }}>
+            <EditorTimeDisplay playerRef={playerRef} />
+          </Flex>
+          <Flex css={{ flex: 1, justifyContent: "center" }}>
+            <EditorPlayPauseButton playerRef={playerRef} />
+          </Flex>
+          <Flex css={{ flex: 1, justifyContent: "end" }}>todo</Flex>
         </Flex>
         <Box>Timeline</Box>
       </Flex>

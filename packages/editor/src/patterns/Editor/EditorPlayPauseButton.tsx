@@ -1,12 +1,7 @@
+import { PauseIcon, PlayIcon } from "@heroicons/react/24/outline";
 import { IconButton } from "@radix-ui/themes";
 import { PlayerRef } from "@remotion/player";
 import { useCallback, useEffect, useState } from "react";
-import {
-  BackwardIcon,
-  ForwardIcon,
-  PauseIcon,
-  PlayIcon
-} from "@heroicons/react/24/outline";
 
 export interface EditorPlayPauseButtonProps {
   playerRef: React.RefObject<PlayerRef | null>;
