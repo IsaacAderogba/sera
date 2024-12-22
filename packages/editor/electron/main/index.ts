@@ -2,9 +2,10 @@ import {
   BrowserWindow,
   app,
   autoUpdater as electronUpdater,
-  ipcMain
+  ipcMain,
+  session
 } from "electron";
-import { APP_MODEL_ID } from "./constants";
+import { APP_MODEL_ID, SHARED_PARTITION } from "./constants";
 import { onIPCInvoke } from "./invoke";
 import {
   handleProtocols,
@@ -19,7 +20,7 @@ app
   .whenReady()
   .then(async () => {
     app.setAppUserModelId(APP_MODEL_ID);
-    handleProtocols();
+    handleProtocols(session.fromPartition(SHARED_PARTITION));
 
     ipcMain.handle("message", onIPCInvoke);
     await initializeWindows();

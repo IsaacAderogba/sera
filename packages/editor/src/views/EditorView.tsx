@@ -4,7 +4,14 @@ import { Timeline } from "../patterns/Timeline";
 
 export const EditorView: React.FC = () => {
   return (
-    <Flex css={{ flexDirection: "column" }}>
+    <Flex
+      className="drag"
+      css={{
+        height: "100%",
+        flexDirection: "column",
+        background: "$background"
+      }}
+    >
       <Scene />
       <Timeline />
     </Flex>

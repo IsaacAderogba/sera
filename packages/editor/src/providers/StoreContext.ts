@@ -10,7 +10,7 @@ import {
   useSelector as useReduxSelector
 } from "react-redux";
 import { createLogger } from "redux-logger";
-import { CompositionState, EditorTrack, TrackItem } from "../remotion/types";
+import { CompositionState, Track, TrackItem } from "../remotion/types";
 import { initializeCompositionState } from "../remotion/utilities";
 import { DeepPartial } from "../utilities/types";
 
@@ -71,22 +71,36 @@ function commitComposition(
   state: CompositionState,
   action: EditorAction
 ): CompositionState {
+  const orderedTrackIds = [...state.orderedTrackIds];
   const tracks = { ...state.tracks };
   const trackItems = { ...state.trackItems };
 
   switch (action.type) {
     case "create-track": {
       tracks[action.payload.data.id] = action.payload.data;
-      return { ...state, tracks };
+      orderedTrackIds.push(action.payload.data.id);
+      return { ...state, tracks, orderedTrackIds };
     }
     case "update-track": {
       const { id, data } = action.payload;
-      if (tracks[id]) tracks[id] = merge({}, tracks[id], data);
+      if (tracks[id]) {
+        tracks[id] = merge({}, tracks[id], data);
+      }
       return { ...state, tracks };
     }
     case "delete-track": {
       delete tracks[action.payload.id];
-      return { ...state, tracks };
+
+      for (const id in trackItems) {
+        if (trackItems[id].trackId !== action.payload.id) continue;
+        delete trackItems[id];
+      }
+
+      return {
+        ...state,
+        tracks,
+        orderedTrackIds: orderedTrackIds.filter(id => id !== action.payload.id)
+      };
     }
     case "create-track-item": {
       trackItems[action.payload.data.id] = action.payload.data;
@@ -94,7 +108,9 @@ function commitComposition(
     }
     case "update-track-item": {
       const { id, data } = action.payload;
-      if (trackItems[id]) trackItems[id] = merge({}, trackItems[id], data);
+      if (trackItems[id]) {
+        trackItems[id] = merge({}, trackItems[id], data);
+      }
       return { ...state, trackItems };
     }
     case "delete-track-item": {
@@ -116,11 +132,11 @@ type EditorAction =
 
 type EditorCreateTrackAction = {
   type: "create-track";
-  payload: { data: EditorTrack };
+  payload: { data: Track };
 };
 type EditorUpdateTrackAction = {
   type: "update-track";
-  payload: { id: string; data: DeepPartial<EditorTrack> };
+  payload: { id: string; data: DeepPartial<Track> };
 };
 type EditorDeleteTrackAction = {
   type: "delete-track";

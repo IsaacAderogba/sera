@@ -12,13 +12,13 @@ export interface CompositionProps {
 }
 
 export type CompositionState = {
+  orderedTrackIds: string[];
   tracks: Record<string, Track>;
   trackItems: Record<string, TrackItem>;
   metadata: CompositionMetadata;
 };
 
 export interface CompositionMetadata {
-  duration: number;
   fps: number;
   width: number;
   height: number;
@@ -41,6 +41,8 @@ export interface AudioTrack extends BaseTrack {
 interface BaseTrack {
   id: string;
   type: DataType;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type TrackItem = TextTrackItem | VideoTrackItem | AudioTrackItem;
@@ -80,6 +82,8 @@ interface BaseTrackItem {
   from: number;
   duration: number;
   playbackRate: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface BaseData {}

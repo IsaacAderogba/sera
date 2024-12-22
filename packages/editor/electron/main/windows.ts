@@ -4,7 +4,7 @@ import {
   shell
 } from "electron";
 import path from "path";
-import { ELECTRON_RENDERER_URL } from "./constants";
+import { ELECTRON_RENDERER_URL, SHARED_PARTITION } from "./constants";
 
 export const activateWindows = async () => {
   const appWindow = BrowserWindow.getAllWindows().find(
@@ -49,7 +49,7 @@ const createWindow = (
       preload: path.join(__dirname, "..", "preload", "index.mjs"),
       sandbox: false,
       backgroundThrottling: false,
-      partition: "persist:shared"
+      partition: SHARED_PARTITION
     },
     transparent: true,
     vibrancy: "fullscreen-ui",

@@ -1,21 +1,27 @@
 import { Composition } from "remotion";
 import { DefaultComposition } from "./DefaultComposition";
-import { calculateMetadata, initializeCompositionState } from "./utilities";
+import {
+  calculateCompositionMetadata,
+  calculateMetadata,
+  initializeCompositionState
+} from "./utilities";
+import { useMemo } from "react";
 
 export const RemotionRoot: React.FC = () => {
-  const state = initializeCompositionState();
+  const composition = initializeCompositionState();
+  const metadata = useMemo(() => calculateMetadata(composition), [composition]);
 
   return (
     <>
       <Composition
         id="DefaultComposition"
         component={DefaultComposition}
-        durationInFrames={state.metadata.duration * state.metadata.fps}
-        fps={state.metadata.fps}
-        width={state.metadata.width}
-        height={state.metadata.height}
-        defaultProps={state}
-        calculateMetadata={calculateMetadata}
+        durationInFrames={metadata.durationInFrames}
+        fps={metadata.fps}
+        width={metadata.width}
+        height={metadata.height}
+        defaultProps={composition}
+        calculateMetadata={calculateCompositionMetadata}
       />
     </>
   );
