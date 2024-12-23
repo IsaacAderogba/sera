@@ -54,10 +54,7 @@ export interface EditorAudioTimelineItemProps {
 export const EditorAudioTimelineItem: React.FC<
   EditorAudioTimelineItemProps
 > = ({ trackItem }) => {
-  /**
-   * so, also need to make the channel
-   */
-  return <Timeline css={{ background: "$pinkA4" }}></Timeline>;
+  return <Timeline css={{ background: "$pinkA4" }} />;
 };
 
 interface TimelineProps extends FlexProps {}
