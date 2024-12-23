@@ -1,5 +1,6 @@
 import {
   DndContext,
+  DragOverlay,
   KeyboardSensor,
   MouseSensor,
   pointerWithin,
@@ -8,8 +9,13 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { PropsWithChildren } from "react";
+import { useDropzoneDragData } from "../patterns/Dropzone/hooks";
+import { DropzoneDragData } from "../patterns/Dropzone/types";
+import { EditorTimelineTrack } from "../patterns/Editor/EditorTimelineTrack";
+import { EditorTimelineTrackItem } from "../patterns/Editor/EditorTimelineTrackItem";
 
 export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const data = useDropzoneDragData();
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -37,6 +43,30 @@ export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
       onDragEnd={() => {}}
     >
       {children}
+      <DragOverlay dropAnimation={null}>
+        {data.map(entry => {
+          return <DropzoneDragDataPreview key={entry.data.id} data={entry} />;
+        })}
+      </DragOverlay>
     </DndContext>
   );
+};
+
+const DropzoneDragDataPreview: React.FC<{ data: DropzoneDragData }> = ({
+  data
+}) => {
+  switch (data.type) {
+    case "track": {
+      return <EditorTimelineTrack track={data.data} />;
+    }
+    case "track-item": {
+      const { size } = data;
+      return (
+        <EditorTimelineTrackItem
+          trackItem={data.data}
+          css={{ width: size.width, height: size.height }}
+        />
+      );
+    }
+  }
 };

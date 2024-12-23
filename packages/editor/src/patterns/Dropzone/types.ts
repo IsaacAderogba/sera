@@ -1,6 +1,6 @@
 import { Track, TrackItem } from "../../remotion/types";
 
-export type DropzoneDragProps = DropzoneTrack | DropzoneTrackItem;
+export type DropzoneDragData = DropzoneTrack | DropzoneTrackItem;
 export type DropzoneDropProps = DropzoneTrackItem;
 
 export interface DropzoneTrack extends BaseDropzone {

@@ -1,21 +1,22 @@
-import { useMemo } from "react";
-import { Flex } from "../../components/Flex";
+import { forwardRef, useMemo } from "react";
+import { Flex, FlexProps } from "../../components/Flex";
 import { useSelector } from "../../providers/StoreContext";
 import { Track } from "../../remotion/types";
 import {
   TIMELINE_STEP_SIZE,
   TIMELINE_STEP_SIZE_WIDTH
 } from "../../utilities/constants";
-import { EditorTimelineItem } from "./EditorTimelineItem";
+import { EditorTimelineTrackItem } from "./EditorTimelineTrackItem";
 import { EditorTimelineTrackHeader } from "./EditorTimelineTrackHeader";
 
-export interface EditorTimelineTrackProps {
+export interface EditorTimelineTrackProps extends FlexProps {
   track: Track;
 }
 
-export const EditorTimelineTrack: React.FC<EditorTimelineTrackProps> = ({
-  track
-}) => {
+export const EditorTimelineTrack = forwardRef<
+  HTMLDivElement,
+  EditorTimelineTrackProps
+>(({ track, css = {}, ...props }, ref) => {
   const composition = useSelector(state => state.editor.composition);
   const timeline = useSelector(state => state.timeline);
   const stepSizeInSeconds = TIMELINE_STEP_SIZE * timeline.scale;
@@ -34,12 +35,15 @@ export const EditorTimelineTrack: React.FC<EditorTimelineTrackProps> = ({
 
   return (
     <Flex
+      ref={ref}
       key={track.id}
+      {...props}
       css={{
         height: "48px",
         width: "100%",
         borderTop: "1px dashed $border",
-        borderBottom: "1px dashed transparent"
+        borderBottom: "1px dashed transparent",
+        ...css
       }}
     >
       <Flex
@@ -71,11 +75,11 @@ export const EditorTimelineTrack: React.FC<EditorTimelineTrackProps> = ({
               }}
               key={id}
             >
-              <EditorTimelineItem key={id} trackItem={trackItem} />
+              <EditorTimelineTrackItem key={id} trackItem={trackItem} />
             </Flex>
           );
         })}
       </Flex>
     </Flex>
   );
-};
+});
