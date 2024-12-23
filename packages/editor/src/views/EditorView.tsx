@@ -62,7 +62,7 @@ export const EditorView: React.FC = () => {
         <Flex
           css={{ flexDirection: "column", height: "100%", overflow: "auto" }}
         >
-          <EditorTimeline />
+          <EditorTimeline playerRef={playerRef} />
         </Flex>
       </Flex>
     </Flex>

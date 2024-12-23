@@ -1,5 +1,5 @@
+import { PlayerRef } from "@remotion/player";
 import React, { useMemo } from "react";
-import { Box } from "../../components/Box";
 import { Flex } from "../../components/Flex";
 import { useSelector } from "../../providers/StoreContext";
 import {
@@ -12,12 +12,17 @@ import {
   TIMELINE_STEP_SIZE,
   TIMELINE_STEP_SIZE_WIDTH
 } from "../../utilities/constants";
+import { EditorPlayhead } from "./EditorPlayhead";
 import { EditorTimelineItem } from "./EditorTimelineItem";
 import { EditorTimelineTrack } from "./EditorTimelineTrack";
 
-export interface EditorTimelineProps {}
+export interface EditorTimelineProps {
+  playerRef: React.RefObject<PlayerRef | null>;
+}
 
-export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
+export const EditorTimeline: React.FC<EditorTimelineProps> = ({
+  playerRef
+}) => {
   const composition = useSelector(state => state.editor.composition);
   const timeline = useSelector(state => state.timeline);
   const orderedTracks = useMemo(
@@ -65,17 +70,14 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
                   top: -18
                 }
               }}
-            >
-              {/* <Text size="1" color="gray">
-                {formatSeconds(step * stepSizeInSeconds)}
-                need to get the relative coordinate that it clicked and use that to 
-                move the ruler
-              </Text> */}
-            </Flex>
+            />
           );
         })}
       </Flex>
-      <Flex css={{ flexDirection: "column", width: "100%" }}>
+      <Flex
+        css={{ positon: "relative", flexDirection: "column", width: "100%" }}
+      >
+        <EditorPlayhead playerRef={playerRef} />
         {orderedTracks.map(({ trackId, trackItemIds }) => {
           const track = composition.tracks[trackId];
           return (
