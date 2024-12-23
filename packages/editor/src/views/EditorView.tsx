@@ -7,6 +7,7 @@ import { DefaultComposition } from "../remotion/DefaultComposition";
 import { calculateMetadata } from "../remotion/utilities";
 import { EditorPlayPauseButton } from "../patterns/Editor/EditorPlayPauseButton";
 import { EditorTimeDisplay } from "../patterns/Editor/EditorTimeDisplay";
+import { EditorTimeline } from "../patterns/Editor/EditorTimeline";
 
 export const EditorView: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);
@@ -41,10 +42,11 @@ export const EditorView: React.FC = () => {
         className="no-drag"
         css={{
           flexDirection: "column",
-          // background: "$translucent",
+          background: "$surface",
           height: "100%",
           gap: "$sm",
-          borderTop: "1px solid $border"
+          borderTop: "1px solid $border",
+          overflow: "auto"
         }}
       >
         <Flex
@@ -54,15 +56,10 @@ export const EditorView: React.FC = () => {
             alignItems: "center"
           }}
         >
-          <Flex css={{ flex: 1, justifyContent: "start" }}>
-            <EditorTimeDisplay playerRef={playerRef} />
-          </Flex>
-          <Flex css={{ flex: 1, justifyContent: "center" }}>
-            <EditorPlayPauseButton playerRef={playerRef} />
-          </Flex>
-          <Flex css={{ flex: 1, justifyContent: "end" }}>todo</Flex>
+          <EditorPlayPauseButton playerRef={playerRef} />
+          <EditorTimeDisplay playerRef={playerRef} />
         </Flex>
-        <Box>Timeline</Box>
+        <EditorTimeline />
       </Flex>
     </Flex>
   );

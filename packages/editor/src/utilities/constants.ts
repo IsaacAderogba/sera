@@ -1,0 +1,3 @@
+export const TIMELINE_STEP_SIZE = 5;
+export const TIMELINE_STEP_SIZE_WIDTH = 100;
+export const TIMELINE_STEP_OVERCOUNT = 10;

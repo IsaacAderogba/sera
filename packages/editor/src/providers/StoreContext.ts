@@ -155,13 +155,35 @@ type EditorDeleteTrackItemAction = {
   payload: { id: string };
 };
 
+export interface TimelineState {
+  scale: number;
+}
+
+function getTimelineState(): TimelineState {
+  return {
+    scale: 1
+  };
+}
+
+const timelineSlice = createSlice({
+  name: "timeline",
+  initialState: getTimelineState(),
+  reducers: {
+    setState: (state, action: PayloadAction<DeepPartial<TimelineState>>) => {
+      return merge({}, state, action.payload);
+    }
+  }
+});
+
 export type StoreState = {
   editor: EditorState;
+  timeline: TimelineState;
 };
 
 export const store = configureStore({
   reducer: combineReducers({
-    editor: editorSlice.reducer
+    editor: editorSlice.reducer,
+    timeline: timelineSlice.reducer
   }),
   middleware: getDefaultMiddleware => {
     return getDefaultMiddleware().prepend(createLogger({ collapsed: true }));
@@ -174,5 +196,6 @@ export const useSelector: Selector = useReduxSelector;
 
 export const dispatch = store.dispatch.bind(store);
 export const actions = {
-  editor: editorSlice.actions
+  editor: editorSlice.actions,
+  timeline: timelineSlice.actions
 };

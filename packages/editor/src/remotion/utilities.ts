@@ -58,7 +58,7 @@ export const initializeCompositionState = (): CompositionState => {
         trackId: videoTrackId,
         name: "Video Example",
         type: "video",
-        from: 0,
+        from: 5,
         duration: 5,
         playbackRate: 1,
         data: { src: "video://video.mp4" },
@@ -131,4 +131,15 @@ export const calculateFrames = (
   const durationInFrames = (trackItem.duration / trackItem.playbackRate) * fps;
 
   return { from, durationInFrames };
+};
+
+export const formatSeconds = (seconds = 0) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  // Pad minutes and seconds with leading zeros if necessary
+  const formattedMinutes = String(minutes).padStart(2, "0");
+  const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+  return `${formattedMinutes}:${formattedSeconds}`;
 };

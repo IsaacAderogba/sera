@@ -25,7 +25,6 @@ export const EditorTimeDisplay: React.FC<EditorTimeDisplayProps> = ({
     };
 
     current.addEventListener("frameupdate", onFrameUpdate);
-
     return () => {
       current.removeEventListener("frameupdate", onFrameUpdate);
     };
