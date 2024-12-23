@@ -1,15 +1,14 @@
-import { Fragment } from "react/jsx-runtime";
-import { CompositionState } from "./types";
-import {
-  AudioSequenceItem,
-  TextSequenceItem,
-  VideoSequenceItem
-} from "./SequenceItem";
 import { useMemo } from "react";
+import { Fragment } from "react/jsx-runtime";
+import { SequenceItem } from "./SequenceItem";
+import { CompositionState } from "./types";
 import { orderTrackItemsByTrack } from "./utilities";
 
 export const DefaultComposition: React.FC<CompositionState> = state => {
-  const orderedTracks = useMemo(() => orderTrackItemsByTrack(state), [state]);
+  const orderedTracks = useMemo(
+    () => orderTrackItemsByTrack(state, { order: "backward" }),
+    [state]
+  );
 
   return (
     <Fragment>
@@ -17,15 +16,7 @@ export const DefaultComposition: React.FC<CompositionState> = state => {
         return (
           <Fragment key={trackId}>
             {trackItemIds.map(id => {
-              const trackItem = state.trackItems[id];
-              switch (trackItem.type) {
-                case "audio":
-                  return <AudioSequenceItem key={id} trackItem={trackItem} />;
-                case "text":
-                  return <TextSequenceItem key={id} trackItem={trackItem} />;
-                case "video":
-                  return <VideoSequenceItem key={id} trackItem={trackItem} />;
-              }
+              return <SequenceItem key={id} trackItem={state.trackItems[id]} />;
             })}
           </Fragment>
         );

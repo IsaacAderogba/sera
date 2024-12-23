@@ -29,6 +29,7 @@ export const registerProtocolSchemes = () => {
 
 export const handleProtocols = (ses = session.defaultSession) => {
   ses.protocol.handle("video", async request => {
+    console.log("filename", request.url);
     const filename = request.url.substring("video://".length).split("#")[0];
     const videoPath = path.join(app.getPath("userData"), "video", filename);
     return ses.fetch(`file://${videoPath}`, {

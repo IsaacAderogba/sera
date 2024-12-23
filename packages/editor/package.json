@@ -17,6 +17,7 @@
     "bundle": "node electron/remotion/bundleRemotion.js"
   },
   "dependencies": {
+    "@radix-ui/colors": "^3.0.0",
     "@radix-ui/themes": "^3.1.6",
     "@reduxjs/toolkit": "^2.5.0",
     "@remotion/bundler": "^4.0.241",

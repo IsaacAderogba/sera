@@ -1,6 +1,29 @@
 import { Audio, OffthreadVideo, Sequence, useVideoConfig } from "remotion";
-import { AudioTrackItem, TextTrackItem, VideoTrackItem } from "./types";
+import {
+  AudioTrackItem,
+  TextTrackItem,
+  TrackItem,
+  VideoTrackItem
+} from "./types";
 import { calculateFrames } from "./utilities";
+
+export interface SequenceItemProps {
+  trackItem: TrackItem;
+}
+
+export const SequenceItem: React.FC<SequenceItemProps> = ({ trackItem }) => {
+  const { id } = trackItem;
+  switch (trackItem.type) {
+    case "audio":
+      return <AudioSequenceItem key={id} trackItem={trackItem} />;
+    case "text":
+      return <TextSequenceItem key={id} trackItem={trackItem} />;
+    case "video":
+      return <VideoSequenceItem key={id} trackItem={trackItem} />;
+    default:
+      return null;
+  }
+};
 
 export interface TextSequenceItemProps {
   trackItem: TextTrackItem;

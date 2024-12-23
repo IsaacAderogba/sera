@@ -1,5 +1,31 @@
 import type * as Stitches from "@stitches/react";
 import { createStitches } from "@stitches/react";
+import {
+  blackA,
+  blueA,
+  blueDarkA,
+  brownA,
+  brownDarkA,
+  gray,
+  grayA,
+  grayDark,
+  grayDarkA,
+  greenA,
+  greenDarkA,
+  orangeA,
+  orangeDarkA,
+  pinkA,
+  pinkDarkA,
+  purpleA,
+  purpleDarkA,
+  redA,
+  redDarkA,
+  slateA,
+  slateDarkA,
+  whiteA,
+  yellowA,
+  yellowDarkA
+} from "@radix-ui/colors";
 
 export const {
   css,
@@ -20,10 +46,25 @@ export const {
       bp3: "1048px"
     },
     colors: {
+      ...gray,
+      ...whiteA,
+      ...blackA,
+      ...grayA,
+      ...slateA,
+      ...blueA,
+      ...greenA,
+      ...redA,
+      ...redA,
+      ...yellowA,
+      ...orangeA,
+      ...brownA,
+      ...purpleA,
+      ...pinkA,
+
       text: "rgba(000,000,000, 0.80)",
       label: "rgba(000,000,000, 0.60)",
       disable: "rgba(000,000,000, 0.25)",
-      border: "rgba(000,000,000, 0.10)",
+      border: "rgba(000,000,000, 0.12)",
       neutral: "rgba(000, 000, 000, 0.05)",
       danger: "#d10005c1",
       foreground: "rgb(26, 26, 26)",
@@ -95,10 +136,24 @@ export const {
 
 export const darkTheme = createTheme({
   colors: {
+    ...grayDark,
+    ...whiteA,
+    ...blackA,
+    ...grayDarkA,
+    ...slateDarkA,
+    ...blueDarkA,
+    ...greenDarkA,
+    ...redDarkA,
+    ...yellowDarkA,
+    ...orangeDarkA,
+    ...brownDarkA,
+    ...purpleDarkA,
+    ...pinkDarkA,
+
     text: "rgba(255,255,255, 0.85)",
     label: "rgba(255,255,255, 0.60)",
     disable: "rgba(255,255,255, 0.25)",
-    border: "rgba(255,255,255, 0.12)",
+    border: "rgba(255,255,255, 0.15)",
     foreground: "rgba(255,255,255, 1)",
     neutral: "rgba(255, 255, 255, 0.06)",
     danger: "#fe4e54e4",

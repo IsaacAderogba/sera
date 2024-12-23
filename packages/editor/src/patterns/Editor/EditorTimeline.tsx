@@ -12,6 +12,8 @@ import {
   TIMELINE_STEP_SIZE,
   TIMELINE_STEP_SIZE_WIDTH
 } from "../../utilities/constants";
+import { EditorTimelineItem } from "./EditorTimelineItem";
+import { EditorTimelineTrack } from "./EditorTimelineTrack";
 
 export interface EditorTimelineProps {}
 
@@ -19,7 +21,7 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
   const composition = useSelector(state => state.editor.composition);
   const timeline = useSelector(state => state.timeline);
   const orderedTracks = useMemo(
-    () => orderTrackItemsByTrack(composition),
+    () => orderTrackItemsByTrack(composition, { order: "forward" }),
     [composition]
   );
   const metadata = useMemo(() => calculateMetadata(composition), [composition]);
@@ -29,8 +31,6 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
   const numberOfSteps =
     Math.round(durationInSeconds / stepSizeInSeconds) + TIMELINE_STEP_OVERCOUNT;
   const steps = new Array(numberOfSteps).fill(0).map((_, index) => index);
-
-  console.log({ stepSizeInSeconds });
 
   return (
     <Flex
@@ -43,12 +43,7 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
       }}
     >
       <Flex
-        css={{
-          border: "1px solid blue",
-          background: "$surface",
-          position: "sticky",
-          top: 0
-        }}
+        css={{ zIndex: 1, background: "$surface", position: "sticky", top: 0 }}
       >
         <Flex css={{ minWidth: TIMELINE_STEP_SIZE_WIDTH }} />
         {steps.map(step => {
@@ -80,19 +75,27 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
           );
         })}
       </Flex>
-      <Flex
-        css={{
-          flexDirection: "column",
-          minHeight: "4000px",
-          width: "100%",
-          border: "1px solid red"
-          // overflowY: "scroll"
-        }}
-      >
+      <Flex css={{ flexDirection: "column", width: "100%" }}>
         {orderedTracks.map(({ trackId, trackItemIds }) => {
+          const track = composition.tracks[trackId];
           return (
-            <Flex key={trackId} css={{ height: "80px", width: "100%" }}>
-              <Flex css={{ minWidth: TIMELINE_STEP_SIZE_WIDTH }} />
+            <Flex
+              key={trackId}
+              css={{
+                height: "48px",
+                width: "100%",
+                borderTop: "1px dashed $border",
+                borderBottom: "1px dashed transparent"
+              }}
+            >
+              <Flex
+                css={{
+                  minWidth: TIMELINE_STEP_SIZE_WIDTH,
+                  maxWidth: TIMELINE_STEP_SIZE_WIDTH
+                }}
+              >
+                <EditorTimelineTrack track={track} />
+              </Flex>
               <Flex css={{ position: "relative", width: "100%" }}>
                 {trackItemIds.map(id => {
                   const trackItem = composition.trackItems[id];
@@ -106,15 +109,15 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = () => {
                   return (
                     <Flex
                       css={{
-                        border: "1px solid blue",
                         position: "absolute",
                         height: "100%",
                         left: `${left}px`,
-                        width: `${width}px`
+                        width: `${width}px`,
+                        padding: "$xxs"
                       }}
                       key={id}
                     >
-                      {trackItem.type}
+                      <EditorTimelineItem key={id} trackItem={trackItem} />
                     </Flex>
                   );
                 })}

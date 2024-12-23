@@ -98,7 +98,10 @@ export const initializeCompositionState = (): CompositionState => {
   };
 };
 
-export const orderTrackItemsByTrack = (state: CompositionState) => {
+export const orderTrackItemsByTrack = (
+  state: CompositionState,
+  props: { order: "forward" | "backward" }
+) => {
   const output: { trackId: string; trackItemIds: string[] }[] = [];
 
   const trackIdToTrackItemIds: Record<string, string[]> = {};
@@ -113,7 +116,10 @@ export const orderTrackItemsByTrack = (state: CompositionState) => {
     }
   }
 
-  for (const trackId of state.orderedTrackIds.slice().reverse()) {
+  let trackIds = state.orderedTrackIds;
+  if (props.order === "backward") trackIds = trackIds.slice().reverse();
+
+  for (const trackId of trackIds) {
     const trackItemIds = trackIdToTrackItemIds[trackId] || [];
     output.push({ trackId, trackItemIds });
   }
