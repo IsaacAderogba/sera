@@ -13,6 +13,7 @@ import { createLogger } from "redux-logger";
 import { CompositionState, Track, TrackItem } from "../remotion/types";
 import { initializeCompositionState } from "../remotion/utilities";
 import { DeepPartial } from "../utilities/types";
+import { DropzoneDragProps } from "../patterns/Dropzone/types";
 
 export interface EditorState {
   compositionUndo: CompositionState[];
@@ -157,11 +158,13 @@ type EditorDeleteTrackItemAction = {
 
 export interface TimelineState {
   scale: number;
+  dropzoneDragProps: DropzoneDragProps | DropzoneDragProps[] | null;
 }
 
 function getTimelineState(): TimelineState {
   return {
-    scale: 1
+    scale: 1,
+    dropzoneDragProps: null
   };
 }
 

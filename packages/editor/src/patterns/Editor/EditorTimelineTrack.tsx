@@ -1,8 +1,13 @@
-import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { Heading, IconButton, Text } from "@radix-ui/themes";
-import { PropsWithChildren } from "react";
-import { Flex, FlexProps } from "../../components/Flex";
-import { AudioTrack, TextTrack, Track, VideoTrack } from "../../remotion/types";
+import { useMemo } from "react";
+import { Flex } from "../../components/Flex";
+import { useSelector } from "../../providers/StoreContext";
+import { Track } from "../../remotion/types";
+import {
+  TIMELINE_STEP_SIZE,
+  TIMELINE_STEP_SIZE_WIDTH
+} from "../../utilities/constants";
+import { EditorTimelineItem } from "./EditorTimelineItem";
+import { EditorTimelineTrackHeader } from "./EditorTimelineTrackHeader";
 
 export interface EditorTimelineTrackProps {
   track: Track;
@@ -11,122 +16,66 @@ export interface EditorTimelineTrackProps {
 export const EditorTimelineTrack: React.FC<EditorTimelineTrackProps> = ({
   track
 }) => {
-  const { id } = track;
-  switch (track.type) {
-    case "audio":
-      return <EditorAudioTimelineTrack key={id} track={track} />;
-    case "text":
-      return <EditorTextTimelineTrack key={id} track={track} />;
-    case "video":
-      return <EditorVideoTimelineTrack key={id} track={track} />;
-    default:
-      return null;
-  }
-};
+  const composition = useSelector(state => state.editor.composition);
+  const timeline = useSelector(state => state.timeline);
+  const stepSizeInSeconds = TIMELINE_STEP_SIZE * timeline.scale;
 
-export interface EditorTextTimelineTrackProps {
-  track: TextTrack;
-}
+  const trackItemIds = useMemo(() => {
+    const trackItemIds: string[] = [];
 
-export const EditorTextTimelineTrack: React.FC<
-  EditorTextTimelineTrackProps
-> = ({ track }) => {
-  return (
-    <Base
-      css={{
-        padding: "$sm",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}
-    >
-      <Flex css={{ flexDirection: "column" }}>
-        <Heading size="1" weight="medium">
-          Text
-        </Heading>
-        <Text size="1" color="gray">
-          Example text track
-        </Text>
-      </Flex>
-      <IconButton variant="ghost" size="1">
-        <EllipsisVerticalIcon width={16} />
-      </IconButton>
-    </Base>
-  );
-};
+    for (const trackItemId in composition.trackItems) {
+      const trackItem = composition.trackItems[trackItemId];
+      if (trackItem.trackId !== track.id) continue;
+      trackItemIds.push(trackItem.id);
+    }
 
-export interface EditorVideoTimelineTrackProps {
-  track: VideoTrack;
-}
+    return trackItemIds;
+  }, [track.id, composition]);
 
-export const EditorVideoTimelineTrack: React.FC<
-  EditorVideoTimelineTrackProps
-> = ({ track }) => {
-  return (
-    <Base
-      css={{
-        padding: "$sm",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}
-    >
-      <Flex css={{ flexDirection: "column" }}>
-        <Heading size="1" weight="medium">
-          Video
-        </Heading>
-        <Text size="1" color="gray">
-          Example video track
-        </Text>
-      </Flex>
-      <IconButton variant="ghost" size="1">
-        <EllipsisVerticalIcon width={16} />
-      </IconButton>
-    </Base>
-  );
-};
-
-export interface EditorAudioTimelineTrackProps {
-  track: AudioTrack;
-}
-
-export const EditorAudioTimelineTrack: React.FC<
-  EditorAudioTimelineTrackProps
-> = ({ track }) => {
-  return (
-    <Base
-      css={{
-        padding: "$sm",
-        justifyContent: "space-between",
-        alignItems: "center"
-      }}
-    >
-      <Flex css={{ flexDirection: "column" }}>
-        <Heading size="1" weight="medium">
-          Audio
-        </Heading>
-        <Text size="1" color="gray">
-          Example audio track
-        </Text>
-      </Flex>
-      <IconButton variant="ghost" size="1">
-        <EllipsisVerticalIcon width={16} />
-      </IconButton>
-    </Base>
-  );
-};
-
-interface BaseProps extends FlexProps {}
-
-const Base: React.FC<PropsWithChildren<BaseProps>> = ({
-  children,
-  css = {},
-  ...props
-}) => {
   return (
     <Flex
-      {...props}
-      css={{ height: "100%", width: "100%", borderRadius: "$md", ...css }}
+      key={track.id}
+      css={{
+        height: "48px",
+        width: "100%",
+        borderTop: "1px dashed $border",
+        borderBottom: "1px dashed transparent"
+      }}
     >
-      {children}
+      <Flex
+        css={{
+          minWidth: TIMELINE_STEP_SIZE_WIDTH,
+          maxWidth: TIMELINE_STEP_SIZE_WIDTH
+        }}
+      >
+        <EditorTimelineTrackHeader track={track} />
+      </Flex>
+      <Flex css={{ position: "relative", width: "100%" }}>
+        {trackItemIds.map(id => {
+          const trackItem = composition.trackItems[id];
+
+          const offsetSteps = trackItem.from / stepSizeInSeconds;
+          const steps = trackItem.duration / stepSizeInSeconds;
+
+          const left = offsetSteps * TIMELINE_STEP_SIZE_WIDTH;
+          const width = steps * TIMELINE_STEP_SIZE_WIDTH;
+
+          return (
+            <Flex
+              css={{
+                position: "absolute",
+                height: "100%",
+                left: `${left}px`,
+                width: `${width}px`,
+                padding: "$xxs"
+              }}
+              key={id}
+            >
+              <EditorTimelineItem key={id} trackItem={trackItem} />
+            </Flex>
+          );
+        })}
+      </Flex>
     </Flex>
   );
 };
