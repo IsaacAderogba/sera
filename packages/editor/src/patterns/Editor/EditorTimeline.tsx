@@ -10,7 +10,15 @@ import {
   TIMELINE_STEP_SIZE_WIDTH
 } from "../../utilities/constants";
 import { EditorPlayhead } from "./EditorPlayhead";
-import { EditorTimelineTrack } from "./EditorTimelineTrack";
+import {
+  EditorTimelineSortableTrack,
+  EditorTimelineTrack,
+  EditorTimelineTrackItems
+} from "./EditorTimelineTrack";
+import {
+  SortableContext,
+  verticalListSortingStrategy
+} from "@dnd-kit/sortable";
 
 export interface EditorTimelineProps {
   playerRef: React.RefObject<PlayerRef | null>;
@@ -95,15 +103,20 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
         css={{ positon: "relative", flexDirection: "column", width: "100%" }}
       >
         <EditorPlayhead playerRef={playerRef} />
-        {composition.orderedTrackIds.map(trackId => {
-          if (!composition.tracks[trackId]) return null;
-          return (
-            <EditorTimelineTrack
-              key={trackId}
-              track={composition.tracks[trackId]}
-            />
-          );
-        })}
+        <SortableContext
+          items={composition.orderedTrackIds}
+          strategy={verticalListSortingStrategy}
+        >
+          {composition.orderedTrackIds.map(trackId => {
+            const track = composition.tracks[trackId];
+            if (!track) return null;
+            return (
+              <EditorTimelineSortableTrack key={trackId} track={track}>
+                <EditorTimelineTrackItems track={track} />
+              </EditorTimelineSortableTrack>
+            );
+          })}
+        </SortableContext>
       </Flex>
     </Flex>
   );

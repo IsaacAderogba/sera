@@ -49,6 +49,8 @@ export const EditorTimelineTrackItem = forwardRef<
   }
 });
 
+export const EditorTimelineDraggableTrackItem = EditorTimelineTrackItem;
+
 export interface EditorTextTimelineItemProps extends FlexProps {
   trackItem: TextTrackItem;
 }

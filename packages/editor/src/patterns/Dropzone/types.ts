@@ -1,22 +1,40 @@
 import { Track, TrackItem } from "../../remotion/types";
 
-export type DropzoneDragData = DropzoneTrack | DropzoneTrackItem;
-export type DropzoneDropProps = DropzoneTrackItem;
+export type DropzoneDragData =
+  | DropzoneTrackDraggable
+  | DropzoneTrackItemDraggable;
+export type DropzoneDropData =
+  | DropzoneTrackDroppable
+  | DropzoneTrackItemDroppable;
 
-export interface DropzoneTrack extends BaseDropzone {
+export interface DropzoneTrackDraggable extends BaseDraggable {
   type: "track";
   data: Track;
 }
 
-export interface DropzoneTrackItem extends BaseDropzone {
+export interface DropzoneTrackItemDraggable extends BaseDraggable {
   type: "track-item";
   data: TrackItem;
 }
 
-interface BaseDropzone {
+interface BaseDraggable {
+  type: DataType;
+  size: { width: string; height: string };
+}
+
+export interface DropzoneTrackDroppable extends BaseDroppable {
+  type: "track";
+  data: Track;
+}
+
+export interface DropzoneTrackItemDroppable extends BaseDroppable {
+  type: "track-item";
+  data: TrackItem;
+}
+
+interface BaseDroppable {
   type: DataType;
   position: "before" | "after";
-  size: { width: number; height: number };
 }
 
 type DataType = "track" | "track-item";

@@ -1,6 +1,11 @@
 import { CalculateMetadataFunction, VideoConfig } from "remotion";
 import { v4 } from "uuid";
 import { CompositionState, TrackItem } from "./types";
+import {
+  TIMELINE_STEP_SIZE,
+  TIMELINE_STEP_SIZE_WIDTH
+} from "../utilities/constants";
+import { TimelineState } from "../providers/StoreContext";
 
 export const calculateCompositionMetadata: CalculateMetadataFunction<
   CompositionState
@@ -125,6 +130,21 @@ export const orderTrackItemsByTrack = (
   }
 
   return output;
+};
+
+export const calculateTrackItemDimsensions = (
+  trackItem: TrackItem,
+  props: { timelineState: TimelineState }
+) => {
+  const timeline = props.timelineState;
+  const stepSizeInSeconds = TIMELINE_STEP_SIZE * timeline.scale;
+
+  const offsetSteps = trackItem.from / stepSizeInSeconds;
+  const steps = trackItem.duration / stepSizeInSeconds;
+
+  const offset = offsetSteps * TIMELINE_STEP_SIZE_WIDTH;
+  const width = steps * TIMELINE_STEP_SIZE_WIDTH;
+  return { offset, width };
 };
 
 export const calculateFrames = (

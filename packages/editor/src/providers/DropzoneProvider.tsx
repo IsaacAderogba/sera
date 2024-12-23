@@ -11,7 +11,10 @@ import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { PropsWithChildren } from "react";
 import { useDropzoneDragData } from "../patterns/Dropzone/hooks";
 import { DropzoneDragData } from "../patterns/Dropzone/types";
-import { EditorTimelineTrack } from "../patterns/Editor/EditorTimelineTrack";
+import {
+  EditorTimelineTrack,
+  EditorTimelineTrackItems
+} from "../patterns/Editor/EditorTimelineTrack";
 import { EditorTimelineTrackItem } from "../patterns/Editor/EditorTimelineTrackItem";
 
 export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -57,7 +60,11 @@ const DropzoneDragDataPreview: React.FC<{ data: DropzoneDragData }> = ({
 }) => {
   switch (data.type) {
     case "track": {
-      return <EditorTimelineTrack track={data.data} />;
+      return (
+        <EditorTimelineTrack track={data.data}>
+          <EditorTimelineTrackItems track={data.data} />
+        </EditorTimelineTrack>
+      );
     }
     case "track-item": {
       const { size } = data;

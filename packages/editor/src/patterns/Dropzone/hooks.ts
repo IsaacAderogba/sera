@@ -1,11 +1,13 @@
 import {
-  UseDraggableArguments,
   useDraggable,
-  useDroppable
+  UseDraggableArguments,
+  useDroppable,
+  UseDroppableArguments
 } from "@dnd-kit/core";
-import { useSortable } from "@dnd-kit/sortable";
-import { useSelector } from "../../providers/StoreContext";
+import { useSortable, UseSortableArguments } from "@dnd-kit/sortable";
 import { useCombinedRefs } from "../../hooks/useManagedRefs";
+import { useSelector } from "../../providers/StoreContext";
+import { DropzoneTrackDraggable, DropzoneTrackDroppable } from "./types";
 
 export const useDropzoneDragData = () => {
   return useSelector(state => {
@@ -14,12 +16,9 @@ export const useDropzoneDragData = () => {
   });
 };
 
-export type DropzoneFlexibleProps = Pick<
-  UseDraggableArguments,
-  "id" | "data" | "disabled"
->;
-
-export function useDropzoneFlexible(props: DropzoneFlexibleProps) {
+export function useDropzonable<T extends DropzoneTrackDraggable>(
+  props: DropzoneProps<UseDraggableArguments, T>
+) {
   const { isOver, setNodeRef: setDroppableNodeRef } = useDroppable(props);
 
   const {
@@ -32,6 +31,16 @@ export function useDropzoneFlexible(props: DropzoneFlexibleProps) {
   return { isOver, attributes, listeners, setNodeRef };
 }
 
-export const useDropzoneDraggable = useDraggable;
-export const useDropzoneDroppable = useDroppable;
-export const useDropzoneSortable = useSortable;
+export const useDropzoneDraggable = <T extends DropzoneTrackDraggable>(
+  props: DropzoneProps<UseDraggableArguments, T>
+) => useDraggable(props);
+
+export const useDropzoneDroppable = <T extends DropzoneTrackDroppable>(
+  props: DropzoneProps<UseDroppableArguments, T>
+) => useDroppable(props);
+
+export const useDropzoneSortable = <T extends DropzoneTrackDraggable>(
+  props: DropzoneProps<UseSortableArguments, T>
+) => useSortable(props);
+
+type DropzoneProps<T, K> = Omit<T, "data"> & { data: K };
