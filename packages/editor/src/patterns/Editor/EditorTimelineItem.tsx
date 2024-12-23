@@ -34,7 +34,15 @@ export interface EditorTextTimelineItemProps {
 export const EditorTextTimelineItem: React.FC<EditorTextTimelineItemProps> = ({
   trackItem
 }) => {
-  return <Timeline css={{ background: "$greenA4" }}></Timeline>;
+  return (
+    <Timeline
+      css={{
+        transition: "background 100ms",
+        background: "$greenA4",
+        "&:hover": { background: "$greenA5" }
+      }}
+    ></Timeline>
+  );
 };
 
 export interface EditorVideoTimelineItemProps {
@@ -44,7 +52,15 @@ export interface EditorVideoTimelineItemProps {
 export const EditorVideoTimelineItem: React.FC<
   EditorVideoTimelineItemProps
 > = ({ trackItem }) => {
-  return <Timeline css={{ background: "$blueA4" }}></Timeline>;
+  return (
+    <Timeline
+      css={{
+        transition: "background 100ms",
+        background: "$blueA4",
+        "&:hover": { background: "$blueA5" }
+      }}
+    ></Timeline>
+  );
 };
 
 export interface EditorAudioTimelineItemProps {
@@ -54,7 +70,15 @@ export interface EditorAudioTimelineItemProps {
 export const EditorAudioTimelineItem: React.FC<
   EditorAudioTimelineItemProps
 > = ({ trackItem }) => {
-  return <Timeline css={{ background: "$pinkA4" }} />;
+  return (
+    <Timeline
+      css={{
+        transition: "background 100ms",
+        background: "$pinkA4",
+        "&:hover": { background: "$pinkA5" }
+      }}
+    />
+  );
 };
 
 interface TimelineProps extends FlexProps {}

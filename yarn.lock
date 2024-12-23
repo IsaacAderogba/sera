@@ -1450,7 +1450,7 @@
     redux-thunk "^3.1.0"
     reselect "^5.1.0"
 
-"@remotion/bundler@^4.0.241":
+"@remotion/bundler@4.0.241":
   version "4.0.241"
   resolved "https://registry.yarnpkg.com/@remotion/bundler/-/bundler-4.0.241.tgz#1e1d10ce1faf956f0f7672c4cba9d716e8e42570"
   integrity sha512-2AGaZxfvcRNxXq0X6WtekM6EknIL6jGftiCr8LUxPeU6bblxBKk+Kd6FSsMbyYPIyMefYF7XFZlanS+T1E6wNA==
@@ -1500,7 +1500,7 @@
   resolved "https://registry.yarnpkg.com/@remotion/compositor-win32-x64-msvc/-/compositor-win32-x64-msvc-4.0.241.tgz#d4071e8d80502b0e86b9202dcf9b0b32012d0079"
   integrity sha512-NZ/SEtx/wA/A8E2J3beLnz6IOLiVb3GDhJEehvze+Tw9KlXmKH9sWFfjo7a8gd753BmuBJMi9cjkyKLLahHIBw==
 
-"@remotion/media-parser@^4.0.241":
+"@remotion/media-parser@4.0.241":
   version "4.0.241"
   resolved "https://registry.yarnpkg.com/@remotion/media-parser/-/media-parser-4.0.241.tgz#32b764f2a0e493094ed6d1a3fde3fb3427840532"
   integrity sha512-4rFyEf3BPaTqZKnpgknsoJ4qE483k68+LjpMwKKYBVdrzXoy2f2WPpD57M4mlZLxuhKKmJP5H/hBE4wfMvy48Q==
@@ -1512,14 +1512,14 @@
   dependencies:
     remotion "4.0.241"
 
-"@remotion/player@4.0.241", "@remotion/player@^4.0.241":
+"@remotion/player@4.0.241":
   version "4.0.241"
   resolved "https://registry.yarnpkg.com/@remotion/player/-/player-4.0.241.tgz#1739d664a224fd735ca4e5df25d4b46047d1ead1"
   integrity sha512-KK2QxlU2RaDV60axU1v0aWlSMb9MuqydSs2Iwg4BzbrP9ZfpBYypvXoleSNOwmv/p2hrotmVym9IEzw9fnGUQQ==
   dependencies:
     remotion "4.0.241"
 
-"@remotion/renderer@4.0.241", "@remotion/renderer@^4.0.241":
+"@remotion/renderer@4.0.241":
   version "4.0.241"
   resolved "https://registry.yarnpkg.com/@remotion/renderer/-/renderer-4.0.241.tgz#b2bc994bc5eaa8dccd7d9d1d218ea19e53778fb1"
   integrity sha512-Z0Ap6D7cRdHILQ4zC81AIdLR3xWk62MIxX1oU6SlBCiUfWYPlRLF+7R2+Avfh4sE+AWWzefaTH+yoRNtyVWjaA==

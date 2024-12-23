@@ -15,6 +15,7 @@ import {
 import { EditorPlayhead } from "./EditorPlayhead";
 import { EditorTimelineItem } from "./EditorTimelineItem";
 import { EditorTimelineTrack } from "./EditorTimelineTrack";
+import { Box } from "../../components/Box";
 
 export interface EditorTimelineProps {
   playerRef: React.RefObject<PlayerRef | null>;
@@ -52,25 +53,50 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
       >
         <Flex css={{ minWidth: TIMELINE_STEP_SIZE_WIDTH }} />
         {steps.map(step => {
+          const seconds = step * stepSizeInSeconds;
           return (
             <Flex
               key={step}
+              onClick={event => {
+                if (!playerRef.current) return;
+                if (!(event.target instanceof HTMLElement)) return;
+
+                const mouseX = event.clientX;
+                const rect = event.target.getBoundingClientRect();
+                const relativeX = mouseX - rect.left;
+
+                const x = Math.max(
+                  0,
+                  Math.min(relativeX, TIMELINE_STEP_SIZE_WIDTH)
+                );
+
+                const step = x / TIMELINE_STEP_SIZE_WIDTH;
+                const xSeconds = step * stepSizeInSeconds;
+
+                const accumulatedSeconds = seconds + xSeconds;
+                const frame = Math.floor(accumulatedSeconds * metadata.fps);
+                playerRef.current.seekTo(frame);
+              }}
               css={{
                 position: "relative",
                 minWidth: TIMELINE_STEP_SIZE_WIDTH,
-                height: "8px",
-                marginTop: "14px",
-                borderLeft: "1px solid $label",
+                padding: "4px 0",
+                marginTop: "10px",
                 "&::after": {
+                  pointerEvents: "none",
                   position: "absolute",
-                  content: formatSeconds(step * stepSizeInSeconds),
+                  content: formatSeconds(seconds),
                   color: "$label",
                   fontSize: "$xs",
                   left: -17,
-                  top: -18
+                  top: -14
                 }
               }}
-            />
+            >
+              <Box
+                css={{ height: "10px", width: "1px", background: "$label" }}
+              />
+            </Flex>
           );
         })}
       </Flex>
