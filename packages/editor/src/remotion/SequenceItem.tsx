@@ -1,4 +1,4 @@
-import { Audio, OffthreadVideo, Sequence, useVideoConfig } from "remotion";
+import { Audio, Sequence, useVideoConfig, Video } from "remotion";
 import {
   AudioTrackItem,
   TextTrackItem,
@@ -67,7 +67,7 @@ export const VideoSequenceItem: React.FC<VideoSequenceItemProps> = ({
 
   return (
     <Sequence from={from} durationInFrames={durationInFrames}>
-      <OffthreadVideo src={trackItem.data.src} />
+      <Video src={trackItem.data.src} />
     </Sequence>
   );
 };
