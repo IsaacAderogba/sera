@@ -9,11 +9,8 @@ import { useCombinedRefs } from "../../hooks/useManagedRefs";
 import { useSelector } from "../../providers/StoreContext";
 import { DropzoneTrackDraggable, DropzoneTrackDroppable } from "./types";
 
-export const useDropzoneDragData = () => {
-  return useSelector(state => {
-    const props = state.timeline.dropzoneDragData;
-    return Array.isArray(props) ? props : props ? [props] : [];
-  });
+export const useDraggableData = () => {
+  return useSelector(state => state.timeline.draggableData);
 };
 
 export function useDropzonable<T extends DropzoneTrackDraggable>(

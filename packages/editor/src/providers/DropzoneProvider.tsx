@@ -9,16 +9,22 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { PropsWithChildren } from "react";
-import { useDropzoneDragData } from "../patterns/Dropzone/hooks";
-import { DropzoneDragData } from "../patterns/Dropzone/types";
+import { useDraggableData } from "../patterns/Dropzone/hooks";
+import {
+  DraggableData,
+  DraggableEventData,
+  DroppableEventData
+} from "../patterns/Dropzone/types";
+import { flattenDropzoneEventData } from "../patterns/Dropzone/utilities";
 import {
   EditorTimelineTrack,
   EditorTimelineTrackItems
 } from "../patterns/Editor/EditorTimelineTrack";
 import { EditorTimelineTrackItem } from "../patterns/Editor/EditorTimelineTrackItem";
+import { actions, dispatch } from "./StoreContext";
 
 export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const data = useDropzoneDragData();
+  const data = useDraggableData();
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -37,27 +43,39 @@ export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
       // autoScroll={false}
       collisionDetection={pointerWithin}
       sensors={sensors}
-      onDragStart={() => {
-        console.log("on drag start");
+      onDragStart={e => {
+        const draggableData = flattenDropzoneEventData(
+          e.active.data.current as DraggableEventData
+        );
+        if (!draggableData.length) return;
+
+        dispatch(actions.timeline.setState({ draggableData }));
       }}
       onDragCancel={() => {
-        console.log("on drag cancel");
+        dispatch(actions.timeline.setState({ draggableData: [] }));
       }}
-      onDragEnd={() => {}}
+      onDragEnd={e => {
+        const draggable = flattenDropzoneEventData(
+          e.active.data.current as DraggableData
+        );
+        const droppable = e.over?.data.current as DroppableEventData;
+        if (!draggable || !droppable || Array.isArray(droppable)) {
+          dispatch(actions.timeline.setState({ draggableData: [] }));
+          return;
+        }
+      }}
     >
       {children}
       <DragOverlay dropAnimation={null}>
         {data.map(entry => {
-          return <DropzoneDragDataPreview key={entry.data.id} data={entry} />;
+          return <DraggableDataPreview key={entry.data.id} data={entry} />;
         })}
       </DragOverlay>
     </DndContext>
   );
 };
 
-const DropzoneDragDataPreview: React.FC<{ data: DropzoneDragData }> = ({
-  data
-}) => {
+const DraggableDataPreview: React.FC<{ data: DraggableData }> = ({ data }) => {
   switch (data.type) {
     case "track": {
       return (

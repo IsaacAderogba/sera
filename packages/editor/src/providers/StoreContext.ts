@@ -10,10 +10,10 @@ import {
   useSelector as useReduxSelector
 } from "react-redux";
 import { createLogger } from "redux-logger";
+import { DraggableData } from "../patterns/Dropzone/types";
 import { CompositionState, Track, TrackItem } from "../remotion/types";
 import { initializeCompositionState } from "../remotion/utilities";
 import { DeepPartial } from "../utilities/types";
-import { DropzoneDragData } from "../patterns/Dropzone/types";
 
 export interface EditorState {
   compositionUndo: CompositionState[];
@@ -158,13 +158,13 @@ type EditorDeleteTrackItemAction = {
 
 export interface TimelineState {
   scale: number;
-  dropzoneDragData: DropzoneDragData | DropzoneDragData[] | null;
+  draggableData: DraggableData[];
 }
 
 function getTimelineState(): TimelineState {
   return {
     scale: 1,
-    dropzoneDragData: null
+    draggableData: []
   };
 }
 
@@ -173,6 +173,7 @@ const timelineSlice = createSlice({
   initialState: getTimelineState(),
   reducers: {
     setState: (state, action: PayloadAction<DeepPartial<TimelineState>>) => {
+      console.log("update state");
       return merge({}, state, action.payload);
     }
   }

@@ -43,10 +43,10 @@ export const EditorView: React.FC = () => {
         css={{
           flexDirection: "column",
           background: "$surface",
-          height: "100%",
+          flex: 1,
           gap: "$sm",
+          overflow: "auto",
           borderTop: "1px solid $border"
-          // overflow: "auto"
         }}
       >
         <Flex
@@ -59,9 +59,7 @@ export const EditorView: React.FC = () => {
           <EditorPlayPauseButton playerRef={playerRef} />
           <EditorTimeDisplay playerRef={playerRef} />
         </Flex>
-        <Flex
-          css={{ flexDirection: "column", height: "100%", overflow: "auto" }}
-        >
+        <Flex css={{ flexDirection: "column", overflow: "auto" }}>
           <EditorTimeline playerRef={playerRef} />
         </Flex>
       </Flex>

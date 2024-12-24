@@ -1,3 +1,7 @@
+import {
+  SortableContext,
+  verticalListSortingStrategy
+} from "@dnd-kit/sortable";
 import { PlayerRef } from "@remotion/player";
 import React, { useMemo } from "react";
 import { Box } from "../../components/Box";
@@ -11,14 +15,9 @@ import {
 } from "../../utilities/constants";
 import { EditorPlayhead } from "./EditorPlayhead";
 import {
-  EditorTimelineSortableTrack,
-  EditorTimelineTrack,
+  SortableEditorTimelineTrack,
   EditorTimelineTrackItems
 } from "./EditorTimelineTrack";
-import {
-  SortableContext,
-  verticalListSortingStrategy
-} from "@dnd-kit/sortable";
 
 export interface EditorTimelineProps {
   playerRef: React.RefObject<PlayerRef | null>;
@@ -100,7 +99,7 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
         })}
       </Flex>
       <Flex
-        css={{ positon: "relative", flexDirection: "column", width: "100%" }}
+        css={{ position: "relative", flexDirection: "column", width: "100%" }}
       >
         <EditorPlayhead playerRef={playerRef} />
         <SortableContext
@@ -111,9 +110,9 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
             const track = composition.tracks[trackId];
             if (!track) return null;
             return (
-              <EditorTimelineSortableTrack key={trackId} track={track}>
+              <SortableEditorTimelineTrack key={trackId} track={track}>
                 <EditorTimelineTrackItems track={track} />
-              </EditorTimelineSortableTrack>
+              </SortableEditorTimelineTrack>
             );
           })}
         </SortableContext>

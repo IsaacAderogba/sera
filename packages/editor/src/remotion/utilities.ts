@@ -28,18 +28,34 @@ export const calculateMetadata = (props: CompositionState) => {
 
 export const initializeCompositionState = (): CompositionState => {
   const videoTrackId = v4();
+  const videoTrackId2 = v4();
   const videoTrackItemId = v4();
   const audioTrackId = v4();
+  const audioTrackId2 = v4();
   const audioTrackItemId = v4();
   const textTrackId = v4();
+  const textTrackId2 = v4();
   const textTrackItemId = v4();
   const date = new Date().toISOString();
 
   return {
-    orderedTrackIds: [textTrackId, audioTrackId, videoTrackId],
+    orderedTrackIds: [
+      textTrackId,
+      textTrackId2,
+      audioTrackId,
+      audioTrackId2,
+      videoTrackId,
+      videoTrackId2
+    ],
     tracks: {
       [videoTrackId]: {
         id: videoTrackId,
+        type: "video",
+        createdAt: date,
+        updatedAt: date
+      },
+      [videoTrackId2]: {
+        id: videoTrackId2,
         type: "video",
         createdAt: date,
         updatedAt: date
@@ -50,8 +66,20 @@ export const initializeCompositionState = (): CompositionState => {
         createdAt: date,
         updatedAt: date
       },
+      [audioTrackId2]: {
+        id: audioTrackId2,
+        type: "audio",
+        createdAt: date,
+        updatedAt: date
+      },
       [textTrackId]: {
         id: textTrackId,
+        type: "text",
+        createdAt: date,
+        updatedAt: date
+      },
+      [textTrackId2]: {
+        id: textTrackId2,
         type: "text",
         createdAt: date,
         updatedAt: date

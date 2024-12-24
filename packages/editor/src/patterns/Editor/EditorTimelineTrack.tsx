@@ -11,7 +11,7 @@ import { TIMELINE_STEP_SIZE_WIDTH } from "../../utilities/constants";
 import { useDropzoneSortable } from "../Dropzone/hooks";
 import { EditorTimelineTrackHeader } from "./EditorTimelineTrackHeader";
 import {
-  EditorTimelineDraggableTrackItem,
+  DraggableTimelineTrackItem,
   EditorTimelineTrackItem
 } from "./EditorTimelineTrackItem";
 
@@ -19,7 +19,7 @@ export interface EditorTimelineTrackProps extends FlexProps {
   track: Track;
 }
 
-export const EditorTimelineSortableTrack: React.FC<
+export const SortableEditorTimelineTrack: React.FC<
   EditorTimelineTrackProps
 > = ({ track, css = {}, children, ...props }) => {
   const {
@@ -106,7 +106,7 @@ export interface EditorTimelineTrackItemsProps {
   track: Track;
 }
 
-export const EditorTimelineSortableTrackItems: React.FC<
+export const SortableEditorTimelineTrackItems: React.FC<
   EditorTimelineTrackItemsProps
 > = ({ track }) => {
   const composition = useSelector(state => state.editor.composition);
@@ -137,7 +137,7 @@ export const EditorTimelineSortableTrackItems: React.FC<
               padding: "$xxs"
             }}
           >
-            <EditorTimelineDraggableTrackItem key={id} trackItem={trackItem} />
+            <DraggableTimelineTrackItem key={id} trackItem={trackItem} />
           </Flex>
         );
       })}
