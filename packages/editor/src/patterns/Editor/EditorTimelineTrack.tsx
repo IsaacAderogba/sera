@@ -43,11 +43,7 @@ export const EditorTimelineSortableTrack: React.FC<
       {...attributes}
       {...listeners}
       {...props}
-      css={{
-        transition: `all 100ms`,
-        ...(isOver ? { background: "red" } : {}),
-        ...css
-      }}
+      css={{ transition: `all 100ms`, ...css }}
     />
   );
 };

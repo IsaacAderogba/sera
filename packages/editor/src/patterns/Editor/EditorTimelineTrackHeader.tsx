@@ -1,39 +1,48 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Heading, IconButton, Text } from "@radix-ui/themes";
-import { PropsWithChildren } from "react";
-import { Flex, FlexProps } from "../../components/Flex";
+import { forwardRef } from "react";
+import { Flex } from "../../components/Flex";
 import { AudioTrack, TextTrack, Track, VideoTrack } from "../../remotion/types";
 
 export interface EditorTimelineTrackHeaderProps {
   track: Track;
 }
 
-export const EditorTimelineTrackHeader: React.FC<
+export const EditorTimelineTrackHeader = forwardRef<
+  HTMLDivElement,
   EditorTimelineTrackHeaderProps
-> = ({ track }) => {
+>(({ track }, ref) => {
   const { id } = track;
   switch (track.type) {
     case "audio":
-      return <EditorAudioTimelineTrackHeader key={id} track={track} />;
+      return (
+        <EditorAudioTimelineTrackHeader key={id} track={track} ref={ref} />
+      );
     case "text":
-      return <EditorTextTimelineTrackHeader key={id} track={track} />;
+      return <EditorTextTimelineTrackHeader key={id} track={track} ref={ref} />;
     case "video":
-      return <EditorVideoTimelineTrackHeader key={id} track={track} />;
+      return (
+        <EditorVideoTimelineTrackHeader key={id} track={track} ref={ref} />
+      );
     default:
       return null;
   }
-};
+});
 
 export interface EditorTextTimelineTrackHeaderProps {
   track: TextTrack;
 }
 
-export const EditorTextTimelineTrackHeader: React.FC<
+export const EditorTextTimelineTrackHeader = forwardRef<
+  HTMLDivElement,
   EditorTextTimelineTrackHeaderProps
-> = ({ track }) => {
+>(({ track }) => {
   return (
-    <Base
+    <Flex
       css={{
+        height: "100%",
+        width: "100%",
+        borderRadius: "$md",
         padding: "$sm",
         justifyContent: "space-between",
         alignItems: "center"
@@ -50,20 +59,24 @@ export const EditorTextTimelineTrackHeader: React.FC<
       <IconButton variant="ghost" size="1">
         <EllipsisVerticalIcon width={16} />
       </IconButton>
-    </Base>
+    </Flex>
   );
-};
+});
 
 export interface EditorVideoTimelineTrackHeaderProps {
   track: VideoTrack;
 }
 
-export const EditorVideoTimelineTrackHeader: React.FC<
+export const EditorVideoTimelineTrackHeader = forwardRef<
+  HTMLDivElement,
   EditorVideoTimelineTrackHeaderProps
-> = ({ track }) => {
+>(({ track }) => {
   return (
-    <Base
+    <Flex
       css={{
+        height: "100%",
+        width: "100%",
+        borderRadius: "$md",
         padding: "$sm",
         justifyContent: "space-between",
         alignItems: "center"
@@ -80,20 +93,24 @@ export const EditorVideoTimelineTrackHeader: React.FC<
       <IconButton variant="ghost" size="1">
         <EllipsisVerticalIcon width={16} />
       </IconButton>
-    </Base>
+    </Flex>
   );
-};
+});
 
 export interface EditorAudioTimelineTrackHeaderProps {
   track: AudioTrack;
 }
 
-export const EditorAudioTimelineTrackHeader: React.FC<
+export const EditorAudioTimelineTrackHeader = forwardRef<
+  HTMLDivElement,
   EditorAudioTimelineTrackHeaderProps
-> = ({ track }) => {
+>(({ track }) => {
   return (
-    <Base
+    <Flex
       css={{
+        height: "100%",
+        width: "100%",
+        borderRadius: "$md",
         padding: "$sm",
         justifyContent: "space-between",
         alignItems: "center"
@@ -110,23 +127,6 @@ export const EditorAudioTimelineTrackHeader: React.FC<
       <IconButton variant="ghost" size="1">
         <EllipsisVerticalIcon width={16} />
       </IconButton>
-    </Base>
-  );
-};
-
-interface BaseProps extends FlexProps {}
-
-const Base: React.FC<PropsWithChildren<BaseProps>> = ({
-  children,
-  css = {},
-  ...props
-}) => {
-  return (
-    <Flex
-      {...props}
-      css={{ height: "100%", width: "100%", borderRadius: "$md", ...css }}
-    >
-      {children}
     </Flex>
   );
-};
+});
