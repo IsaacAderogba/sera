@@ -7,7 +7,7 @@ import {
   useSensor,
   useSensors
 } from "@dnd-kit/core";
-import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { PropsWithChildren } from "react";
 import { useDraggableData } from "../patterns/Dropzone/hooks";
 import {
@@ -21,9 +21,14 @@ import {
   EditorTimelineTrackItems
 } from "../patterns/Editor/EditorTimelineTrack";
 import { EditorTimelineTrackItem } from "../patterns/Editor/EditorTimelineTrackItem";
-import { actions, dispatch } from "./StoreContext";
+import { actions, dispatch, useSelector } from "./StoreContext";
+import {
+  isEditorTimelineTrackDroppable,
+  isEditorTimelineTrackSortable
+} from "../patterns/Editor/hooks";
 
 export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  const composition = useSelector(state => state.editor.composition);
   const data = useDraggableData();
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -63,6 +68,39 @@ export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
           dispatch(actions.timeline.setState({ draggableData: [] }));
           return;
         }
+
+        if (
+          droppable.type === "track" &&
+          isEditorTimelineTrackSortable(droppable.data, draggable)
+        ) {
+          const drag = draggable[0];
+
+          if (drag.data.id !== droppable.data.id) {
+            const ids = [...composition.orderedTrackIds];
+            const oldIndex = ids.findIndex(id => id === drag.data.id);
+            const newIndex = ids.findIndex(id => id === droppable.data.id);
+            if (oldIndex >= 0 && newIndex >= 0) {
+              dispatch(
+                actions.editor.commit({
+                  type: "order-track-ids",
+                  payload: { data: arrayMove(ids, oldIndex, newIndex) }
+                })
+              );
+            }
+          }
+
+          dispatch(actions.timeline.setState({ draggableData: [] }));
+        } else if (
+          droppable.type === "track" &&
+          isEditorTimelineTrackDroppable(droppable.data, draggable)
+        ) {
+          console.log("drop");
+          // todo
+          dispatch(actions.timeline.setState({ draggableData: [] }));
+        } else {
+          console.log("no drop");
+          dispatch(actions.timeline.setState({ draggableData: [] }));
+        }
       }}
     >
       {children}
@@ -79,13 +117,15 @@ const DraggableDataPreview: React.FC<{ data: DraggableData }> = ({ data }) => {
   switch (data.type) {
     case "track": {
       return (
-        <EditorTimelineTrack track={data.data}>
+        <EditorTimelineTrack track={data.data} css={{ opacity: 0.5 }}>
           <EditorTimelineTrackItems track={data.data} />
         </EditorTimelineTrack>
       );
     }
     case "track-item": {
-      return <EditorTimelineTrackItem trackItem={data.data} />;
+      return (
+        <EditorTimelineTrackItem trackItem={data.data} css={{ opacity: 0.5 }} />
+      );
     }
   }
 };

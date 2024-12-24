@@ -34,7 +34,7 @@ export interface DropzoneTrackItemDroppable extends BaseDroppable {
 
 interface BaseDroppable {
   type: DataType;
-  position: "before" | "after";
+  position: "before" | "on" | "after";
 }
 
 type DataType = "track" | "track-item";

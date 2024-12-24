@@ -8,20 +8,29 @@ import {
   orderTrackItemsByTrack
 } from "../../remotion/utilities";
 import { TIMELINE_STEP_SIZE_WIDTH } from "../../utilities/constants";
-import { useDropzoneSortable } from "../Dropzone/hooks";
+import { useDropzoneDroppable, useDropzoneSortable } from "../Dropzone/hooks";
 import { EditorTimelineTrackHeader } from "./EditorTimelineTrackHeader";
 import {
   DraggableTimelineTrackItem,
   EditorTimelineTrackItem
 } from "./EditorTimelineTrackItem";
+import {
+  useIsEditorTimelineTrackDroppable,
+  useIsEditorTimelineTrackSortable
+} from "./hooks";
 
 export interface EditorTimelineTrackProps extends FlexProps {
   track: Track;
 }
 
+export const createSortableeEditorTimelineTrackId = (id: string) =>
+  `sortable-editor-timeline-track-${id}`;
+
 export const SortableEditorTimelineTrack: React.FC<
   EditorTimelineTrackProps
 > = ({ track, css = {}, children, ...props }) => {
+  const isSortable = useIsEditorTimelineTrackSortable(track);
+
   const {
     attributes,
     listeners,
@@ -30,12 +39,13 @@ export const SortableEditorTimelineTrack: React.FC<
     transform,
     transition
   } = useDropzoneSortable({
-    id: `sortable-editor-timeline-track-${track.id}`,
+    id: createSortableeEditorTimelineTrackId(track.id),
     data: {
       type: "track",
       data: track,
       size: { width: "100%", height: "48px" }
-    }
+    },
+    disabled: !isSortable
   });
 
   return (
@@ -106,7 +116,7 @@ export interface EditorTimelineTrackItemsProps {
   track: Track;
 }
 
-export const SortableEditorTimelineTrackItems: React.FC<
+export const DroppableEditorTimelineTrackItems: React.FC<
   EditorTimelineTrackItemsProps
 > = ({ track }) => {
   const composition = useSelector(state => state.editor.composition);
@@ -118,8 +128,28 @@ export const SortableEditorTimelineTrackItems: React.FC<
     );
   }, [track.id, composition]);
 
+  const isDroppable = useIsEditorTimelineTrackDroppable(track);
+  const { setNodeRef, isOver } = useDropzoneDroppable({
+    id: `droppable-editor-timeline-track-items-${track.id}`,
+    data: {
+      type: "track",
+      data: track,
+      position: "on"
+    },
+    disabled: !isDroppable
+  });
+
   return (
-    <Flex css={{ position: "relative", width: "100%" }}>
+    <Flex
+      ref={setNodeRef}
+      css={{
+        position: "relative",
+        width: "100%",
+        border: "1px solid",
+        borderRadius: "$sm",
+        borderColor: isOver ? "$grayA8" : "transparent"
+      }}
+    >
       {result?.trackItemIds.map(id => {
         const trackItem = composition.trackItems[id];
         const { offset } = calculateTrackItemDimensions(trackItem, {

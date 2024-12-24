@@ -77,6 +77,9 @@ function commitComposition(
   const trackItems = { ...state.trackItems };
 
   switch (action.type) {
+    case "order-track-ids": {
+      return { ...state, orderedTrackIds: action.payload.data };
+    }
     case "create-track": {
       tracks[action.payload.data.id] = action.payload.data;
       orderedTrackIds.push(action.payload.data.id);
@@ -124,6 +127,7 @@ function commitComposition(
 }
 
 type EditorAction =
+  | EditorOrderTrackIdsAction
   | EditorCreateTrackAction
   | EditorUpdateTrackAction
   | EditorDeleteTrackAction
@@ -131,6 +135,10 @@ type EditorAction =
   | EditorUpdateTrackItemAction
   | EditorDeleteTrackItemAction;
 
+type EditorOrderTrackIdsAction = {
+  type: "order-track-ids";
+  payload: { data: string[] };
+};
 type EditorCreateTrackAction = {
   type: "create-track";
   payload: { data: Track };

@@ -16,7 +16,8 @@ import {
 import { EditorPlayhead } from "./EditorPlayhead";
 import {
   SortableEditorTimelineTrack,
-  SortableEditorTimelineTrackItems
+  DroppableEditorTimelineTrackItems,
+  createSortableeEditorTimelineTrackId
 } from "./EditorTimelineTrack";
 
 export interface EditorTimelineProps {
@@ -103,7 +104,9 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
       >
         <EditorPlayhead playerRef={playerRef} />
         <SortableContext
-          items={composition.orderedTrackIds}
+          items={composition.orderedTrackIds.map(id =>
+            createSortableeEditorTimelineTrackId(id)
+          )}
           strategy={verticalListSortingStrategy}
         >
           {composition.orderedTrackIds.map(trackId => {
@@ -111,7 +114,7 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
             if (!track) return null;
             return (
               <SortableEditorTimelineTrack key={trackId} track={track}>
-                <SortableEditorTimelineTrackItems track={track} />
+                <DroppableEditorTimelineTrackItems track={track} />
               </SortableEditorTimelineTrack>
             );
           })}
