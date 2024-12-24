@@ -21,30 +21,55 @@ export interface EditorTimelineTrackProps extends FlexProps {
 
 export const EditorTimelineSortableTrack: React.FC<
   EditorTimelineTrackProps
-> = ({ track, css = {}, ...props }) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isOver } =
-    useDropzoneSortable({
-      id: track.id,
-      data: {
-        type: "track",
-        data: track,
-        size: { width: "100%", height: "48px" }
-      }
-    });
+> = ({ track, css = {}, children, ...props }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    setActivatorNodeRef,
+    transform,
+    transition
+  } = useDropzoneSortable({
+    id: track.id,
+    data: {
+      type: "track",
+      data: track,
+      size: { width: "100%", height: "48px" }
+    }
+  });
 
   return (
-    <EditorTimelineTrack
+    <Flex
       ref={setNodeRef}
-      track={track}
       style={{
         transform: CSSTransform.Transform.toString(transform),
         transition: transform ? "transform 100ms ease" : transition
       }}
       {...attributes}
-      {...listeners}
       {...props}
-      css={{ transition: `all 100ms`, ...css }}
-    />
+      css={{
+        height: "48px",
+        width: "100%",
+        borderTop: "1px dashed $border",
+        borderBottom: "1px dashed transparent",
+        transition: `all 100ms`,
+        ...css
+      }}
+    >
+      <Flex
+        css={{
+          minWidth: TIMELINE_STEP_SIZE_WIDTH,
+          maxWidth: TIMELINE_STEP_SIZE_WIDTH
+        }}
+      >
+        <EditorTimelineTrackHeader
+          ref={setActivatorNodeRef}
+          track={track}
+          {...listeners}
+        />
+      </Flex>
+      {children}
+    </Flex>
   );
 };
 
@@ -55,7 +80,6 @@ export const EditorTimelineTrack = forwardRef<
   return (
     <Flex
       ref={ref}
-      key={track.id}
       {...props}
       css={{
         height: "48px",

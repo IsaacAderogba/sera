@@ -11,18 +11,35 @@ export interface EditorTimelineTrackHeaderProps {
 export const EditorTimelineTrackHeader = forwardRef<
   HTMLDivElement,
   EditorTimelineTrackHeaderProps
->(({ track }, ref) => {
+>(({ track, ...props }, ref) => {
   const { id } = track;
   switch (track.type) {
     case "audio":
       return (
-        <EditorAudioTimelineTrackHeader key={id} track={track} ref={ref} />
+        <EditorAudioTimelineTrackHeader
+          key={id}
+          track={track}
+          ref={ref}
+          {...props}
+        />
       );
     case "text":
-      return <EditorTextTimelineTrackHeader key={id} track={track} ref={ref} />;
+      return (
+        <EditorTextTimelineTrackHeader
+          key={id}
+          track={track}
+          ref={ref}
+          {...props}
+        />
+      );
     case "video":
       return (
-        <EditorVideoTimelineTrackHeader key={id} track={track} ref={ref} />
+        <EditorVideoTimelineTrackHeader
+          key={id}
+          track={track}
+          ref={ref}
+          {...props}
+        />
       );
     default:
       return null;
@@ -36,9 +53,11 @@ export interface EditorTextTimelineTrackHeaderProps {
 export const EditorTextTimelineTrackHeader = forwardRef<
   HTMLDivElement,
   EditorTextTimelineTrackHeaderProps
->(({ track }) => {
+>(({ track, ...props }, ref) => {
   return (
     <Flex
+      {...props}
+      ref={ref}
       css={{
         height: "100%",
         width: "100%",
@@ -70,9 +89,11 @@ export interface EditorVideoTimelineTrackHeaderProps {
 export const EditorVideoTimelineTrackHeader = forwardRef<
   HTMLDivElement,
   EditorVideoTimelineTrackHeaderProps
->(({ track }) => {
+>(({ track, ...props }, ref) => {
   return (
     <Flex
+      {...props}
+      ref={ref}
       css={{
         height: "100%",
         width: "100%",
@@ -104,9 +125,11 @@ export interface EditorAudioTimelineTrackHeaderProps {
 export const EditorAudioTimelineTrackHeader = forwardRef<
   HTMLDivElement,
   EditorAudioTimelineTrackHeaderProps
->(({ track }) => {
+>(({ track, ...props }, ref) => {
   return (
     <Flex
+      {...props}
+      ref={ref}
       css={{
         height: "100%",
         width: "100%",
