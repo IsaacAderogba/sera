@@ -21,7 +21,7 @@ export const calculateMetadata = (props: CompositionState) => {
     const { from, duration } = props.trackItems[id];
     maxDuration = Math.max(maxDuration, from + duration);
   }
-  const durationInFrames = maxDuration * fps;
+  const durationInFrames = Math.round(maxDuration * fps);
 
   return { fps, durationInFrames, height, width, props };
 };
@@ -36,6 +36,7 @@ export const initializeCompositionState = (): CompositionState => {
   const textTrackId = v4();
   const textTrackId2 = v4();
   const textTrackItemId = v4();
+  const textTrackItemId2 = v4();
   const date = new Date().toISOString();
 
   return {
@@ -117,6 +118,18 @@ export const initializeCompositionState = (): CompositionState => {
         type: "text",
         from: 0,
         duration: 5,
+        playbackRate: 1,
+        data: { text: "Hello World" },
+        createdAt: date,
+        updatedAt: date
+      },
+      [textTrackItemId2]: {
+        id: textTrackItemId2,
+        trackId: textTrackId2,
+        name: "Text Example",
+        type: "text",
+        from: 0,
+        duration: 10,
         playbackRate: 1,
         data: { text: "Hello World" },
         createdAt: date,

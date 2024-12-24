@@ -67,7 +67,7 @@ export const VideoSequenceItem: React.FC<VideoSequenceItemProps> = ({
 
   return (
     <Sequence from={from} durationInFrames={durationInFrames}>
-      <Video src={trackItem.data.src} />
+      <Video src={trackItem.data.src} pauseWhenBuffering />
     </Sequence>
   );
 };

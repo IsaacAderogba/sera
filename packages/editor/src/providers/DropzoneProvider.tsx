@@ -26,9 +26,16 @@ import {
   isEditorTimelineTrackDroppable,
   isEditorTimelineTrackSortable
 } from "../patterns/Editor/hooks";
+import {
+  TIMELINE_STEP_SIZE,
+  TIMELINE_STEP_SIZE_WIDTH
+} from "../utilities/constants";
 
 export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const composition = useSelector(state => state.editor.composition);
+  const timeline = useSelector(state => state.timeline);
+  const stepSizeInSeconds = TIMELINE_STEP_SIZE * timeline.scale;
+
   const data = useDraggableData();
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -94,8 +101,57 @@ export const DropzoneProvider: React.FC<PropsWithChildren> = ({ children }) => {
           droppable.type === "track" &&
           isEditorTimelineTrackDroppable(droppable.data, draggable)
         ) {
-          console.log("drop");
-          // todo
+          const deltaX = e.delta.x;
+          const step = deltaX / TIMELINE_STEP_SIZE_WIDTH;
+          const xSeconds = Math.round(step * stepSizeInSeconds * 100) / 100;
+
+          type TrackItemRanges = Record<string, { from: number; to: number }>;
+          const trackItemNewRanges: TrackItemRanges = {};
+          for (const { data } of draggable) {
+            const from = Math.max(0, data.from + xSeconds);
+            trackItemNewRanges[data.id] = { from, to: from + data.duration };
+          }
+
+          const trackItemOldRanges: TrackItemRanges = {};
+
+          for (const id in composition.trackItems) {
+            const trackItem = composition.trackItems[id];
+            // don't factor candidate track items into ranges calculation.
+            if (trackItemNewRanges[id] !== undefined) continue;
+
+            // don't factor in items that are in a different track
+            if (trackItem.trackId !== droppable.data.id) continue;
+
+            const { from, duration } = trackItem;
+            trackItemOldRanges[id] = { from, to: from + duration };
+          }
+
+          let violatesExistingRange = false;
+          for (const newId in trackItemNewRanges) {
+            const newRange = trackItemNewRanges[newId];
+
+            for (const oldId in trackItemOldRanges) {
+              const oldRange = trackItemOldRanges[oldId];
+              if (newRange.from < oldRange.to && newRange.to > oldRange.from) {
+                violatesExistingRange = true;
+                break;
+              }
+            }
+          }
+
+          if (!violatesExistingRange) {
+            for (const id in trackItemNewRanges) {
+              const { from } = trackItemNewRanges[id];
+
+              dispatch(
+                actions.editor.commit({
+                  type: "update-track-item",
+                  payload: { id, data: { from, trackId: droppable.data.id } }
+                })
+              );
+            }
+          }
+
           dispatch(actions.timeline.setState({ draggableData: [] }));
         } else {
           console.log("no drop");

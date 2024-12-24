@@ -62,14 +62,14 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
 
                 const mouseX = event.clientX;
                 const rect = event.target.getBoundingClientRect();
-                const relativeX = mouseX - rect.left;
+                const x = mouseX - rect.left;
 
-                const x = Math.max(
+                const deltaX = Math.max(
                   0,
-                  Math.min(relativeX, TIMELINE_STEP_SIZE_WIDTH)
+                  Math.min(x, TIMELINE_STEP_SIZE_WIDTH)
                 );
 
-                const step = x / TIMELINE_STEP_SIZE_WIDTH;
+                const step = deltaX / TIMELINE_STEP_SIZE_WIDTH;
                 const xSeconds = step * stepSizeInSeconds;
 
                 const accumulatedSeconds = seconds + xSeconds;

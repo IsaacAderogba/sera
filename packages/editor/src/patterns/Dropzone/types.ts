@@ -5,15 +5,15 @@ export type DroppableEventData = DropzoneEventData<DroppableData>;
 
 export type DropzoneEventData<T> = T | T[] | null;
 
-export type DraggableData = DropzoneTrackDraggable | DropzoneTrackItemDraggable;
-export type DroppableData = DropzoneTrackDroppable | DropzoneTrackItemDroppable;
+export type DraggableData = DraggableTrack | DraggableTrackItem;
+export type DroppableData = DroppableTrack | DroppableTrackItem;
 
-export interface DropzoneTrackDraggable extends BaseDraggable {
+export interface DraggableTrack extends BaseDraggable {
   type: "track";
   data: Track;
 }
 
-export interface DropzoneTrackItemDraggable extends BaseDraggable {
+export interface DraggableTrackItem extends BaseDraggable {
   type: "track-item";
   data: TrackItem;
 }
@@ -22,12 +22,12 @@ interface BaseDraggable {
   type: DataType;
 }
 
-export interface DropzoneTrackDroppable extends BaseDroppable {
+export interface DroppableTrack extends BaseDroppable {
   type: "track";
   data: Track;
 }
 
-export interface DropzoneTrackItemDroppable extends BaseDroppable {
+export interface DroppableTrackItem extends BaseDroppable {
   type: "track-item";
   data: TrackItem;
 }

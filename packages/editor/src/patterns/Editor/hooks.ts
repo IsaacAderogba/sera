@@ -1,6 +1,6 @@
 import { Track } from "../../remotion/types";
 import { useDraggableData } from "../Dropzone/hooks";
-import { DraggableData } from "../Dropzone/types";
+import { DraggableData, DraggableTrackItem } from "../Dropzone/types";
 
 export const useIsEditorTimelineTrackSortable = (track: Track) => {
   const draggableData = useDraggableData();
@@ -27,7 +27,7 @@ export const useIsEditorTimelineTrackDroppable = (track: Track) => {
 export const isEditorTimelineTrackDroppable = (
   track: Track,
   draggableData: DraggableData[]
-) => {
+): draggableData is DraggableTrackItem[] => {
   if (!draggableData.length) return false;
 
   // only track items can be dragged on to tracks
