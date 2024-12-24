@@ -16,7 +16,7 @@ import {
 import { EditorPlayhead } from "./EditorPlayhead";
 import {
   SortableEditorTimelineTrack,
-  EditorTimelineTrackItems
+  SortableEditorTimelineTrackItems
 } from "./EditorTimelineTrack";
 
 export interface EditorTimelineProps {
@@ -111,7 +111,7 @@ export const EditorTimeline: React.FC<EditorTimelineProps> = ({
             if (!track) return null;
             return (
               <SortableEditorTimelineTrack key={trackId} track={track}>
-                <EditorTimelineTrackItems track={track} />
+                <SortableEditorTimelineTrackItems track={track} />
               </SortableEditorTimelineTrack>
             );
           })}

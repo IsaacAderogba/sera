@@ -20,7 +20,6 @@ export interface DropzoneTrackItemDraggable extends BaseDraggable {
 
 interface BaseDraggable {
   type: DataType;
-  size: { width: string; height: string };
 }
 
 export interface DropzoneTrackDroppable extends BaseDroppable {

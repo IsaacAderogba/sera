@@ -4,7 +4,7 @@ import { Flex, FlexProps } from "../../components/Flex";
 import { useSelector } from "../../providers/StoreContext";
 import { Track } from "../../remotion/types";
 import {
-  calculateTrackItemDimsensions,
+  calculateTrackItemDimensions,
   orderTrackItemsByTrack
 } from "../../remotion/utilities";
 import { TIMELINE_STEP_SIZE_WIDTH } from "../../utilities/constants";
@@ -30,7 +30,7 @@ export const SortableEditorTimelineTrack: React.FC<
     transform,
     transition
   } = useDropzoneSortable({
-    id: track.id,
+    id: `sortable-editor-timeline-track-${track.id}`,
     data: {
       type: "track",
       data: track,
@@ -110,7 +110,7 @@ export const SortableEditorTimelineTrackItems: React.FC<
   EditorTimelineTrackItemsProps
 > = ({ track }) => {
   const composition = useSelector(state => state.editor.composition);
-  const timeline = useSelector(state => state.timeline);
+  const timelineState = useSelector(state => state.timeline);
 
   const result = useMemo(() => {
     return orderTrackItemsByTrack(composition, { order: "backward" }).find(
@@ -122,8 +122,8 @@ export const SortableEditorTimelineTrackItems: React.FC<
     <Flex css={{ position: "relative", width: "100%" }}>
       {result?.trackItemIds.map(id => {
         const trackItem = composition.trackItems[id];
-        const { offset, width } = calculateTrackItemDimsensions(trackItem, {
-          timelineState: timeline
+        const { offset } = calculateTrackItemDimensions(trackItem, {
+          timelineState
         });
 
         return (
@@ -133,7 +133,6 @@ export const SortableEditorTimelineTrackItems: React.FC<
               position: "absolute",
               height: "100%",
               left: `${offset}px`,
-              width: `${width}px`,
               padding: "$xxs"
             }}
           >
@@ -161,7 +160,7 @@ export const EditorTimelineTrackItems: React.FC<
     <Flex css={{ position: "relative", width: "100%" }}>
       {result?.trackItemIds.map(id => {
         const trackItem = composition.trackItems[id];
-        const { offset, width } = calculateTrackItemDimsensions(trackItem, {
+        const { offset, width } = calculateTrackItemDimensions(trackItem, {
           timelineState: timeline
         });
 

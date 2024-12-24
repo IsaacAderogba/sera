@@ -6,10 +6,35 @@ import {
   TrackItem,
   VideoTrackItem
 } from "../../remotion/types";
+import { useDropzoneDraggable } from "../Dropzone/hooks";
+import { useSelector } from "../../providers/StoreContext";
+import { calculateTrackItemDimensions } from "../../remotion/utilities";
 
 export interface EditorTimelineTrackItemProps extends FlexProps {
   trackItem: TrackItem;
 }
+
+export const DraggableTimelineTrackItem: React.FC<
+  EditorTimelineTrackItemProps
+> = ({ trackItem, ...props }) => {
+  const { attributes, listeners, setNodeRef } = useDropzoneDraggable({
+    id: `draggable-timeline-track-item-${trackItem.id}`,
+    data: {
+      type: "track-item",
+      data: trackItem
+    }
+  });
+
+  return (
+    <EditorTimelineTrackItem
+      ref={setNodeRef}
+      trackItem={trackItem}
+      {...listeners}
+      {...attributes}
+      {...props}
+    />
+  );
+};
 
 export const EditorTimelineTrackItem = forwardRef<
   HTMLDivElement,
@@ -49,8 +74,6 @@ export const EditorTimelineTrackItem = forwardRef<
   }
 });
 
-export const DraggableTimelineTrackItem = EditorTimelineTrackItem;
-
 export interface EditorTextTimelineItemProps extends FlexProps {
   trackItem: TextTrackItem;
 }
@@ -59,6 +82,8 @@ export const EditorTextTimelineItem = forwardRef<
   HTMLDivElement,
   EditorTextTimelineItemProps
 >(({ trackItem, css = {}, ...props }, ref) => {
+  const timelineState = useSelector(state => state.timeline);
+  const { width } = calculateTrackItemDimensions(trackItem, { timelineState });
   return (
     <Flex
       {...props}
@@ -66,7 +91,7 @@ export const EditorTextTimelineItem = forwardRef<
       css={{
         ...css,
         height: "100%",
-        width: "100%",
+        width: `${width}px`,
         borderRadius: "$md",
         transition: "background 100ms",
         background: "$greenA4",
@@ -84,6 +109,8 @@ export const EditorVideoTimelineItem = forwardRef<
   HTMLDivElement,
   EditorVideoTimelineItemProps
 >(({ trackItem, css = {}, ...props }, ref) => {
+  const timelineState = useSelector(state => state.timeline);
+  const { width } = calculateTrackItemDimensions(trackItem, { timelineState });
   return (
     <Flex
       {...props}
@@ -91,7 +118,7 @@ export const EditorVideoTimelineItem = forwardRef<
       css={{
         ...css,
         height: "100%",
-        width: "100%",
+        width: `${width}px`,
         borderRadius: "$md",
         transition: "background 100ms",
         background: "$blueA4",
@@ -109,13 +136,16 @@ export const EditorAudioTimelineItem = forwardRef<
   HTMLDivElement,
   EditorAudioTimelineItemProps
 >(({ trackItem, css = {}, ...props }, ref) => {
+  const timelineState = useSelector(state => state.timeline);
+  const { width } = calculateTrackItemDimensions(trackItem, { timelineState });
   return (
     <Flex
       {...props}
+      ref={ref}
       css={{
         ...css,
         height: "100%",
-        width: "100%",
+        width: `${width}px`,
         borderRadius: "$md",
         transition: "background 100ms",
         background: "$pinkA4",

@@ -173,7 +173,6 @@ const timelineSlice = createSlice({
   initialState: getTimelineState(),
   reducers: {
     setState: (state, action: PayloadAction<DeepPartial<TimelineState>>) => {
-      console.log("update state");
       return merge({}, state, action.payload);
     }
   }

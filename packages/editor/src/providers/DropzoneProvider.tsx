@@ -85,13 +85,7 @@ const DraggableDataPreview: React.FC<{ data: DraggableData }> = ({ data }) => {
       );
     }
     case "track-item": {
-      const { size } = data;
-      return (
-        <EditorTimelineTrackItem
-          trackItem={data.data}
-          css={{ width: size.width, height: size.height }}
-        />
-      );
+      return <EditorTimelineTrackItem trackItem={data.data} />;
     }
   }
 };

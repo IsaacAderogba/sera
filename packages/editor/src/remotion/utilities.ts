@@ -160,7 +160,7 @@ export const orderTrackItemsByTrack = (
   return output;
 };
 
-export const calculateTrackItemDimsensions = (
+export const calculateTrackItemDimensions = (
   trackItem: TrackItem,
   props: { timelineState: TimelineState }
 ) => {
