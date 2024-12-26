@@ -95,7 +95,7 @@ export const initializeCompositionState = (): CompositionState => {
         from: 5,
         duration: 5,
         playbackRate: 1,
-        data: { src: "video://video.mp4" },
+        data: { src: "video.mp4" },
         createdAt: date,
         updatedAt: date
       },
@@ -107,7 +107,7 @@ export const initializeCompositionState = (): CompositionState => {
         from: 0,
         duration: 15,
         playbackRate: 1,
-        data: { src: "audio://audio.mp3" },
+        data: { src: "audio.mp3" },
         createdAt: date,
         updatedAt: date
       },

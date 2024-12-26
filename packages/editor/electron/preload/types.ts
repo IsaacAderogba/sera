@@ -34,7 +34,7 @@ export type IPCBroadcastEvents = {
 };
 
 export type IPCInvokeEvents = {
-  render: (props: any) => Promise<void>;
+  render: (props: CompositionState) => Promise<void>;
   bundle: (props: any) => Promise<void>;
 };
 

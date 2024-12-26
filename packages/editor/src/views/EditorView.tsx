@@ -15,11 +15,29 @@ import {
 import { Separator } from "@radix-ui/themes";
 import { EditorRenderButton } from "../patterns/Editor/EditorRenderButton";
 import { EditorRenderDisplay } from "../patterns/Editor/EditorRenderDisplay";
+import { cloneDeep } from "lodash-es";
 
 export const EditorView: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);
   const composition = useSelector(state => state.editor.composition);
   const metadata = useMemo(() => calculateMetadata(composition), [composition]);
+
+  const proxiedComposition = useMemo(() => {
+    const clone = cloneDeep(composition);
+    for (const id in clone.trackItems) {
+      const trackItem = clone.trackItems[id];
+      switch (trackItem.type) {
+        case "video":
+          trackItem.data.src = `video://${trackItem.data.src}`;
+          break;
+        case "audio":
+          trackItem.data.src = `audio://${trackItem.data.src}`;
+          break;
+      }
+    }
+
+    return clone;
+  }, [composition]);
 
   return (
     <Flex
@@ -36,7 +54,7 @@ export const EditorView: React.FC = () => {
             ref={playerRef}
             controls
             component={DefaultComposition}
-            inputProps={composition}
+            inputProps={proxiedComposition}
             compositionHeight={metadata.height}
             compositionWidth={metadata.width}
             durationInFrames={metadata.durationInFrames}

@@ -1,8 +1,7 @@
 import { app, protocol, session } from "electron";
 import path from "path";
-import fs from "fs/promises";
-import mime from "mime";
 import { DEEPLINK_PROTOCOL } from "./constants";
+import { getFileHeaders } from "./file";
 
 export const registerProtocolSchemes = () => {
   if (process.defaultApp) {
@@ -29,7 +28,6 @@ export const registerProtocolSchemes = () => {
 
 export const handleProtocols = (ses = session.defaultSession) => {
   ses.protocol.handle("video", async request => {
-    console.log("filename", request.url);
     const filename = request.url.substring("video://".length).split("#")[0];
     const videoPath = path.join(app.getPath("userData"), "video", filename);
     return ses.fetch(`file://${videoPath}`, {
@@ -42,27 +40,6 @@ export const handleProtocols = (ses = session.defaultSession) => {
     const audioPath = path.join(app.getPath("userData"), "audio", filename);
     return ses.fetch(`file://${audioPath}`);
   });
-};
-
-const getFileHeaders = async (pathname: string): Promise<HeadersInit> => {
-  try {
-    const headers: HeadersInit = {};
-
-    const contentType = mime.getType(pathname);
-    if (contentType) {
-      headers["Content-Type"] = contentType;
-    }
-
-    const stats = await fs.stat(pathname);
-    if (stats.size) {
-      headers["Content-Length"] = `${stats.size}`;
-    }
-
-    return headers;
-  } catch (err) {
-    console.log("error retrieving headers", err);
-    return {};
-  }
 };
 
 export const setContentSecurityPolicy = () => {

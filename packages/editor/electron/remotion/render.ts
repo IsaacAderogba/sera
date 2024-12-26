@@ -3,9 +3,14 @@ import {
   RenderMediaOnProgress,
   selectComposition
 } from "@remotion/renderer";
+import cors from "cors";
 import { app, shell } from "electron";
 import log from "electron-log/main.js";
+import express, { json } from "express";
+import { cloneDeep } from "lodash-es";
 import path from "path";
+import { getFileHeaders } from "../main/file";
+import { CompositionState } from "../preload/types";
 
 function isMusl(): boolean {
   // @ts-expect-error no types
@@ -69,40 +74,86 @@ if (app.isPackaged) {
 }
 
 export async function render(
-  inputProps: Record<string, unknown>,
+  compositionState: CompositionState,
   onProgress: RenderMediaOnProgress
 ) {
-  const compositionId = "DefaultComposition";
+  return new Promise(resolve => {
+    const application = express();
+    application.use(json());
+    application.use(cors());
 
-  const bundleLocation = path.join(app.getAppPath(), "out", "remotion-bundle");
-  log.info(`Bundle location: ${bundleLocation}`);
+    const PORT = 4521;
+    application.use("/assets", async (req, res) => {
+      const [_, type, filename] = req.url.split("/");
+      const filepath = path.join(app.getPath("userData"), type, filename);
 
-  const composition = await selectComposition({
-    serveUrl: bundleLocation,
-    id: compositionId,
-    inputProps,
-    binariesDirectory
+      const headers = await getFileHeaders(filepath);
+      for (const key in headers) {
+        res.setHeader(key, headers[key]);
+      }
+
+      res.sendFile(filepath, error => {
+        console.error("error sending filee", error);
+      });
+    });
+
+    const server = application.listen(PORT, async () => {
+      const proxiedComposition = cloneDeep(compositionState);
+      for (const id in proxiedComposition.trackItems) {
+        const trackItem = proxiedComposition.trackItems[id];
+        switch (trackItem.type) {
+          case "video":
+            trackItem.data.src = `http://localhost:${PORT}/assets/video/${trackItem.data.src}`;
+            break;
+          case "audio":
+            trackItem.data.src = `http://localhost:${PORT}/assets/audio/${trackItem.data.src}`;
+            break;
+        }
+      }
+
+      try {
+        const compositionId = "DefaultComposition";
+        const bundleLocation = path.join(
+          app.getAppPath(),
+          "out",
+          "remotion-bundle"
+        );
+        log.info(`Bundle location: ${bundleLocation}`);
+
+        const composition = await selectComposition({
+          serveUrl: bundleLocation,
+          id: compositionId,
+          inputProps: proxiedComposition,
+          binariesDirectory
+        });
+        log.info(`Composition selected: ${composition.id}`);
+
+        const downloadsFolderPath = path.join(
+          app.getPath("downloads"),
+          "output-remotion.mp4"
+        );
+        log.info(`Downloads folder path: ${downloadsFolderPath}`);
+
+        log.info(`Rendering video: ${compositionId}.mp4`);
+        await renderMedia({
+          composition,
+          serveUrl: bundleLocation,
+          codec: "h264",
+          outputLocation: downloadsFolderPath,
+          inputProps: proxiedComposition,
+          binariesDirectory,
+          onProgress
+        });
+        log.info(`Video rendered: ${compositionId}.mp4`);
+
+        shell.showItemInFolder(downloadsFolderPath);
+        log.info("Shell opened /downloads folder");
+      } catch (err) {
+        console.error(err);
+      } finally {
+        server.close();
+        resolve(undefined);
+      }
+    });
   });
-  log.info(`Composition selected: ${composition.id}`);
-
-  const downloadsFolderPath = path.join(
-    app.getPath("downloads"),
-    "output-remotion.mp4"
-  );
-  log.info(`Downloads folder path: ${downloadsFolderPath}`);
-
-  log.info(`Rendering video: ${compositionId}.mp4`);
-  await renderMedia({
-    composition,
-    serveUrl: bundleLocation,
-    codec: "h264",
-    outputLocation: downloadsFolderPath,
-    inputProps,
-    binariesDirectory,
-    onProgress
-  });
-  log.info(`Video rendered: ${compositionId}.mp4`);
-
-  shell.showItemInFolder(downloadsFolderPath);
-  log.info("Shell opened /downloads folder");
 }
