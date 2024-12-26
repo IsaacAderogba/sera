@@ -45,7 +45,7 @@ export const AudioPlayerView: React.FC = () => {
         audioRef.current.pause();
         return;
     }
-  }, [state, dispatch, song.id, song.data.audioFilename]);
+  }, [state, dispatch, song?.id, song?.data.audioFilename]);
 
   if (!song) return <NoSong />;
   return (
