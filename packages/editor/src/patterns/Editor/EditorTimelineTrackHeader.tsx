@@ -1,5 +1,5 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
-import { Heading, IconButton, Text } from "@radix-ui/themes";
+import { DropdownMenu, Heading, IconButton, Text } from "@radix-ui/themes";
 import { forwardRef } from "react";
 import { Flex } from "../../components/Flex";
 import {
@@ -8,6 +8,7 @@ import {
   Track,
   VideoTrack
 } from "../../../electron/preload/types";
+import { actions, dispatch } from "../../providers/StoreContext";
 
 export interface EditorTimelineTrackHeaderProps {
   track: Track;
@@ -80,9 +81,7 @@ export const EditorTextTimelineTrackHeader = forwardRef<
           Example text track
         </Text>
       </Flex>
-      <IconButton variant="ghost" size="1">
-        <EllipsisVerticalIcon width={16} />
-      </IconButton>
+      <TrackDropdown track={track} />
     </Flex>
   );
 });
@@ -116,9 +115,7 @@ export const EditorVideoTimelineTrackHeader = forwardRef<
           Example video track
         </Text>
       </Flex>
-      <IconButton variant="ghost" size="1">
-        <EllipsisVerticalIcon width={16} />
-      </IconButton>
+      <TrackDropdown track={track} />
     </Flex>
   );
 });
@@ -152,9 +149,34 @@ export const EditorAudioTimelineTrackHeader = forwardRef<
           Example audio track
         </Text>
       </Flex>
-      <IconButton variant="ghost" size="1">
-        <EllipsisVerticalIcon width={16} />
-      </IconButton>
+      <TrackDropdown track={track} />
     </Flex>
   );
 });
+
+const TrackDropdown: React.FC<{ track: Track }> = ({ track }) => {
+  return (
+    <DropdownMenu.Root modal={false}>
+      <DropdownMenu.Trigger>
+        <IconButton variant="ghost" size="1">
+          <EllipsisVerticalIcon width={16} />
+        </IconButton>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content size="1" side="right">
+        <DropdownMenu.Item
+          color="red"
+          onClick={() => {
+            dispatch(
+              actions.editor.commit({
+                type: "delete-track",
+                payload: { id: track.id }
+              })
+            );
+          }}
+        >
+          Delete
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  );
+};

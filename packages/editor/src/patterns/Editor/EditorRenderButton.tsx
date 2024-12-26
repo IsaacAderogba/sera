@@ -1,10 +1,10 @@
 import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
-import { IconButton } from "@radix-ui/themes";
+import { IconButton, IconButtonProps } from "@radix-ui/themes";
 import { useEffect, useMemo, useState } from "react";
 import { actions, dispatch, useSelector } from "../../providers/StoreContext";
 import { calculateMetadata } from "../../remotion/utilities";
 
-export const EditorRenderButton: React.FC = () => {
+export const EditorRenderButton: React.FC<IconButtonProps> = props => {
   const [rendering, setRendering] = useState(false);
   const composition = useSelector(state => state.editor.composition);
   const metadata = useMemo(() => calculateMetadata(composition), [composition]);
@@ -46,6 +46,7 @@ export const EditorRenderButton: React.FC = () => {
           );
         }
       }}
+      {...props}
     >
       <ArrowRightEndOnRectangleIcon width={16} />
     </IconButton>

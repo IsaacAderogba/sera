@@ -16,6 +16,8 @@ import { Separator } from "@radix-ui/themes";
 import { EditorRenderButton } from "../patterns/Editor/EditorRenderButton";
 import { EditorRenderDisplay } from "../patterns/Editor/EditorRenderDisplay";
 import { cloneDeep } from "lodash-es";
+import { EditorThemeButton } from "../patterns/Editor/EditorThemeButton";
+import { EditorTrackButtons } from "../patterns/Editor/EditorTrackButtons";
 
 export const EditorView: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);
@@ -49,10 +51,9 @@ export const EditorView: React.FC = () => {
       }}
     >
       <Flex css={{ background: "$background", justifyContent: "center" }}>
-        <Box className="no-drag" css={{ width: "400px", height: "300px" }}>
+        <Box className="no-drag" css={{ width: "100%", height: "300px" }}>
           <Player
             ref={playerRef}
-            controls
             component={DefaultComposition}
             inputProps={proxiedComposition}
             compositionHeight={metadata.height}
@@ -64,7 +65,6 @@ export const EditorView: React.FC = () => {
         </Box>
       </Flex>
       <Flex
-        className="no-drag"
         css={{
           flexDirection: "column",
           background: "$surface",
@@ -81,13 +81,14 @@ export const EditorView: React.FC = () => {
             alignItems: "center"
           }}
         >
-          <Flex
-            css={{ alignItems: "center", flex: 1, justifyContent: "start" }}
-          >
-            <EditorPlayPauseButton playerRef={playerRef} />
-            <Separator orientation="vertical" mx="1" />
-            <EditorUndoButton />
-            <EditorRedoButton />
+          <Flex css={{ flex: 1, justifyContent: "start" }}>
+            <Flex className="no-drag" css={{ alignItems: "center" }}>
+              <EditorThemeButton />
+              <EditorPlayPauseButton playerRef={playerRef} />
+              <Separator orientation="vertical" mx="1" />
+              <EditorUndoButton />
+              <EditorRedoButton />
+            </Flex>
           </Flex>
           <Flex
             css={{ alignItems: "center", flex: 1, justifyContent: "center" }}
@@ -96,11 +97,20 @@ export const EditorView: React.FC = () => {
           </Flex>
           <Flex css={{ alignItems: "center", flex: 1, justifyContent: "end" }}>
             <EditorTimeDisplay playerRef={playerRef} />
-            <EditorRenderButton />
+            <EditorRenderButton className="no-drag" />
           </Flex>
         </Flex>
-        <Flex css={{ flexDirection: "column", overflow: "auto" }}>
+        <Flex
+          className="no-drag"
+          css={{
+            flexDirection: "column",
+            overflow: "auto",
+            gap: "$sm",
+            paddingBottom: "$sm"
+          }}
+        >
           <EditorTimeline playerRef={playerRef} />
+          <EditorTrackButtons />
         </Flex>
       </Flex>
     </Flex>
