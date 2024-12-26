@@ -36,7 +36,7 @@ export type IPCBroadcastEvents = {
 export type IPCInvokeEvents = {
   render: (props: CompositionState) => Promise<void>;
   bundle: (props: any) => Promise<void>;
-  importTrackItem: (file: File) => Promise<TrackItem | null>;
+  importTrackItem: (type: "mp3" | "mp4") => Promise<TrackItem | null>;
 };
 
 export interface IPCContext {

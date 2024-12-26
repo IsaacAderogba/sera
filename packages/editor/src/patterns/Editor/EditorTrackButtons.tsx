@@ -1,14 +1,13 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { Button } from "@radix-ui/themes";
-import { useRef } from "react";
+import { useState } from "react";
 import { v4 } from "uuid";
-import { Track, TrackItem } from "../../../electron/preload/types";
+import { Track } from "../../../electron/preload/types";
 import { Flex } from "../../components/Flex";
 import { actions, dispatch } from "../../providers/StoreContext";
 
 export const EditorTrackButtons: React.FC = () => {
-  const uploadVideoRef = useRef<HTMLInputElement>(null);
-  const uploadAudioRef = useRef<HTMLInputElement>(null);
+  const [importing, setImporting] = useState({ video: false, audio: false });
 
   return (
     <Flex css={{ justifyContent: "center", gap: "$sm" }}>
@@ -45,74 +44,71 @@ export const EditorTrackButtons: React.FC = () => {
         Text
       </Button>
       <Button
+        loading={importing.video}
         variant="surface"
-        onClick={() => {
-          uploadVideoRef.current?.click();
+        onClick={async () => {
+          try {
+            setImporting(state => ({ ...state, video: true }));
+            const videoTrack = createTrack("video");
+            const videoTrackItem = await window.ipc.invoke(
+              "importTrackItem",
+              "mp4"
+            );
+
+            if (videoTrackItem) {
+              dispatch(
+                actions.editor.commit({
+                  type: "create-track",
+                  payload: {
+                    data: videoTrack,
+                    items: [{ ...videoTrackItem, trackId: videoTrack.id }]
+                  }
+                })
+              );
+            }
+          } finally {
+            setImporting(state => ({ ...state, video: false }));
+          }
         }}
       >
-        <input
-          accept=".mp4"
-          ref={uploadVideoRef}
-          type="file"
-          style={{ display: "none" }}
-          onChange={async e => {
-            const videoTrack = createTrack("video");
-            const videoTrackItem = await importTrackItem(e);
-            if (!videoTrackItem) return;
-
-            dispatch(
-              actions.editor.commit({
-                type: "create-track",
-                payload: {
-                  data: videoTrack,
-                  items: [{ ...videoTrackItem, trackId: videoTrack.id }]
-                }
-              })
-            );
-          }}
-        />
         <PlusIcon width={16} />
         Video
       </Button>
       <Button
+        loading={importing.audio}
         variant="surface"
-        onClick={() => {
-          uploadAudioRef.current?.click();
-        }}
-      >
-        <input
-          accept=".mp3"
-          ref={uploadAudioRef}
-          type="file"
-          style={{ display: "none" }}
-          onChange={async e => {
+        onClick={async () => {
+          try {
+            setImporting(state => ({ ...state, audio: true }));
             const audioTrack = createTrack("audio");
-            const audioTrackItem = await importTrackItem(e);
+            const audioTrackItem = await window.ipc.invoke(
+              "importTrackItem",
+              "mp3"
+            );
             if (!audioTrackItem) return;
 
-            dispatch(
-              actions.editor.commit({
-                type: "create-track",
-                payload: {
-                  data: audioTrack,
-                  items: [{ ...audioTrackItem, trackId: audioTrack.id }]
-                }
-              })
-            );
-          }}
-        />
+            if (audioTrackItem) {
+              dispatch(
+                actions.editor.commit({
+                  type: "create-track",
+                  payload: {
+                    data: audioTrack,
+                    items: [{ ...audioTrackItem, trackId: audioTrack.id }]
+                  }
+                })
+              );
+            }
+          } finally {
+            setImporting(state => ({ ...state, audio: false }));
+          }
+        }}
+      >
         <PlusIcon width={16} />
         Audio
       </Button>
     </Flex>
   );
 };
-
-async function importTrackItem(e: React.ChangeEvent<HTMLInputElement>) {
-  const files = e.currentTarget.files;
-  if (!files || files.length === 0) return;
-  return await window.ipc.invoke("importTrackItem", files[0]);
-}
 
 function createTrack<T extends Track>(type: T["type"]): Track {
   const date = new Date().toISOString();
