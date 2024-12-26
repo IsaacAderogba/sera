@@ -13,6 +13,8 @@ import {
   EditorUndoButton
 } from "../patterns/Editor/EditorHistoryButtons";
 import { Separator } from "@radix-ui/themes";
+import { EditorRenderButton } from "../patterns/Editor/EditorRenderButton";
+import { EditorRenderDisplay } from "../patterns/Editor/EditorRenderDisplay";
 
 export const EditorView: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);
@@ -61,13 +63,23 @@ export const EditorView: React.FC = () => {
             alignItems: "center"
           }}
         >
-          <Flex css={{ alignItems: "center" }}>
+          <Flex
+            css={{ alignItems: "center", flex: 1, justifyContent: "start" }}
+          >
             <EditorPlayPauseButton playerRef={playerRef} />
             <Separator orientation="vertical" mx="1" />
             <EditorUndoButton />
             <EditorRedoButton />
           </Flex>
-          <EditorTimeDisplay playerRef={playerRef} />
+          <Flex
+            css={{ alignItems: "center", flex: 1, justifyContent: "center" }}
+          >
+            <EditorRenderDisplay />
+          </Flex>
+          <Flex css={{ alignItems: "center", flex: 1, justifyContent: "end" }}>
+            <EditorTimeDisplay playerRef={playerRef} />
+            <EditorRenderButton />
+          </Flex>
         </Flex>
         <Flex css={{ flexDirection: "column", overflow: "auto" }}>
           <EditorTimeline playerRef={playerRef} />

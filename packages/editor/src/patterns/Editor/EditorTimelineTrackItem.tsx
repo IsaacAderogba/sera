@@ -5,7 +5,7 @@ import {
   TextTrackItem,
   TrackItem,
   VideoTrackItem
-} from "../../remotion/types";
+} from "../../../electron/preload/types";
 import { useDropzoneDraggable } from "../Dropzone/hooks";
 import { useSelector } from "../../providers/StoreContext";
 import { calculateTrackItemDimensions } from "../../remotion/utilities";

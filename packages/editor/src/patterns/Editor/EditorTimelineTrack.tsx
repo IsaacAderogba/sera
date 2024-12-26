@@ -2,7 +2,6 @@ import { CSS as CSSTransform } from "@dnd-kit/utilities";
 import React, { forwardRef, PropsWithChildren, useMemo } from "react";
 import { Flex, FlexProps } from "../../components/Flex";
 import { useSelector } from "../../providers/StoreContext";
-import { Track } from "../../remotion/types";
 import {
   calculateTrackItemDimensions,
   orderTrackItemsByTrack
@@ -18,6 +17,7 @@ import {
   useIsEditorTimelineTrackDroppable,
   useIsEditorTimelineTrackSortable
 } from "./hooks";
+import { Track } from "../../../electron/preload/types";
 
 export interface EditorTimelineTrackProps extends FlexProps {
   track: Track;

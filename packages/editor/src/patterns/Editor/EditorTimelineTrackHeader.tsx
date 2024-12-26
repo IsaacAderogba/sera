@@ -2,7 +2,12 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Heading, IconButton, Text } from "@radix-ui/themes";
 import { forwardRef } from "react";
 import { Flex } from "../../components/Flex";
-import { AudioTrack, TextTrack, Track, VideoTrack } from "../../remotion/types";
+import {
+  AudioTrack,
+  TextTrack,
+  Track,
+  VideoTrack
+} from "../../../electron/preload/types";
 
 export interface EditorTimelineTrackHeaderProps {
   track: Track;

@@ -1,4 +1,4 @@
-import { Track } from "../../remotion/types";
+import { Track } from "../../../electron/preload/types";
 import { useDraggableData } from "../Dropzone/hooks";
 import { DraggableData, DraggableTrackItem } from "../Dropzone/types";
 

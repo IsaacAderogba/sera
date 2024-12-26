@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { SequenceItem } from "./SequenceItem";
-import { CompositionState } from "./types";
 import { orderTrackItemsByTrack } from "./utilities";
+import { CompositionState } from "../../electron/preload/types";
 
 export const DefaultComposition: React.FC<CompositionState> = state => {
   const orderedTracks = useMemo(

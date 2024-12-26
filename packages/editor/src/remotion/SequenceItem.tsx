@@ -1,11 +1,12 @@
 import { Audio, Sequence, useVideoConfig, Video } from "remotion";
+
+import { calculateFrames } from "./utilities";
 import {
   AudioTrackItem,
   TextTrackItem,
   TrackItem,
   VideoTrackItem
-} from "./types";
-import { calculateFrames } from "./utilities";
+} from "../../electron/preload/types";
 
 export interface SequenceItemProps {
   trackItem: TrackItem;

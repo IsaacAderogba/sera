@@ -11,9 +11,14 @@ import {
 } from "react-redux";
 import { createLogger } from "redux-logger";
 import { DraggableData } from "../patterns/Dropzone/types";
-import { CompositionState, Track, TrackItem } from "../remotion/types";
 import { initializeCompositionState } from "../remotion/utilities";
 import { DeepPartial } from "../utilities/types";
+import { StitchingState } from "@remotion/renderer";
+import {
+  CompositionState,
+  Track,
+  TrackItem
+} from "../../electron/preload/types";
 
 export interface EditorState {
   compositionUndo: CompositionState[];
@@ -167,12 +172,32 @@ type EditorDeleteTrackItemAction = {
 export interface TimelineState {
   scale: number;
   draggableData: DraggableData[];
+  renderProgress: RenderProgress;
+}
+
+export interface RenderProgress {
+  renderedFrames: number;
+  encodedFrames: number;
+  encodedDoneIn: number | null;
+  renderedDoneIn: number | null;
+  renderEstimatedTime: number;
+  progress: number;
+  stitchStage: StitchingState;
 }
 
 function getTimelineState(): TimelineState {
   return {
     scale: 1,
-    draggableData: []
+    draggableData: [],
+    renderProgress: {
+      renderedFrames: 0,
+      encodedFrames: 0,
+      encodedDoneIn: null,
+      renderedDoneIn: null,
+      renderEstimatedTime: 0,
+      progress: 0,
+      stitchStage: "encoding"
+    }
   };
 }
 

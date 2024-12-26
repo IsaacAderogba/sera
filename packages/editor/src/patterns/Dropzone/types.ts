@@ -1,4 +1,4 @@
-import { Track, TrackItem } from "../../remotion/types";
+import { Track, TrackItem } from "../../../electron/preload/types";
 
 export type DraggableEventData = DropzoneEventData<DraggableData>;
 export type DroppableEventData = DropzoneEventData<DroppableData>;

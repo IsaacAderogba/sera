@@ -1,3 +1,3 @@
-import { bundle } from "./bundle";
+import { bundle } from "./bundle.js";
 
 bundle();

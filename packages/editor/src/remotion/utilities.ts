@@ -1,11 +1,11 @@
 import { CalculateMetadataFunction, VideoConfig } from "remotion";
 import { v4 } from "uuid";
-import { CompositionState, TrackItem } from "./types";
 import {
   TIMELINE_STEP_SIZE,
   TIMELINE_STEP_SIZE_WIDTH
 } from "../utilities/constants";
 import { TimelineState } from "../providers/StoreContext";
+import { CompositionState, TrackItem } from "../../electron/preload/types";
 
 export const calculateCompositionMetadata: CalculateMetadataFunction<
   CompositionState
