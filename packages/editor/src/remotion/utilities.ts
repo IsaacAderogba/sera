@@ -1,11 +1,10 @@
 import { CalculateMetadataFunction, VideoConfig } from "remotion";
-import { v4 } from "uuid";
+import { CompositionState, TrackItem } from "../../electron/preload/types";
+import { TimelineState } from "../providers/StoreContext";
 import {
   TIMELINE_STEP_SIZE,
   TIMELINE_STEP_SIZE_WIDTH
 } from "../utilities/constants";
-import { TimelineState } from "../providers/StoreContext";
-import { CompositionState, TrackItem } from "../../electron/preload/types";
 
 export const calculateCompositionMetadata: CalculateMetadataFunction<
   CompositionState
@@ -27,115 +26,10 @@ export const calculateMetadata = (props: CompositionState) => {
 };
 
 export const initializeCompositionState = (): CompositionState => {
-  const videoTrackId = v4();
-  const videoTrackId2 = v4();
-  const videoTrackItemId = v4();
-  const audioTrackId = v4();
-  const audioTrackId2 = v4();
-  const audioTrackItemId = v4();
-  const textTrackId = v4();
-  const textTrackId2 = v4();
-  const textTrackItemId = v4();
-  const textTrackItemId2 = v4();
-  const date = new Date().toISOString();
-
   return {
-    orderedTrackIds: [
-      textTrackId,
-      textTrackId2,
-      audioTrackId,
-      audioTrackId2,
-      videoTrackId,
-      videoTrackId2
-    ],
-    tracks: {
-      [videoTrackId]: {
-        id: videoTrackId,
-        type: "video",
-        createdAt: date,
-        updatedAt: date
-      },
-      [videoTrackId2]: {
-        id: videoTrackId2,
-        type: "video",
-        createdAt: date,
-        updatedAt: date
-      },
-      [audioTrackId]: {
-        id: audioTrackId,
-        type: "audio",
-        createdAt: date,
-        updatedAt: date
-      },
-      [audioTrackId2]: {
-        id: audioTrackId2,
-        type: "audio",
-        createdAt: date,
-        updatedAt: date
-      },
-      [textTrackId]: {
-        id: textTrackId,
-        type: "text",
-        createdAt: date,
-        updatedAt: date
-      },
-      [textTrackId2]: {
-        id: textTrackId2,
-        type: "text",
-        createdAt: date,
-        updatedAt: date
-      }
-    },
-    trackItems: {
-      [videoTrackItemId]: {
-        id: videoTrackItemId,
-        trackId: videoTrackId,
-        name: "Video Example",
-        type: "video",
-        from: 5,
-        duration: 5,
-        playbackRate: 1,
-        data: { src: "video.mp4" },
-        createdAt: date,
-        updatedAt: date
-      },
-      [audioTrackItemId]: {
-        id: audioTrackItemId,
-        trackId: audioTrackId,
-        name: "Audio Example",
-        type: "audio",
-        from: 0,
-        duration: 15,
-        playbackRate: 1,
-        data: { src: "audio.mp3" },
-        createdAt: date,
-        updatedAt: date
-      },
-      [textTrackItemId]: {
-        id: textTrackItemId,
-        trackId: textTrackId,
-        name: "Text Example",
-        type: "text",
-        from: 0,
-        duration: 5,
-        playbackRate: 1,
-        data: { text: "Hello World" },
-        createdAt: date,
-        updatedAt: date
-      },
-      [textTrackItemId2]: {
-        id: textTrackItemId2,
-        trackId: textTrackId2,
-        name: "Text Example",
-        type: "text",
-        from: 0,
-        duration: 10,
-        playbackRate: 1,
-        data: { text: "Hello World" },
-        createdAt: date,
-        updatedAt: date
-      }
-    },
+    orderedTrackIds: [],
+    tracks: {},
+    trackItems: {},
     metadata: {
       fps: 30,
       width: 1920,

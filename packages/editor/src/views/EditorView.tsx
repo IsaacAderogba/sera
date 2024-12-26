@@ -58,7 +58,7 @@ export const EditorView: React.FC = () => {
             inputProps={proxiedComposition}
             compositionHeight={metadata.height}
             compositionWidth={metadata.width}
-            durationInFrames={metadata.durationInFrames}
+            durationInFrames={Math.max(metadata.durationInFrames, 1)}
             fps={metadata.fps}
             style={{ width: "100%", height: "100%" }}
           />
