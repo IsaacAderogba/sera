@@ -1,12 +1,12 @@
-import { Audio, Sequence, useVideoConfig, Video } from "remotion";
+import { Audio, OffthreadVideo, Sequence, useVideoConfig } from "remotion";
 
-import { calculateFrames } from "./utilities";
 import {
   AudioTrackItem,
   TextTrackItem,
   TrackItem,
   VideoTrackItem
 } from "../../electron/preload/types";
+import { calculateFrames } from "./utilities";
 
 export interface SequenceItemProps {
   trackItem: TrackItem;
@@ -68,7 +68,7 @@ export const VideoSequenceItem: React.FC<VideoSequenceItemProps> = ({
 
   return (
     <Sequence from={from} durationInFrames={durationInFrames}>
-      <Video src={trackItem.data.src} pauseWhenBuffering />
+      <OffthreadVideo src={trackItem.data.src} pauseWhenBuffering />
     </Sequence>
   );
 };
