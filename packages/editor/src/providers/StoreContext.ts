@@ -88,13 +88,19 @@ function commitComposition(
     case "create-track": {
       tracks[action.payload.data.id] = action.payload.data;
       orderedTrackIds.push(action.payload.data.id);
-      return { ...state, tracks, orderedTrackIds };
+
+      for (const trackItem of action.payload.items) {
+        trackItems[trackItem.id] = trackItem;
+      }
+
+      return { ...state, tracks, orderedTrackIds, trackItems };
     }
     case "update-track": {
       const { id, data } = action.payload;
       if (tracks[id]) {
         tracks[id] = merge({}, tracks[id], data);
       }
+
       return { ...state, tracks };
     }
     case "delete-track": {
@@ -146,7 +152,7 @@ type EditorOrderTrackIdsAction = {
 };
 type EditorCreateTrackAction = {
   type: "create-track";
-  payload: { data: Track };
+  payload: { data: Track; items: TrackItem[] };
 };
 type EditorUpdateTrackAction = {
   type: "update-track";
