@@ -8,6 +8,11 @@ import { calculateMetadata } from "../remotion/utilities";
 import { EditorPlayPauseButton } from "../patterns/Editor/EditorPlayPauseButton";
 import { EditorTimeDisplay } from "../patterns/Editor/EditorTimeDisplay";
 import { EditorTimeline } from "../patterns/Editor/EditorTimeline";
+import {
+  EditorRedoButton,
+  EditorUndoButton
+} from "../patterns/Editor/EditorHistoryButtons";
+import { Separator } from "@radix-ui/themes";
 
 export const EditorView: React.FC = () => {
   const playerRef = useRef<PlayerRef>(null);
@@ -56,7 +61,12 @@ export const EditorView: React.FC = () => {
             alignItems: "center"
           }}
         >
-          <EditorPlayPauseButton playerRef={playerRef} />
+          <Flex css={{ alignItems: "center" }}>
+            <EditorPlayPauseButton playerRef={playerRef} />
+            <Separator orientation="vertical" mx="1" />
+            <EditorUndoButton />
+            <EditorRedoButton />
+          </Flex>
           <EditorTimeDisplay playerRef={playerRef} />
         </Flex>
         <Flex css={{ flexDirection: "column", overflow: "auto" }}>
