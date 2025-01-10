@@ -10,26 +10,22 @@ export type Publish = <T extends keyof IPCBroadcastAPI>(
 
 export type Subscribe = <T extends keyof IPCBroadcastAPI>(
   subject: T,
-  listener: (
-    context: IPCContext,
-    ...data: Parameters<IPCBroadcastAPI[T]>
-  ) => void
+  listener: (event: IPCEvent, ...data: Parameters<IPCBroadcastAPI[T]>) => void
 ) => Unsubscribe;
 
 export type Unsubscribe = () => void;
 
 export type IPCBroadcastAPI = {
-  foo: () => void;
+  foo: () => Promise<void>;
 };
 
 export type IPCInvokeAPI = {
-  bar: () => void;
+  bar: () => Promise<void>;
 };
 
-export type IPCContext = {
+export type IPCEvent = {
   platform: Platform;
   windowId: number;
-  viewId: number;
 };
 export type Platform = "mac" | "windows" | "linux";
 
