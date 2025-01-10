@@ -1,6 +1,6 @@
 {
   "extends": ["@commitlint/config-conventional"],
   "rules": {
-    "scope-enum": [2, "always", ["player", "launcher", "editor"]]
+    "scope-enum": [2, "always", ["player", "launcher", "editor", "spotlight"]]
   }
 }

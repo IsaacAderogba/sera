@@ -1,0 +1,23 @@
+{
+  "name": "@sera/spotlight",
+  "version": "0.1.1",
+  "description": "An Electron application with React and TypeScript",
+  "author": "example.com",
+  "homepage": "https://electron-vite.org",
+  "type": "module",
+  "main": "./dist/main/index.js",
+  "license": "ISC",
+  "scripts": {},
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "electron": "33.2.1",
+    "electron-vite": "^2.3.0",
+    "vite": "^5.3.1"
+  }
+}
