@@ -6,6 +6,7 @@ import {
 } from "electron";
 import path from "path";
 import { ELECTRON_RENDERER_URL, SHARED_PARTITION } from "./constants";
+import { MAIN_WINDOW_HEIGHT, MAIN_WINDOW_WIDTH } from "../preload/constants";
 
 export const activateWindows = async () => {
   const appWindow = BrowserWindow.getAllWindows().find(
@@ -26,8 +27,8 @@ export const initializeWindows = async () => {
 export const createMainWindow = async () => {
   const win = createWindow("main", {
     type: "panel",
-    width: 640,
-    height: 480,
+    width: MAIN_WINDOW_WIDTH,
+    height: MAIN_WINDOW_HEIGHT,
     fullscreenable: false,
     resizable: false,
     maximizable: false,
@@ -38,7 +39,7 @@ export const createMainWindow = async () => {
   });
 
   win.setVisibleOnAllWorkspaces(true);
-  win.on("blur", () => win.hide());
+  // win.on("blur", () => win.hide());
   win.on("show", () => win.focus());
   win.on("close", e => {
     e.preventDefault();
