@@ -1,3 +1,5 @@
+import { InterfaceThemePreference } from "./store";
+
 export type Invoke = <T extends keyof IPCInvokeAPI>(
   subject: T,
   ...data: Parameters<IPCInvokeAPI[T]>
@@ -16,7 +18,7 @@ export type Subscribe = <T extends keyof IPCBroadcastAPI>(
 export type Unsubscribe = () => void;
 
 export type IPCBroadcastAPI = {
-  foo: () => Promise<void>;
+  themeChange: (theme: InterfaceThemePreference) => Promise<void> | void;
 };
 
 export type IPCInvokeAPI = {
