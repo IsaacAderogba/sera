@@ -1,11 +1,11 @@
 import React from "react";
 import { StoreProvider } from "../../src/patterns/providers/StoreProvider";
-import { MainView } from "../../src/views/MainView";
+import { MainRouterProvider } from "../../src/patterns/providers/RouterProvider";
 
 export const MainApp: React.FC = () => {
   return (
     <StoreProvider>
-      <MainView />
+      <MainRouterProvider />
     </StoreProvider>
   );
 };
