@@ -234,4 +234,5 @@ export const globalStyles = globalCss({
   ".no-drag": { "-webkit-app-region": "no-drag" }
 });
 
+export type Size = "default" | "compact";
 export type CSS = Stitches.CSS<typeof config>;
