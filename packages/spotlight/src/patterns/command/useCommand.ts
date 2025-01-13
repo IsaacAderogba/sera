@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import {
-  CommandItemContext,
-  CommandLayoutContext,
+  CommandItemIdContext,
+  CommandLayoutIdContext,
   CommandQueryContext,
-  CommandSectionContext,
+  CommandSectionIdContext,
   CommandStateContext
 } from "./CommandStore";
 
@@ -23,14 +23,14 @@ export const useCommandQuery = () => {
   return context;
 };
 
-export const useCommandItem = () => {
-  return useContext(CommandItemContext);
+export const useCommandItemId = () => {
+  return useContext(CommandItemIdContext);
 };
 
-export const useCommandSection = () => {
-  return useContext(CommandSectionContext);
+export const useCommandSectionId = () => {
+  return useContext(CommandSectionIdContext);
 };
 
-export const useCommandLayout = () => {
-  return useContext(CommandLayoutContext);
+export const useCommandLayoutId = () => {
+  return useContext(CommandLayoutIdContext);
 };

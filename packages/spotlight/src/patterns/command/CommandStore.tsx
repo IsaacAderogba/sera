@@ -1,15 +1,15 @@
 import { createContext, MutableRefObject } from "react";
 import { Size } from "../../utilities/stitches";
 
-export const CommandItemContext = createContext("");
-export const CommandSectionContext = createContext("");
-export const CommandLayoutContext = createContext("");
+export const CommandItemIdContext = createContext("");
+export const CommandSectionIdContext = createContext("");
+export const CommandLayoutIdContext = createContext("");
 
 export const CommandStateContext = createContext<CommandState | undefined>(
   undefined
 );
 
-export const CommandQueryContext = createContext<CommandState | undefined>(
+export const CommandQueryContext = createContext<CommandQuery | undefined>(
   undefined
 );
 
@@ -36,13 +36,13 @@ export interface CommandState {
   size: Size;
 }
 
-type CommandAction = {
+export type CommandAction = {
   id: string;
   type: "action";
   data: MutableRefObject<CommandActionData>;
 };
 
-type CommandActionData = {
+export type CommandActionData = {
   itemId: string;
 
   icon: React.ReactNode;
@@ -50,37 +50,37 @@ type CommandActionData = {
   shortcut: string;
 };
 
-type CommandItem = {
+export type CommandItem = {
   id: string;
   type: "item";
   data: MutableRefObject<CommandItemData>;
 };
 
-type CommandItemData = {
+export type CommandItemData = {
   itemId: string;
-  layoutId: string;
   sectionId: string;
+  layoutId: string;
 
   icon: React.ReactNode;
   title: React.ReactNode;
 };
 
-type CommandSection = {
+export type CommandSection = {
   id: string;
   type: "section";
   data: MutableRefObject<CommandSectionData>;
 };
-type CommandSectionData = {
+export type CommandSectionData = {
   title: React.ReactNode;
 };
 
-type CommandLayout = {
+export type CommandLayout = {
   id: string;
   type: "layout";
   data: MutableRefObject<CommandLayoutData>;
 };
 
-type CommandLayoutData = CommandListData;
-type CommandListData = {
+export type CommandLayoutData = CommandListData;
+export type CommandListData = {
   type: "list";
 };
