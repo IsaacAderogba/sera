@@ -36,6 +36,11 @@ export interface CommandState {
   size: Size;
 }
 
+export type CommandMatch = {
+  item: CommandItem;
+  score: number;
+};
+
 export type CommandAction = {
   id: string;
   type: "action";

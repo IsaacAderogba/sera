@@ -11,7 +11,7 @@ import { useValueRef } from "../../hooks/useManagedRefs";
 
 export type CommandItemProps = Omit<
   CommandItemData,
-  "itemId" | "sectionId" | "layoutId"
+  "parentId" | "sectionId" | "layoutId"
 >;
 export const CommandItem: React.FC<PropsWithChildren<CommandItemProps>> = ({
   children,

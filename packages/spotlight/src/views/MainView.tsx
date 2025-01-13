@@ -4,6 +4,7 @@ import { CommandInput } from "../patterns/command/CommandInput";
 import { CommandItem } from "../patterns/command/CommandItem";
 import { CommandLayout } from "../patterns/command/CommandLayout";
 import { CommandProvider } from "../patterns/command/CommandProvider";
+import { CommandResults } from "../patterns/command/CommandResults";
 import { CommandSection } from "../patterns/command/CommandSection";
 
 export const MainView: React.FC = () => {
@@ -21,6 +22,7 @@ export const MainView: React.FC = () => {
       <div className="no-drag">
         <CommandProvider>
           <CommandInput />
+          <CommandResults />
           <CommandLayout type="list">
             <CommandSection title="Section 1">
               <CommandItem title="Item" icon="i">
