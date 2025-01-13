@@ -14,7 +14,7 @@ export const CommandQueryContext = createContext<CommandQuery | undefined>(
 );
 
 export interface CommandQuery {
-  onRootIdChange: (state: React.SetStateAction<string | undefined>) => void;
+  onRootIdChange: (state: React.SetStateAction<string>) => void;
   onInputChange: (state: React.SetStateAction<string>) => void;
   onOpenChange: (state: React.SetStateAction<boolean>) => void;
 
