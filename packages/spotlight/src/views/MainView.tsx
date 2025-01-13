@@ -1,3 +1,4 @@
+import { Box } from "../components/Box";
 import { Flex } from "../components/Flex";
 import { CommandAction } from "../patterns/command/CommandAction";
 import { CommandInput } from "../patterns/command/CommandInput";
@@ -18,7 +19,7 @@ export const MainView: React.FC = () => {
         overflow: "auto"
       }}
     >
-      <div>editor</div>
+      <Box css={{ flex: 1 }}>Editor</Box>
       <div className="no-drag">
         <CommandProvider>
           <CommandInput />

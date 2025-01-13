@@ -14,6 +14,8 @@ export const CommandQueryContext = createContext<CommandQuery | undefined>(
 );
 
 export interface CommandQuery {
+  setState: React.Dispatch<React.SetStateAction<CommandState>>;
+
   onRootIdChange: (state: React.SetStateAction<string>) => void;
   onInputChange: (state: React.SetStateAction<string>) => void;
   onOpenChange: (state: React.SetStateAction<boolean>) => void;
@@ -34,10 +36,17 @@ export interface CommandState {
   layouts: Record<string, CommandLayout>;
 
   size: Size;
+  selected: CommandSelected;
 }
 
-export type CommandMatch = {
-  item: CommandItem;
+export type CommandSelected = {
+  id: string;
+  index: number;
+  open: boolean;
+};
+
+export type CommandMatch<T> = {
+  data: T;
   score: number;
 };
 

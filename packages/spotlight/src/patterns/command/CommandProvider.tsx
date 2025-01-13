@@ -31,7 +31,7 @@ export const CommandProvider: React.FC<
   onRootIdChange: onRootIdChangeProp
 }) => {
   const [open, onOpenChange] = useManagedState({
-    defaultState: false,
+    defaultState: true,
     state: openProp,
     onStateChange: onOpenChangeProp
   });
@@ -52,11 +52,12 @@ export const CommandProvider: React.FC<
     open,
     input,
     rootId,
-    size,
     actions: {},
     items: {},
     layouts: {},
-    sections: {}
+    sections: {},
+    size,
+    selected: { id: "", index: 0, open: false }
   });
 
   useEffect(() => {
@@ -65,6 +66,7 @@ export const CommandProvider: React.FC<
 
   const query: CommandQuery = useMemo(
     () => ({
+      setState,
       onInputChange,
       onRootIdChange,
       onOpenChange,
