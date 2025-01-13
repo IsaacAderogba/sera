@@ -57,7 +57,7 @@ export type CommandItem = {
 };
 
 export type CommandItemData = {
-  itemId: string;
+  parentId: string;
   sectionId: string;
   layoutId: string;
 

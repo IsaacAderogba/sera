@@ -18,12 +18,12 @@ export const CommandItem: React.FC<PropsWithChildren<CommandItemProps>> = ({
   ...props
 }) => {
   const id = useUniqueId();
-  const itemId = useCommandItemId();
+  const parentId = useCommandItemId();
   const sectionId = useCommandSectionId();
   const layoutId = useCommandLayoutId();
   const data = useValueRef<CommandItemData>({
     ...props,
-    itemId,
+    parentId,
     sectionId,
     layoutId
   });

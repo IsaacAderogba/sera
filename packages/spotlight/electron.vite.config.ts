@@ -30,6 +30,7 @@ export default defineConfig({
           main: path.join(__dirname, "electron", "renderer", "main.html")
         }
       }
-    }
+    },
+    plugins: [react({})]
   }
 });
